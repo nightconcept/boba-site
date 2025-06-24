@@ -9,16 +9,24 @@ export default defineConfig({
 		starlight({
 			title: 'Boba Lang',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			expressiveCode: {
+				langs: [
+					{
+						name: 'boba',
+						base: 'typescript',
+					},
+				],
+			},
 			sidebar: [
 				{
 					label: 'Guides',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'Get Started', slug: 'guides/get-started' },
 					],
 				},
 				{
-					label: 'Reference',
+					label: 'Language Reference',
 					autogenerate: { directory: 'reference' },
 				},
 			],

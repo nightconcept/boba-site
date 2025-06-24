@@ -1,0 +1,41 @@
+---
+title: Loops
+---
+
+Boba supports `for`, `while`, `foreach`, and `repeat` loops.
+
+## `for` loop
+
+```boba
+for i in 1 to 5 by 1 { // these are ALWAYS numbers
+  print("I am print #{i}!") // Standard support for f-strings like Python. \\{ and \\} will support escaping
+}
+```
+
+## `while` loop
+
+```boba
+var j: number = 0
+while j < 10 do {
+  j++
+  print("I am print #{j}!")
+  if j == 5 then break
+}
+```
+
+## `foreach` loop
+
+```boba
+foreach page in book {
+  read(page)
+}
+```
+
+## `repeat` loop
+
+```boba
+var k: number = 0
+repeat {
+  print("Repeating!")
+  k++
+} until k == 10
