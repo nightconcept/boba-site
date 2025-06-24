@@ -1,0 +1,275 @@
+---
+title: Boba Syntax Highlighting
+description: A demonstration of the Boba language syntax highlighting.
+---
+
+This page demonstrates the custom syntax highlighting for the Boba language. For comparison, each Boba example is followed by an equivalent TypeScript example.
+
+## Basic Class and Function Example
+
+```boba
+// This is a single-line comment
+class Greeter {
+  fn say_hello(name: string) {
+    // Log a greeting to the console
+    console.log("Hello, #{name}!");
+  }
+}
+
+// Create a new instance of the Greeter class
+const greeter = new Greeter();
+
+// Call the say_hello method
+greeter.say_hello("Boba");
+```
+
+### TypeScript
+
+```typescript
+// This is a single-line comment
+class Greeter {
+  sayHello(name: string): void {
+    // Log a greeting to the console
+    console.log(`Hello, ${name}!`);
+  }
+}
+
+// Create a new instance of the Greeter class
+const greeter = new Greeter();
+
+// Call the sayHello method
+greeter.sayHello("TypeScript");
+```
+
+## Variables and Types
+
+```boba
+// Variable declarations
+var counter = 0;
+const max_value = 100;
+var message: string = "Welcome to Boba!";
+var enabled: boolean = true;
+var items: table = {};
+```
+
+### TypeScript
+
+```typescript
+// Variable declarations
+let counter = 0;
+const maxValue = 100;
+let message: string = "Welcome to TypeScript!";
+let enabled: boolean = true;
+let items: Record<string, any> = {};
+```
+
+## Control Flow and Operators
+
+```boba
+// Conditional statements
+if counter < max_value and enabled {
+    counter++;
+    console.log("Counter incremented: #{counter}");
+} else {
+    console.log("Maximum reached or disabled");
+}
+
+// Loops and ranges
+for i in 1 to 10 by 2 {
+    console.log("Odd number: #{i}");
+}
+
+// While loop
+while counter <= max_value {
+    counter++;
+    if counter == 50 {
+        break;
+    }
+}
+```
+
+### TypeScript
+
+```typescript
+// For demonstration, we'll declare variables used in conditions and loops.
+let counter = 1;
+const maxValue = 100;
+const enabled = true;
+
+// Conditional statements
+if (counter < maxValue && enabled) {
+    counter++;
+    console.log(`Counter incremented: ${counter}`);
+} else {
+    console.log("Maximum reached or disabled");
+}
+
+// Loops and ranges
+for (let i = 1; i <= 10; i += 2) {
+    console.log(`Odd number: ${i}`);
+}
+
+// While loop
+while (counter <= maxValue) {
+    counter++;
+    if (counter === 50) {
+        break;
+    }
+}
+```
+
+## Functions and Piping
+
+```boba
+// Function definition with arrow syntax
+fn calculate(x: number, y: number) -> number {
+    return x * y + 10;
+}
+
+// Private function
+private fn internal_helper(data: table) -> string {
+    return data.name |> uppercase |> trim;
+}
+
+// Piping operator example
+const result = calculate(5, 3) |> to_string |> log;
+```
+
+### TypeScript
+
+```typescript
+// Function definition with arrow syntax
+const calculate = (x: number, y: number): number => {
+    return x * y + 10;
+};
+
+// Private method in a class (TypeScript uses `private` keyword inside classes)
+class DataHelper {
+    private internalHelper(data: { name: string }): string {
+        return data.name.toUpperCase().trim();
+    }
+}
+
+// Function chaining is used instead of a pipe operator
+const result = calculate(5, 3).toString();
+console.log(result);
+```
+
+## Advanced Features
+
+```boba
+/* 
+   Multi-line comment
+   showcasing string interpolation
+   and advanced operators
+*/
+class Calculator extends BaseCalculator {
+    fn compute(values: table) -> number {
+        var sum = 0;
+        
+        foreach item in values {
+            sum += item.value;
+        }
+        
+        // Comparison operators
+        if sum >= 100 and sum <= 1000 {
+            return sum ^ 2;  // Exponentiation
+        } else if sum > 1000 or sum < 0 {
+            return null;
+        }
+        
+        return sum;
+    }
+}
+```
+
+### TypeScript
+
+```typescript
+/*
+   Multi-line comment
+   showcasing string interpolation
+   and advanced operators
+*/
+// Assuming a BaseCalculator class exists from another file
+declare class BaseCalculator {}
+
+class Calculator extends BaseCalculator {
+    compute(values: { value: number }[]): number | null {
+        let sum = 0;
+        
+        for (const item of values) {
+            sum += item.value;
+        }
+        
+        // Comparison operators
+        if (sum >= 100 && sum <= 1000) {
+            return sum ** 2;  // Exponentiation
+        } else if (sum > 1000 || sum < 0) {
+            return null;
+        }
+        
+        return sum;
+    }
+}
+```
+
+## Edge Cases and Special Syntax
+
+```boba
+// Numbers and expressions
+var pi = 3.14159;
+var result = (10 + 5) * 2 - 1;
+
+// String interpolation in different contexts
+var template = "The result is #{result} and pi is #{pi.toFixed(2)}";
+
+// Table access and methods
+var data = {
+    name: "Boba",
+    version: 1.0,
+    features: ["syntax highlighting", "piping", "classes"]
+};
+
+// Method chaining and property access
+var info = data.name
+    |> uppercase
+    |> concat(" Language v#{data.version}")
+    |> display;
+```
+
+### TypeScript
+
+```typescript
+// Numbers and expressions
+let pi = 3.14159;
+let result = (10 + 5) * 2 - 1;
+
+// Template literals for string interpolation
+let template = `The result is ${result} and pi is ${pi.toFixed(2)}`;
+
+// Object access and methods
+let data = {
+    name: "TypeScript",
+    version: 5.0,
+    features: ["type safety", "classes", "interfaces"]
+};
+
+// Method chaining and property access
+const info = data.name
+    .toUpperCase()
+    .concat(` Language v${data.version}`);
+
+console.log(info);
+```
+
+This comprehensive example showcases all the major syntax highlighting features of the Boba language, including:
+
+- **Comments**: Single-line (`//`) and multi-line (`/* */`)
+- **Keywords**: Control flow, loops, and declarations
+- **Types**: Primitive types like `string`, `number`, `boolean`, `table`
+- **Operators**: Arithmetic, comparison, logical, assignment, and the special piping operator (`|>`)
+- **String interpolation**: Using `#{expression}` syntax
+- **Functions**: Regular and private function declarations
+- **Classes**: Class definitions with inheritance
+- **Punctuation**: Proper highlighting of braces, brackets, and other delimiters

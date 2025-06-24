@@ -35,6 +35,12 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 - [x] Create a placeholder page for the formal grammar at `src/content/docs/reference/grammar.mdx`.
 - [x] **Verification**: All created pages are accessible via the sidebar, render correctly, and display the appropriate content.
 
+### 2.3. Task: Integrate and verify custom Boba syntax highlighting
+
+- [x] Modify `astro.config.mjs` to load the `src/grammars/boba.tmLanguage.json` grammar.
+- [x] Create a new document in `src/content/docs/` with a `boba` code block to demonstrate highlighting.
+- [x] **Verification**: The new page renders correctly and the Boba code block shows proper syntax highlighting.
+
 ## 3. Epic: Additional Tasks / Backlog
 
 ### 3.1. Task: Create the machine-readable context file for the AI assistant

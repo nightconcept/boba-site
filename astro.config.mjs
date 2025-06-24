@@ -1,6 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const bobaGrammar = JSON.parse(
+	readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), './src/grammars/boba.tmLanguage.json'), 'utf-8'),
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,12 +17,16 @@ export default defineConfig({
 			title: 'Boba Lang',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			expressiveCode: {
-				langs: [
-					{
-						name: 'boba',
-						base: 'typescript',
-					},
-				],
+				shiki: {
+					langs: [
+						{
+							id: 'boba',
+							scopeName: 'source.boba',
+							aliases: ['boba'],
+							...bobaGrammar,
+						},
+					],
+				},
 			},
 			sidebar: [
 				{
@@ -23,6 +34,7 @@ export default defineConfig({
 					items: [
 						// Each item here is one entry in the navigation menu.
 						{ label: 'Get Started', slug: 'guides/get-started' },
+						{ label: 'Boba Syntax Highlighting', slug: 'guides/boba-syntax-highlighting' },
 					],
 				},
 				{
