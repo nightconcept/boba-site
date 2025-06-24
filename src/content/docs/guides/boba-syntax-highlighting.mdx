@@ -10,9 +10,9 @@ This page demonstrates the custom syntax highlighting for the Boba language. For
 ```boba
 // This is a single-line comment
 class Greeter {
-  fn say_hello(name: string) {
+  fn say_hello(name: string) -> void {
     // Log a greeting to the console
-    console.log("Hello, #{name}!");
+    console.log("Hello, #{name}!")
   }
 }
 
@@ -45,11 +45,11 @@ greeter.sayHello("TypeScript");
 
 ```boba
 // Variable declarations
-var counter = 0;
-const max_value = 100;
-var message: string = "Welcome to Boba!";
-var enabled: boolean = true;
-var items: table = {};
+var counter = 0
+const max_value = 100
+var message: string = "Welcome to Boba!"
+var enabled: boolean = true
+var items: table = {}
 ```
 
 ### TypeScript
@@ -69,21 +69,21 @@ let items: Record<string, any> = {};
 // Conditional statements
 if counter < max_value and enabled {
     counter++;
-    console.log("Counter incremented: #{counter}");
+    console.log("Counter incremented: #{counter}")
 } else {
-    console.log("Maximum reached or disabled");
+    console.log("Maximum reached or disabled")
 }
 
 // Loops and ranges
 for i in 1 to 10 by 2 {
-    console.log("Odd number: #{i}");
+    console.log("Odd number: #{i}")
 }
 
 // While loop
 while counter <= max_value {
-    counter++;
+    counter++
     if counter == 50 {
-        break;
+        break
     }
 }
 ```
@@ -123,16 +123,16 @@ while (counter <= maxValue) {
 ```boba
 // Function definition with arrow syntax
 fn calculate(x: number, y: number) -> number {
-    return x * y + 10;
+    return x * y + 10
 }
 
 // Private function
 private fn internal_helper(data: table) -> string {
-    return data.name |> uppercase |> trim;
+    return data.name |> uppercase() |> trim()
 }
 
 // Piping operator example
-const result = calculate(5, 3) |> to_string |> log;
+const result = calculate(5, 3) |> to_string() |> log()
 ```
 
 ### TypeScript
@@ -165,20 +165,20 @@ console.log(result);
 */
 class Calculator extends BaseCalculator {
     fn compute(values: table) -> number {
-        var sum = 0;
+        var sum = 0
         
         foreach item in values {
-            sum += item.value;
+            sum += item.value
         }
         
         // Comparison operators
         if sum >= 100 and sum <= 1000 {
-            return sum ^ 2;  // Exponentiation
+            return sum ^ 2  // Exponentiation
         } else if sum > 1000 or sum < 0 {
-            return null;
+            return null
         }
         
-        return sum;
+        return sum
     }
 }
 ```
@@ -218,24 +218,23 @@ class Calculator extends BaseCalculator {
 
 ```boba
 // Numbers and expressions
-var pi = 3.14159;
-var result = (10 + 5) * 2 - 1;
+var pi = 3.14159
+var result = (10 + 5) * 2 - 1
 
 // String interpolation in different contexts
-var template = "The result is #{result} and pi is #{pi.toFixed(2)}";
+var template = "The result is #{result} and pi is #{pi.toFixed(2)}"
 
 // Table access and methods
-var data = {
-    name: "Boba",
-    version: 1.0,
-    features: ["syntax highlighting", "piping", "classes"]
-};
+var data: table = {
+    name: string = "Boba",
+    version: number = 1.0
+}
 
 // Method chaining and property access
 var info = data.name
     |> uppercase()
     |> concat(" Language v#{data.version}")
-    |> display();
+    |> display()
 ```
 
 ### TypeScript
