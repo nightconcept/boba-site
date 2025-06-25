@@ -1,14 +1,15 @@
 # Boba Lang Documentation Website - Product Requirements Document (Prototype)
+
 1. Introduction
 
     Project Idea: To create a modern, professional documentation website for the Boba programming language. This site will be built using the Astro framework and its Starlight template. It will serve as the primary source of truth for human learners and as a persistent context provider for an AI development assistant.
-    Problem/Need: Boba Lang is designed for beginners transitioning from visual languages and needs a central, well-structured home for its documentation, tutorials, and language specification. This website addresses the need for clear, accessible learning materials for its target audience and provides a crucial, stable context for AI-assisted development of the language itself.
+    Problem/Need: Boba Lang needs a central, well-structured home for its documentation, tutorials, and language specification. This website addresses the need for clear, accessible materials and provides a crucial, stable context for AI-assisted development of the language itself.
     Prototype Goal: To establish the foundational structure of the Astro/Starlight site. This includes creating the main landing page, an initial "Getting Started" guide, and placeholder pages for key documentation sections like the formal grammar (EBNF) and a machine-readable llm.txt summary. The primary goal is to build a solid, well-styled scaffold that is ready for continuous content expansion.
 
 2. Core Features / User Stories
 
     Feature 1: Informative Landing Page
-        Description: A welcoming homepage that clearly explains what Boba Lang is, who it's for (children and beginners moving from Scratch-like languages), and the problems it aims to solve (the pedagogical "syntactic cliff" and developer "ecosystem tax").
+        Description: A welcoming homepage that clearly explains what Boba Lang is, highlighting its simple syntax and developer experience. It should articulate the problems it aims to solve, such as overly complex syntax in other languages and the "developer ecosystem tax".
         User Action(s): User visits the root URL of the website.
         Outcome(s): The user quickly understands the core value proposition of Boba Lang and is presented with clear navigation to key sections like "Get Started" or "Language Concepts."
 
@@ -88,6 +89,6 @@ The project will follow a standard Astro and Starlight directory layout to ensur
 
     Language Version: Node.js (latest LTS), TypeScript (latest stable), pnpm
     Formatting/Linting: Biome. biome.json will be provided.
-    Key Principles: Prioritize clarity, simplicity, and accessibility in all written content to cater to a beginner audience. Content must be well-structured to be easily parsed by both humans and AI.
+    Key Principles: Prioritize clarity, simplicity, and accessibility in all written content. Content must be well-structured to be easily parsed by both humans and AI.
     Naming Conventions: All content files and directories should use kebab-case (e.g., get-started.mdx).
   

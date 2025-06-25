@@ -19,4 +19,11 @@ Use `const` to declare immutable constants.
 
 ```boba
 const A: number = 1
+struct Point = { x: number, y: number }
+const p: Point = { x = 10, y = 20 }
+var x: Point = { x = 15, y = 25 }
+
+// Is this line a compile error?
+p.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
+p = x // COMPILE ERROR: Cannot assign to 'p' because it is a constant.
 ```

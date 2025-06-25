@@ -5,14 +5,43 @@ title: Functions
 Functions are defined using the `fn` keyword. You can specify argument types and return types.
 
 ```boba
-fn myFunction() -> void {
+// Public function
+pub fn myFunction() -> void {
   print("This is a function")
 }
 
-fn myFunctionWithArgs(a: number, b: number) -> number {
+pub fn myFunctionWithArgs(a: number, b: number) -> number {
   return a + b
 }
 
-private fn myPrivateFunction() -> void {
+// Private functions are only accessible within the file declared in.
+// Not having pub makes a function private.
+fn myPrivateFunction() -> void {
   print("Don't tell anyone about this!")
 }
+
+## Overloading
+
+Allowed. An overload resolution algorithm must be implemented.
+
+## Default Parameters
+
+Allowed.
+
+## Guidance
+
+Use Overloading for Different Semantics or Types. The core behavior of the function changes based on the type of input.
+
+```boba
+// Behavior is different for a number vs. a list
+pub fn create_buffer(size: number) { /* Allocate a new buffer */ }
+pub fn create_buffer(from_data: number[]) { /* Copy data into a new buffer */ }
+```
+
+Use Default Arguments for Optional Configuration. The core behavior is the same, but you are providing optional flags or parameters to tweak it.
+```boba
+// Behavior is always connecting, but port and ssl are optional tweaks
+pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) { ... }
+```
+
+An overload set should not contain functions that only differ by parameters with default values.

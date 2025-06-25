@@ -1,0 +1,17 @@
+---
+title: Imports
+---
+
+## Imports
+
+Individual functions (they must be public) and all functions from a file can be imported. All overloads are also imported.
+
+Circular imports are disallowed.
+
+Imported functions can be renamed.
+
+```boba
+import func1, func2 from "relative/path/from/this/file.boba"
+import * from "relative/path/from/this/file2.boba"
+import func1 as func3 from "relative/path/from/this/file3.boba"
+```

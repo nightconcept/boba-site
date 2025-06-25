@@ -2,7 +2,7 @@
 title: Piping
 ---
 
-Boba supports the pipe operator `|>` for chaining function calls.
+Boba supports the pipe operator `|>` for chaining function calls. The return of the initial call will be passed into the first parameter of the next function. Piping will call the object method first if it exists, then attempt to use a global method.
 
 ```js
 var ingredients: string = ["flour", "sugar", "boba pearls"]

@@ -8,15 +8,20 @@ Boba supports classes and inheritance.
 class Enemy = {
   health: number = 100
 
-  fn take_damage(amount: number) -> void {
+  pub fn take_damage(amount: number) -> void {
     self.health = self.health - amount
+  }
+
+  // Class private functions are only accessible within the class
+  heal(amount: number) -> void {
+    self.health = self.health + amount
   }
 }
 
 class Goblin extends Enemy = {
   gold: number = 12
 
-  fn taunt() {
+  pub fn taunt() {
     print("Heh heh heh! I have {self.health} health left!")
   }
 }
