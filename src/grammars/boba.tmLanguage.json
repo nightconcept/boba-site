@@ -6,6 +6,7 @@
     { "include": "#comments" },
     { "include": "#strings" },
     { "include": "#keywords" },
+    { "include": "#enums" },
     { "include": "#entities" },
     { "include": "#constants" },
     { "include": "#storage" },
@@ -59,7 +60,7 @@
     "entities": {
       "patterns": [
         {
-          "begin": "\\b(fn|private fn)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(\\()",
+          "begin": "\\b(fn|private fn|pub fn)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(\\()",
           "beginCaptures": {
             "1": { "name": "storage.type.function" },
             "2": { "name": "entity.name.function" },
@@ -74,16 +75,41 @@
           ]
         },
         {
-          "match": "\\b(class)\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
-          "captures": {
+          "begin": "\\b(class)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\\s+(extends)\\s+([a-zA-Z_][a-zA-Z0-9_]*))?\\s*(=)?\\s*({)",
+          "beginCaptures": {
             "1": { "name": "storage.type.class" },
-            "2": { "name": "entity.name.class" }
-          }
-        },
-        {
-           "name": "entity.other.inherited-class",
-           "match": "(?<=extends\\s)([a-zA-Z_][a-zA-Z0-9_]*)"
+            "2": { "name": "entity.name.class" },
+            "3": { "name": "storage.type" },
+            "4": { "name": "entity.other.inherited-class" },
+            "5": { "name": "keyword.operator.assignment" },
+            "6": { "name": "meta.brace.curly" }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": { "name": "meta.brace.curly" }
+          },
+          "patterns": [
+            { "include": "$self" }
+          ]
         }
+      ]
+    },
+    "enums": {
+      "begin": "\\b(enum)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*({)",
+      "beginCaptures": {
+        "1": { "name": "storage.type" },
+        "2": { "name": "entity.name.type.enum" }
+      },
+      "end": "(})",
+      "endCaptures": {
+        "1": { "name": "meta.brace.curly" }
+      },
+      "patterns": [
+        {
+          "name": "support.type.primitive",
+          "match": "\\b([A-Z_][A-Z0-9_]*)\\b"
+        },
+        { "include": "#punctuation" }
       ]
     },
     "keywords": {
@@ -102,11 +128,7 @@
         "patterns": [
             {
                 "name": "storage.type",
-                "match": "\\b(var|const|fn|class|extends|private)\\b"
-            },
-            {
-                "name": "variable.language.this",
-                "match": "\\b(self)\\b"
+                "match": "\\b(var|const|fn|class|extends|private|pub|enum)\\b"
             }
         ]
     },
@@ -153,7 +175,7 @@
       ]
     },
     "string-interpolation": {
-      "begin": "(#\\{)",
+      "begin": "(\\{)",
       "end": "(\\})",
       "beginCaptures": {
         "1": { "name": "constant.language.boolean.true" }
@@ -236,6 +258,14 @@
         {
           "name": "variable.other.constant",
           "match": "(?<=\\bconst\\s)([a-zA-Z_][a-zA-Z0-9_]*)"
+        },
+        {
+          "match": "(?<=:)\\s*([A-Z][a-zA-Z0-9_]*)\\b",
+          "captures": {
+            "1": {
+              "name": "entity.name.class"
+            }
+          }
         }
       ]
     },
@@ -246,7 +276,11 @@
           "match": "(?<=\\.)([a-zA-Z_][a-zA-Z0-9_]*)(?=\\()"
         },
         {
-          "name": "variable.other.property",
+          "name": "entity.name.function",
+          "match": "(?<=\\.)([A-Z_][A-Z0-9_]*)\\b"
+        },
+        {
+          "name": "keyword.operator.new",
           "match": "(?<=\\.)([a-zA-Z_][a-zA-Z0-9_]*)"
         }
       ]
@@ -256,6 +290,14 @@
         {
           "name": "entity.name.tag",
           "match": "([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*:)"
+        }
+      ]
+    },
+    "self-keyword": {
+      "patterns": [
+        {
+          "name": "constant.language",
+          "match": "\\b(self)\\b"
         }
       ]
     },

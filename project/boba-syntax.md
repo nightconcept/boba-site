@@ -54,6 +54,58 @@ Boba has the following built-in constants:
 - `null`
 - `false`
 - `true`
+## Enumerations
+
+```boba
+enum Color {
+  RED,
+  GREEN,
+  BLUE
+}
+var my_color = Color.GREEN
+```
+## Result Enum
+
+```boba
+enum Result<T, E> {
+  Ok(T),    // The 'Success' compartment, holds a value of type T
+  Err(E)    // The 'Failure' compartment, holds a value of type E
+}
+```
+- `T` is a generic placeholder for the type of data you expect on success.
+- `E` is a generic placeholder for the type of data you expect on failure.
+
+Example usage:
+```boba
+// You define this struct somewhere in your project.
+// It represents the data you expect to get from your config file.
+struct Config = {
+  hostname: string,
+  port: number,
+  enable_https: boolean
+}
+
+fn load_config() -> Result<Config, error> {
+
+    // 1. Call read_file. It returns a Result<string, error>.
+    // 2. The '?' operator checks that Result.
+    //    - If it's Err(e), '?' IMMEDIATELY stops this function and returns that Err(e).
+    //    - If it's Ok(s), '?' unwraps the box, takes out the string 's', and assigns it to 'content'.
+    var content = read_file("config.json")?
+
+    // 3. This line is only reached if read_file succeeded.
+    // 4. Call parse_json with the content. It returns a Result<Config, error>.
+    // 5. The '?' operator checks that Result again.
+    //    - If it's Err(e), '?' IMMEDIATELY stops this function and returns that Err(e).
+    //    - If it's Ok(c), '?' unwraps the box, takes out the Config object 'c', and assigns it to 'config'.
+    var config = parse_json(content)?
+
+    print("Config loaded!")
+
+    return Ok(config)
+}
+```
+
 Functions are defined using the `fn` keyword. You can specify argument types and return types.
 
 ```boba
@@ -98,7 +150,6 @@ pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) { ...
 
 An overload set should not contain functions that only differ by parameters with default values.
 
-This page will host the formal EBNF (Extended Backus-Naur Form) grammar for Boba Lang.
 ## Imports
 
 Individual functions (they must be public) and all functions from a file can be imported. All overloads are also imported.
@@ -124,13 +175,34 @@ var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 print(ingredients[0]) // Outputs "flour"
 ingredients[2] = "tapioca pearls" // Changes the value
 ```
+
+## 2-D Lists
+
+```boba
+// A 2x3 matrix (2 rows, 3 columns)
+var matrix: number[][] = [
+  [1, 2, 3],
+  [4, 5, 6]
+]
+
+// A "jagged" list is also possible
+var jagged: number[][] = [
+  [10, 20],
+  [30, 40, 50],
+  [60]
+]
+
+// Accessing elements
+var value: number = matrix[1][2] // value would be 6
+print(jagged[1][1]) // prints 40
+```
 Boba supports `for`, `while`, `foreach`, and `repeat` loops.
 
 ## `for` loop
 
 ```boba
 for i in 1 to 5 by 1 { // these are ALWAYS numbers
-  print("I am print #{i}!") // Standard support for f-strings like Python. \\{ and \\} will support escaping
+  print("I am print {i}!") // Standard support for f-strings like Python. \\{ and \\} will support escaping
 }
 ```
 
@@ -140,7 +212,7 @@ for i in 1 to 5 by 1 { // these are ALWAYS numbers
 var j: number = 0
 while j < 10 do {
   j++
-  print("I am print #{j}!")
+  print("I am print {j}!")
   if j == 5 then break
 }
 ```
@@ -163,6 +235,33 @@ repeat {
   print("Repeating!")
   k++
 } until k == 10
+## Maps
+
+```boba
+// Explicit types
+var scores: [string: number] = {
+  "ada": 100,
+  "grace": 95
+}
+
+// Inferenced types
+var actions = {
+  "add": "added",
+  "subtract": "subtracted"
+}
+```
+## Match
+
+```boba
+// Hypothetical Boba match statement
+match my_variable {
+  1 => print("It was one!"),
+  x where x > 100 => print("It's a big number: {x}"),
+  s: string => print("It's a string of length {s.len()}"),
+  _ => print("Default case") // `_` is a wildcard
+}
+```
+
 Boba supports a variety of operators.
 
 ### Comparisons
@@ -277,8 +376,15 @@ In Boba, you can declare variables using the `var` and `const` keywords.
 Use `var` to declare mutable variables. You must specify a type.
 
 ```boba
+// Typing can be explicit or implicit
+
 var x: number = 2
+
 y, z: number = 3, 4 // y and z must be the same type
+
+// Types are inferenced at declaration
+var a = 5
+var name = "Boba"
 ```
 
 ## `const`
@@ -288,11 +394,11 @@ Use `const` to declare immutable constants.
 ```boba
 const A: number = 1
 struct Point = { x: number, y: number }
-const p: Point = { x = 10, y = 20 }
+const BEST_POINT: Point = { x = 10, y = 20 }
 var x: Point = { x = 15, y = 25 }
 
-// Is this line a compile error?
-p.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
-p = x // COMPILE ERROR: Cannot assign to 'p' because it is a constant.
+A = 10 // COMPILE ERROR: Cannot assign to 'A' because it is a constant.
+BEST_POINT.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
+BEST_POINT = x // COMPILE ERROR: Cannot assign to 'BEST_POINT' because it is a constant.
 ```
 

@@ -8,7 +8,7 @@ Boba supports `for`, `while`, `foreach`, and `repeat` loops.
 
 ```boba
 for i in 1 to 5 by 1 { // these are ALWAYS numbers
-  print("I am print #{i}!") // Standard support for f-strings like Python. \\{ and \\} will support escaping
+  print("I am print {i}!") // Standard support for f-strings like Python. \\{ and \\} will support escaping
 }
 ```
 
@@ -18,7 +18,7 @@ for i in 1 to 5 by 1 { // these are ALWAYS numbers
 var j: number = 0
 while j < 10 do {
   j++
-  print("I am print #{j}!")
+  print("I am print {j}!")
   if j == 5 then break
 }
 ```

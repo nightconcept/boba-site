@@ -1,0 +1,45 @@
+---
+title: Error Handling
+---
+
+## Result Enum
+
+```boba
+enum Result<T, E> {
+  Ok(T),    // The 'Success' compartment, holds a value of type T
+  Err(E)    // The 'Failure' compartment, holds a value of type E
+}
+```
+- `T` is a generic placeholder for the type of data you expect on success.
+- `E` is a generic placeholder for the type of data you expect on failure.
+
+Example usage:
+```boba
+// You define this struct somewhere in your project.
+// It represents the data you expect to get from your config file.
+struct Config = {
+  hostname: string,
+  port: number,
+  enable_https: boolean
+}
+
+fn load_config() -> Result<Config, error> {
+
+    // 1. Call read_file. It returns a Result<string, error>.
+    // 2. The '?' operator checks that Result.
+    //    - If it's Err(e), '?' IMMEDIATELY stops this function and returns that Err(e).
+    //    - If it's Ok(s), '?' unwraps the box, takes out the string 's', and assigns it to 'content'.
+    var content = read_file("config.json")?
+
+    // 3. This line is only reached if read_file succeeded.
+    // 4. Call parse_json with the content. It returns a Result<Config, error>.
+    // 5. The '?' operator checks that Result again.
+    //    - If it's Err(e), '?' IMMEDIATELY stops this function and returns that Err(e).
+    //    - If it's Ok(c), '?' unwraps the box, takes out the Config object 'c', and assigns it to 'config'.
+    var config = parse_json(content)?
+
+    print("Config loaded!")
+
+    return Ok(config)
+}
+```

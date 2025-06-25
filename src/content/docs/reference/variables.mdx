@@ -6,11 +6,15 @@ In Boba, you can declare variables using the `var` and `const` keywords.
 
 ## `var`
 
-Use `var` to declare mutable variables. You must specify a type.
+Use var to declare mutable variables. The type can be specified explicitly or inferred by the compiler from the value assigned at declaration.
 
 ```boba
 var x: number = 2
 y, z: number = 3, 4 // y and z must be the same type
+
+// Types are inferenced at declaration
+var a = 5
+var name = "Boba"
 ```
 
 ## `const`
@@ -20,10 +24,10 @@ Use `const` to declare immutable constants.
 ```boba
 const A: number = 1
 struct Point = { x: number, y: number }
-const p: Point = { x = 10, y = 20 }
+const BEST_POINT: Point = { x = 10, y = 20 }
 var x: Point = { x = 15, y = 25 }
 
-// Is this line a compile error?
-p.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
-p = x // COMPILE ERROR: Cannot assign to 'p' because it is a constant.
+A = 10 // COMPILE ERROR: Cannot assign to 'A' because it is a constant.
+BEST_POINT.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
+BEST_POINT = x // COMPILE ERROR: Cannot assign to 'BEST_POINT' because it is a constant.
 ```

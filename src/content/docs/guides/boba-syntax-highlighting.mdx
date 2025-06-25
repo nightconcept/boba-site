@@ -10,9 +10,13 @@ This page demonstrates the custom syntax highlighting for the Boba language. For
 ```boba
 // This is a single-line comment
 class Greeter {
-  fn say_hello(name: string) -> void {
+  pub fn say_hello(name: string) -> void {
     // Log a greeting to the console
-    console.log("Hello, #{name}!")
+    console.log("Hello, {name}!")
+  }
+  fn say_bye(name: string) -> void {
+    // Log a farewell to the console
+    console.log("Bye, {name}!")
   }
 }
 
@@ -32,6 +36,11 @@ class Greeter {
     // Log a greeting to the console
     console.log(`Hello, ${name}!`);
   }
+
+  private sayBye(name: string): void {
+    // Log a greeting to the console
+    console.log(`Bye, ${name}!`);
+  }
 }
 
 // Create a new instance of the Greeter class
@@ -49,7 +58,7 @@ var counter = 0
 const max_value = 100
 var message: string = "Welcome to Boba!"
 var enabled: boolean = true
-var items: table = {}
+var items: [string:string] = {}
 ```
 
 ### TypeScript
@@ -69,14 +78,14 @@ let items: Record<string, any> = {};
 // Conditional statements
 if counter < max_value and enabled {
     counter++;
-    console.log("Counter incremented: #{counter}")
+    console.log("Counter incremented: {counter}")
 } else {
     console.log("Maximum reached or disabled")
 }
 
 // Loops and ranges
 for i in 1 to 10 by 2 {
-    console.log("Odd number: #{i}")
+    console.log("Odd number: {i}")
 }
 
 // While loop
@@ -121,15 +130,35 @@ while (counter <= maxValue) {
 ## Functions and Piping
 
 ```boba
-// Function definition with arrow syntax
-fn calculate(x: number, y: number) -> number {
+// Public function definition with arrow syntax
+pub fn calculate(x: number, y: number) -> number {
     return x * y + 10
 }
 
 // Private function
-private fn internal_helper(data: table) -> string {
+fn internal_helper(data: table) -> string {
     return data.name |> uppercase() |> trim()
 }
+
+class Enemy = {
+  health: number = 100
+
+  // Init always exists and does not need fn
+  init() {
+    self.health = 200
+  }
+
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health = health - amount
+  }
+
+  // Class private functions are only accessible within the class
+  fn heal(amount: number) -> void {
+    self.health = self.health + amount
+  }
+}
+
+var goblin: Enemy = new Enemy()
 
 // Piping operator example
 const result = calculate(5, 3) |> to_string() |> log()
@@ -155,6 +184,31 @@ const result = calculate(5, 3).toString();
 console.log(result);
 ```
 
+## Enumerations
+
+```boba
+enum Color {
+  RED,
+  GREEN,
+  BLUE
+}
+
+// Variants are accessed through the enum type itself, like 'Color.GREEN'.
+var my_color: Color = Color.GREEN
+```
+
+### TypeScript
+
+```typescript
+enum Color {
+  RED,
+  GREEN,
+  BLUE
+}
+
+// Variants are accessed through the enum type itself, like 'Color.GREEN'.
+let myColor: Color = Color.GREEN;
+```
 ## Advanced Features
 
 ```boba
@@ -222,7 +276,7 @@ var pi = 3.14159
 var result = (10 + 5) * 2 - 1
 
 // String interpolation in different contexts
-var template = "The result is #{result} and pi is #{pi.toFixed(2)}"
+var template = "The result is {result} and pi is {pi.toFixed(2)}"
 
 // Table access and methods
 var data: table = {
@@ -234,7 +288,7 @@ var data: table = {
 // Method chaining and property access
 var info = data.name
     |> uppercase()
-    |> concat(" Language v#{data.version}")
+    |> concat(" Language v{data.version}")
     |> display()
 ```
 
@@ -269,7 +323,7 @@ This comprehensive example showcases all the major syntax highlighting features 
 - **Keywords**: Control flow, loops, and declarations
 - **Types**: Primitive types like `string`, `number`, `boolean`, `table`
 - **Operators**: Arithmetic, comparison, logical, assignment, and the special piping operator (`|>`)
-- **String interpolation**: Using `#{expression}` syntax
+- **String interpolation**: Using `{expression}` syntax
 - **Functions**: Regular and private function declarations
 - **Classes**: Class definitions with inheritance
 - **Punctuation**: Proper highlighting of braces, brackets, and other delimiters
