@@ -1,0 +1,27 @@
+---
+title: Structures
+---
+
+In Boba, you can define custom data structures for your objects using the `type` keyword.
+
+## Defining a Structure
+
+Use the `type` keyword to define the blueprint for a new data structure.
+
+```boba
+// This defines a "Player" structure.
+type Player = {
+  name: string,
+  score: number,
+  is_active: boolean
+}
+```
+
+## Creating an Instance
+
+Once you have defined a structure, you can create variables that use it. When you create an instance of a structure, you don't need to specify the types of the fields again.
+
+```boba
+// Create a new variable "ada" of type "Player"
+var ada: Player = { name = "Ada", score = 100, is_active = true }
+``` 

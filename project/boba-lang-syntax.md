@@ -8,7 +8,8 @@
 - number
 - function
 - boolean
-- table
+- lists (of other types)
+- object literals/structs
 
 ### Comments
 
@@ -39,16 +40,16 @@ const A: number = 1
 
 ```boba
 // A list of numbers. Type is spread. No need for something like number[]
-var high_scores: number = [100, 95, 80]
+var high_scores: number[] = [100, 95, 80]
 
 // A list of strings
-var ingredients: string = ["flour", "sugar", "boba pearls"]
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 
 print(ingredients[0]) // Outputs "flour"
 ingredients[2] = "tapioca pearls" // Changes the value
 
 // This is a List of Numbers.
-var my_list: number = [1, 2, 3]
+var my_list: number[] = [1, 2, 3]
 
 // The line below would cause a clear, helpful error in the editor:
 // "A list of numbers can only hold numbers. You tried to add text."
@@ -66,19 +67,35 @@ player.score = 105   // Update the score
 
 Notes: 0 or 1 index? 1-index for low levels, 0 for highest level.
 
+### Structures
+
+```boba
+// Use the `type` keyword to define a new data structure.
+// This is a Struct.It's the blueprint for our Player objects. 
+
+type Player = {
+  name: string,
+  score: number,
+  is_active: boolean
+}
+
+// Variable with a defined structure. Types of fields do not need to be specified.
+
+var ada: Player = { name = "Ada", score = 100, is_active = true }
+```
+
 ### Functions
 
 ```boba
-fn myFunction() -> void{
+fn myFunction() -> void {
   print("This is a function")
 }
 
-fn myFunctionWithArgs(a: number, b: number) -> number{
+fn myFunctionWithArgs(a: number, b: number) -> number {
   return a + b
 }
 
-private fn myPrivateFunction() -> void
-{
+private fn myPrivateFunction() -> void {
   print("Don't tell anyone about this!")
 }
 ```
