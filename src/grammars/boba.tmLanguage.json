@@ -5,14 +5,15 @@
   "patterns": [
     { "include": "#comments" },
     { "include": "#strings" },
+    { "include": "#self-keyword" },
     { "include": "#keywords" },
     { "include": "#enums" },
     { "include": "#entities" },
+    { "include": "#table-literals" },
     { "include": "#constants" },
     { "include": "#storage" },
     { "include": "#variables" },
     { "include": "#properties" },
-    { "include": "#table-keys" },
     { "include": "#operators" },
     { "include": "#punctuation" },
     { "include": "#numbers" },
@@ -92,6 +93,16 @@
             { "include": "$self" }
           ]
         }
+      ]
+    },
+    "table-literals": {
+      "begin": "{",
+      "end": "}",
+      "beginCaptures": { "0": { "name": "meta.brace.curly" } },
+      "endCaptures": { "0": { "name": "meta.brace.curly" } },
+      "patterns": [
+        { "include": "#table-keys" },
+        { "include": "$self" }
       ]
     },
     "enums": {
@@ -178,10 +189,10 @@
       "begin": "(\\{)",
       "end": "(\\})",
       "beginCaptures": {
-        "1": { "name": "constant.language.boolean.true" }
+        "1": { "name": "constant.language" }
       },
       "endCaptures": {
-        "1": { "name": "constant.language.boolean.true" }
+        "1": { "name": "constant.language" }
       },
       "patterns": [
         {
@@ -276,6 +287,10 @@
           "match": "(?<=\\.)([a-zA-Z_][a-zA-Z0-9_]*)(?=\\()"
         },
         {
+          "name": "source",
+          "match": "(?<=\\bself\\.)([a-zA-Z_][a-zA-Z0-9_]*)"
+        },
+        {
           "name": "entity.name.function",
           "match": "(?<=\\.)([A-Z_][A-Z0-9_]*)\\b"
         },
@@ -288,7 +303,7 @@
     "table-keys": {
       "patterns": [
         {
-          "name": "entity.name.tag",
+          "name": "storage.type",
           "match": "([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*:)"
         }
       ]
@@ -296,7 +311,7 @@
     "self-keyword": {
       "patterns": [
         {
-          "name": "constant.language",
+          "name": "entity.name.function",
           "match": "\\b(self)\\b"
         }
       ]

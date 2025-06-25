@@ -149,7 +149,7 @@ class Enemy = {
   }
 
   pub fn take_damage(amount: number) -> void {
-    self.health = self.health = health - amount
+    self.health = self.health = self.health - amount
   }
 
   // Class private functions are only accessible within the class
@@ -182,6 +182,39 @@ class DataHelper {
 // Function chaining is used instead of a pipe operator
 const result = calculate(5, 3).toString();
 console.log(result);
+```
+
+### Python
+
+```python
+# Public function definition
+def calculate(x: int, y: int) -> int:
+    return x * y + 10
+
+# Private function (by convention)
+def _internal_helper(data: dict) -> str:
+    return data['name'].upper().strip()
+
+class Enemy:
+    health: int = 100
+
+    def __init__(self):
+        # The constructor initializes instance-specific attributes
+        self.health = 200
+
+    def take_damage(self, amount: int) -> None:
+        self.health -= amount
+
+    # Private method (by convention)
+    def _heal(self, amount: int) -> None:
+        self.health += amount
+
+# Instantiate the class
+goblin = Enemy()
+
+# Piping can be simulated with nested function calls or method chaining
+result_as_string = str(calculate(5, 3))
+print(result_as_string)
 ```
 
 ## Enumerations
