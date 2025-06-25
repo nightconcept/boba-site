@@ -1,0 +1,149 @@
+---
+title: Types
+---
+
+A type is a classification that tells the compiler or interpreter how a programmer intends to use a piece of data. Boba is a statically-typed language, meaning the type of every variable is known at compile time.
+
+## Primitive Types
+
+Primitive types are the most basic data types available in Boba.
+
+### `string`
+
+A `string` is a sequence of characters used to represent text.
+
+```boba
+var name: string = "Boba Fett"
+let constant_string = "Immutable" // Type is inferred
+```
+
+### `number`
+
+The `number` type represents a 64-bit floating-point number (double-precision). It's used for both integer and fractional values.
+
+```boba
+var price: number = 20.0
+var quantity = 3 // Type is inferred
+let pi: number = 3.14159
+```
+
+> **Note on Precision**: Boba's number type is suitable for a vast range of applications, but be aware of standard floating-point precision limitations when dealing with very large integers (greater than 2^53).
+
+### `boolean`
+
+A `boolean` represents one of two values: `true` or `false`. It's primarily used for conditional logic.
+
+```boba
+var is_active: boolean = true
+let has_permission = false // Type is inferred
+```
+
+## Composite Types
+
+Composite types, also known as aggregate types, are composed of primitive types and other composite types.
+
+### `list`
+
+A `list` is an ordered, resizable collection of elements of a single type.
+
+For more details, see the [`list`](/docs/reference/lists/) reference.
+
+```boba
+var scores: number[] = [100, 95, 88]
+let names: string[] = ["Ada", "Grace", "Hedy"]
+```
+
+### `map`
+
+A `map` is an unordered collection of key-value pairs. All keys must be of the same type, and all values must be of the same type.
+
+For more details, see the [`map`](/docs/reference/maps/) reference.
+
+```boba
+var user_scores: [string:number] = {
+  "ada": 100,
+  "grace": 95
+}
+```
+
+### `struct`
+
+A `struct` (or structure) is a custom composite type that lets you group related variables of different types into a named collection.
+
+For more details, see the [`struct`](/docs/reference/structures/) reference.
+
+```boba
+// Definition
+struct Point {
+  x: number,
+  y: number,
+}
+
+// Usage
+var p1: Point = Point(x: 10, y: 20)
+```
+
+### `enum`
+
+An `enum` (or enumeration) allows you to define a custom type by enumerating its possible values.
+
+For more details, see the [`enum`](/docs/reference/enumerations/) reference.
+
+```boba
+// Definition
+enum Status {
+  Pending,
+  InProgress,
+  Completed,
+  Failed,
+}
+
+// Usage
+var current_status: Status = Status.InProgress
+```
+
+### `class`
+
+A `class` is a blueprint for creating objects. It bundles data (properties) and methods (functions) that operate on that data.
+
+For more details, see the [`class`](/docs/reference/classes/) reference.
+
+```boba
+// Definition
+class Player {
+  name: string
+  score: number = 0
+
+  pub fn new(name: string) {
+    self.name = name
+  }
+
+  pub fn increase_score(amount: number) {
+    self.score += amount
+  }
+}
+
+// Usage
+var player1 = Player("Zoe")
+player1.increase_score(10)
+```
+
+## Other Types
+
+### `function`
+
+Functions are also a type in Boba. This allows them to be passed as arguments to other functions or assigned to variables.
+
+For more details, see the [`function`](/docs/reference/functions/) reference.
+
+```boba
+fn add(a: number, b: number) -> number {
+  return a + b
+}
+
+// Assign a function to a variable
+var operation: fn(number, number) -> number = add
+
+// Use the variable to call the function
+var result = operation(5, 10) // result is 15
+```

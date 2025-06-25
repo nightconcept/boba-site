@@ -11,8 +11,14 @@ You define a class using the `class` keyword.
 ```boba
 class Enemy = {
   // Properties
-  health: number = 100
-  mana: number = 50
+  health: number
+  mana: number
+
+  // Initializer - sets starting values
+  init() {
+    self.health = 100
+    self.mana = 50
+  }
 
   // A public method (accessible from outside the class)
   pub fn take_damage(amount: number) -> void {
@@ -37,13 +43,47 @@ Methods are functions that belong to a class. They define the behavior of the ob
 -   **Private Methods**: Declared without `pub`, they can only be called by other methods within the same class.
 -   **The `self` Keyword**: Inside a method, the `self` keyword is used to access the properties and other methods of the current object instance.
 
-## Creating an Instance
+## Constructors: The `init` Block
 
-To create an object from a class, you use the `new` keyword.
+The `init` block is a special method in a class that gets called when a new instance of the class is created using the `new` keyword. It's used to set up the initial state of the object. Unlike regular methods, it is defined with the `init` keyword and without `fn`.
+
+### Overloading Initializers
+
+You can define multiple `init` blocks with different parameters. This is called overloading. The compiler determines which `init` block to call based on the arguments you provide to the `new` keyword.
 
 ```boba
+class Enemy = {
+  health: number
+  mana: number
+
+  // Default initializer
+  // Called by `new Enemy()`
+  init() {
+    self.health = 100
+    self.mana = 50
+  }
+
+  // Overloaded initializer with custom health
+  // Called by `new Enemy(200)`
+  init(start_health: number) {
+    self.health = start_health
+    self.mana = 50
+  }
+}
+```
+
+### Creating an Instance
+
+When you create a new instance, the arguments you pass to `new` will determine which `init` block is executed.
+
+```boba
+// Calls init()
 var basic_enemy = new Enemy()
-basic_enemy.take_damage(15) // Prints: "Enemy took 15 damage. Health is now 85."
+print(basic_enemy.health) // Prints: 100
+
+// Calls init(start_health: number)
+var strong_enemy = new Enemy(200)
+print(strong_enemy.health) // Prints: 200
 ```
 
 ## Inheritance

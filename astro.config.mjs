@@ -38,6 +38,10 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Learn',
+					autogenerate: { directory: 'learn' },
+				},
+				{
 					label: 'Language Reference',
 					autogenerate: { directory: 'reference' },
 				},

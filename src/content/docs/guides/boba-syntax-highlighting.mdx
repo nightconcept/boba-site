@@ -242,6 +242,73 @@ enum Color {
 // Variants are accessed through the enum type itself, like 'Color.GREEN'.
 let myColor: Color = Color.GREEN;
 ```
+
+## Structs
+
+```boba
+struct Player = {
+  name: string,
+  score: number,
+  is_active: boolean
+}
+
+var player1: Player = {
+  name: "Alice",
+  score: 100,
+  is_active: true
+}
+```
+
+### TypeScript
+
+```typescript
+interface Player {
+  name: string;
+  score: number;
+  isActive: boolean;
+}
+
+const player1: Player = {
+  name: "Alice",
+  score: 100,
+  isActive: true,
+};
+```
+
+## Match Expressions
+
+```boba
+fn get_http_message(status_code: number) -> string {
+  match status_code {
+    200 => "OK",
+    404 => "Not Found",
+    s where s >= 500 => "Server Error: {s}",
+    _ => "Unknown status"
+  }
+}
+
+const message = get_http_message(404)
+console.log(message)
+```
+
+### Rust
+
+```rust
+fn get_http_message(status_code: u16) -> String {
+    match status_code {
+        200 => "OK".to_string(),
+        404 => "Not Found".to_string(),
+        s if s >= 500 => format!("Server Error: {}", s),
+        _ => "Unknown status".to_string(),
+    }
+}
+
+fn main() {
+    let message = get_http_message(404);
+    println!("{}", message);
+}
+```
+
 ## Advanced Features
 
 ```boba

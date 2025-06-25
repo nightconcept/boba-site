@@ -1,0 +1,60 @@
+---
+title: Defer Statement
+---
+
+The `defer` statement is a control flow mechanism in Boba designed for robust resource management. It schedules a function call to be executed at the moment the surrounding function scope is exited. Its primary purpose is to guarantee that cleanup tasks—such as closing files, unlocking mutexes, or closing network connections—are always performed, regardless of how the function terminates.
+
+It is crucial to distinguish `defer` from garbage collection; the GC manages memory, while `defer` manages other system resources.
+
+## How It Works
+
+When a `defer` statement is encountered, the function call within it is not executed immediately. Instead, it is placed onto a special stack associated with the current function call. When the function is about to return, all deferred calls are executed in Last-In, First-Out (LIFO) order.
+
+This execution is guaranteed to happen irrespective of the exit path:
+
+-   After a `return` statement is executed.
+-   When the end of the function body is reached.
+-   When an error is propagated up the call stack via the `?` operator.
+
+The arguments to a deferred function call are evaluated at the time the `defer` statement is executed, not when the call is finally invoked.
+
+## Syntax
+
+The syntax is simply the `defer` keyword followed by a function or method call.
+
+```boba
+defer <expression_resulting_in_a_function_call>
+```
+
+## Example: Guaranteed File Closing
+
+The most common use case is ensuring files are closed after being opened. The practice is to `defer` the cleanup task immediately after the resource is successfully acquired.
+
+```boba
+// This function reads a file and returns its size, using Boba's Result-based error handling.
+pub fn get_file_size(path: string) -> Result<number, error> {
+    // 1. Open the file. The '?' operator will return any error immediately.
+    var file = fs.open(path)?
+
+    // 2. Immediately defer the close() call. This guarantees the file will
+    //    be closed when get_file_size() exits, no matter what happens next.
+    defer file.close()
+
+    // 3. Now, perform work with the file.
+    var contents = file.read_all()? // '?' might cause an early exit here. defer still runs.
+
+    if (contents.is_empty()) {
+        // If we return early here, the deferred file.close() is executed right before.
+        return Err({ message = "file is empty" })
+    }
+
+    // 4. On successful completion, the deferred file.close() runs after this return.
+    return Ok(contents.len())
+}
+```
+
+## Philosophy and Robustness
+
+The `defer` statement is a cornerstone of Boba's focus on a superior Developer Experience (DX) and writing robust code. It works synergistically with the `Result` and `?` error handling system. While `?` makes error propagation clean, `defer` ensures that this clean propagation doesn't lead to resource leaks.
+
+This pattern eliminates entire classes of common bugs, making Boba code safer and easier to reason about. It allows the programmer to place cleanup code right next to allocation code, improving readability and maintainability. 

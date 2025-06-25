@@ -76,6 +76,23 @@
           ]
         },
         {
+          "begin": "\\b(struct)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(=)?\\s*({)",
+          "beginCaptures": {
+            "1": { "name": "storage.type" },
+            "2": { "name": "entity.name.class" },
+            "3": { "name": "keyword.operator.assignment" },
+            "4": { "name": "meta.brace.curly" }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": { "name": "meta.brace.curly" }
+          },
+          "patterns": [
+            { "include": "#table-keys" },
+            { "include": "$self" }
+          ]
+        },
+        {
           "begin": "\\b(class)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\\s+(extends)\\s+([a-zA-Z_][a-zA-Z0-9_]*))?\\s*(=)?\\s*({)",
           "beginCaptures": {
             "1": { "name": "storage.type.class" },
@@ -139,7 +156,7 @@
         "patterns": [
             {
                 "name": "storage.type",
-                "match": "\\b(var|const|fn|class|extends|private|pub|enum)\\b"
+                "match": "\\b(var|const|fn|class|extends|private|pub|enum|struct|match|where)\\b"
             }
         ]
     },
@@ -189,10 +206,10 @@
       "begin": "(\\{)",
       "end": "(\\})",
       "beginCaptures": {
-        "1": { "name": "constant.language" }
+        "1": { "name": "constant.language.boolean.true" }
       },
       "endCaptures": {
-        "1": { "name": "constant.language" }
+        "1": { "name": "constant.language.boolean.true" }
       },
       "patterns": [
         {
