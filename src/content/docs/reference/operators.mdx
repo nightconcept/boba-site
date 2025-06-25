@@ -2,70 +2,70 @@
 title: Operators
 ---
 
-Boba supports a variety of operators.
+Operators are special symbols that perform operations on operands (values and variables). Boba supports a range of arithmetic, comparison, and logical operators.
 
-### Comparisons
+## Arithmetic Operators
 
-Comparisons must be boolean.
+These operators perform mathematical calculations.
 
-#### Wrong
-```boba
-var score: number = 100
-if (score) { ... } // COMPILE ERROR: Expected 'boolean', but got 'number'.
+| Operator | Description      | Example              |
+| :------- | :--------------- | :------------------- |
+| `+`      | Addition         | `5 + 2`  // 7         |
+| `-`      | Subtraction      | `5 - 2`  // 3         |
+| `*`      | Multiplication   | `5 * 2`  // 10        |
+| `/`      | Division         | `5 / 2`  // 2.5       |
+| `%`      | Modulo/Remainder | `5 % 2`  // 1         |
+| `^`      | Power            | `5 ^ 2`  // 25        |
 
-var name: string = "Ada"
-if (name) { ... } // COMPILE ERROR: Expected 'boolean', but got 'string'.
+### Unary Arithmetic
 
-var items: number[] = [1, 2, 3]
-if (items) { ... } // COMPILE ERROR: Expected 'boolean', but got 'number[]'.
-```
-### Correct
+These operators modify a single numeric variable.
 
-```boba
-var score: number = 100
-if (score != 0) { ... } // Correct: The '!=' operator produces a boolean.
-
-var name: string = "Ada"
-if (name != "") { ... } // Correct: Be explicit about checking for an empty string.
-
-var items: number[] = [1, 2, 3]
-if (items.len() > 0) { ... } // Correct: Be explicit about checking the list's size.
-```
-
-## Relational (binary)
+-   `++`: Increments the value by 1.
+-   `--`: Decrements the value by 1.
 
 ```boba
-// eq    lt   gt     le    ge
-   ==    <     >     <=    >=
+var score = 10
+score++ // score is now 11
 ```
 
-## Not equal
+## Comparison and Relational Operators
 
-```boba
-!=
-```
+These operators compare two operands and return a `boolean` (`true` or `false`).
 
-## Arithmetic (binary)
+| Operator | Description               |
+| :------- | :------------------------ |
+| `==`     | Equal to                  |
+| `!=`     | Not equal to              |
+| `<`      | Less than                 |
+| `>`      | Greater than              |
+| `<=`     | Less than or equal to     |
+| `>=`     | Greater than or equal to  |
 
-```boba
-//add    sub    mul    div    mod    pow
-   +      -      *      /      %      ^
-```
+### Strict Boolean Evaluations
 
-## Arithmetic (unary)
+In conditional contexts like `if` statements, Boba requires an actual `boolean` value. You cannot use non-boolean types as a shorthand for `true` or `false`.
 
-```boba
-++
---
-```
+-   **Wrong**: `if (score) { ... }` where `score` is a `number`.
+-   **Correct**: `if (score != 0) { ... }` which produces a `boolean`.
 
-## Logic
+## Logical Operators
 
-| Type    | == / != Behavior                                                                           | Example                                                                     |   |   |
-|---------|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|---|---|
-| number  | Compares the numerical values.                                                             | `5 == 5.0` is `true`                                                        |   |   |
-| boolean | Compares the boolean values                                                                | `true == true` is `true`                                                    |   |   |
-| string  | Compares the contents of the strings character by character                                | `"hello" == "hello"` is `true`                                              |   |   |
-| list    | Compares references. Two lists are equal only if they are the same exact object in memory. | `var a = [1] var b = [1] a == b` is `false`.   `var c = a a == c` is `true` |   |   |
-| struct  | Compares by value. Two structs are equal if all their fields are equal.                    | `var p1 = {x=1} var p2 = {x=1}` `p1 == p2` is `true`                        |   |   |
-| class   | Compares references, just like lists.                                                      | `var g1 = new G()` `var g2 = new G()` `g1 == g2` is `false`                 |   |   |
+These operators are used to combine `boolean` expressions.
+
+-   `and`: Logical AND (returns `true` if both operands are `true`).
+-   `or`: Logical OR (returns `true` if at least one operand is `true`).
+-   `not`: Logical NOT (inverts a `boolean` value).
+
+## Equality `==` and `!=` Behavior
+
+The behavior of the equality operators depends on the type of the operands.
+
+| Type    | Behavior                                                                           | Example                                                                     |
+| :------ | :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| `number`  | Compares numerical values.                                                         | `5 == 5.0` is `true`                                                        |
+| `boolean` | Compares the boolean values.                                                       | `true == true` is `true`                                                    |
+| `string`  | Compares the contents of the strings character by character.                       | `"hello" == "hello"` is `true`                                              |
+| `list`    | **Compares by reference**. Two lists are equal only if they are the *same object*. | `var a = [1]; var b = [1]; a == b` is `false`. `var c = a; a == c` is `true`. |
+| `struct`  | **Compares by value**. Two structs are equal if all their corresponding fields are equal. | `var p1 = {x=1}; var p2 = {x=1}; p1 == p2` is `true`.                        |
+| `class`   | **Comares by reference**. Two class instances are equal only if they are the *same object*. | `var g1 = new G(); var g2 = new G(); g1 == g2` is `false`.                 |

@@ -1,0 +1,70 @@
+---
+title: "2. Data Types"
+description: "Explore the fundamental data types in Boba for handling numbers, text, and true/false values."
+---
+
+In the last chapter, you learned how to create variables and constants. Now, let's explore the fundamental data types you'll use to store different kinds of information in Boba.
+
+## Primitive Types
+
+Boba has a set of primitive types that are the building blocks of data in your programs.
+
+### `number`
+
+The `number` type is used to represent 64-bit floating-point numbers. This is suitable for a wide range of applications, from simple arithmetic to more complex calculations.
+
+```boba
+var price: number = 19.99
+var quantity: number = 3
+var total = price * quantity // total is inferred as a number
+```
+
+*Note: While Boba's `number` type is versatile, be mindful of standard floating-point precision limitations when working with very large integers (greater than 2^53).*
+
+### `string`
+
+The `string` type is used to represent text.
+
+```boba
+var message: string = "Hello, Boba!"
+var playerName = "Ada" // Inferred as a string
+```
+
+### `boolean`
+
+The `boolean` type represents a value that can be either `true` or `false`. Booleans are essential for controlling the flow of your program.
+
+```boba
+var isGameOver: boolean = false
+var hasKey = true // Inferred as a boolean
+```
+
+## Composite Types
+
+Boba also has composite types, which are made up of primitive types.
+
+### `list`
+
+A `list` is an ordered collection of values of the same type. Lists are dynamic, meaning you can add or remove items.
+
+```boba
+// A list of numbers
+var highScores: number[] = [100, 95, 80]
+
+// A list of strings
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+```
+
+### `map`
+
+A `map` is a collection of key-value pairs. Each key must be unique, and all keys must be of the same type, as must all values.
+
+```boba
+// A map with string keys and number values
+var scores: [string:number] = {
+  "ada": 100,
+  "grace": 95
+}
+```
+
+In the next chapter, we'll look at how to use these types with operators to perform calculations and make comparisons.

@@ -1,0 +1,71 @@
+---
+title: "6. Functions"
+description: "Learn how to create reusable blocks of code in Boba with functions."
+---
+
+Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
+
+## Defining and Calling Functions
+
+You define a function using the `fn` keyword. You can also specify the types of the arguments and the return value.
+
+```boba
+// A simple function that takes no arguments and returns nothing.
+pub fn sayHello() -> void {
+  print("Hello, Boba!")
+}
+
+// Call the function
+sayHello()
+```
+
+### Functions with Arguments and Return Values
+
+Functions can take input values (arguments) and produce an output value (return value).
+
+```boba
+pub fn add(a: number, b: number) -> number {
+  return a + b
+}
+
+var sum = add(5, 3) // sum will be 8
+```
+
+### Private Functions
+
+By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword.
+
+```boba
+// This function can only be called from this file.
+fn myPrivateFunction() -> void {
+  print("This is a secret!")
+}
+```
+
+## Default Parameters
+
+Boba allows you to provide default values for function parameters. This makes the function more flexible, as you can call it with fewer arguments.
+
+```boba
+pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) {
+  // ... connection logic ...
+}
+
+// Call with all arguments
+connect("myhost.com", 8080, false)
+
+// Call with only the required argument
+connect("myhost.com")
+```
+
+## The Pipe Operator `|>`
+
+Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of one function is passed as the first argument to the next function.
+
+```boba
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+
+ingredients[0] |> upper() |> print() // Outputs "FLOUR"
+```
+
+Functions are the building blocks of any Boba program. In the next chapter, we'll explore how to group related data and functions together using structs.

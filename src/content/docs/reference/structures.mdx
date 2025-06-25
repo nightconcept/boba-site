@@ -2,11 +2,11 @@
 title: Structures
 ---
 
-In Boba, you can define custom data structures for your objects using the `struct` keyword.
+Structures (or `structs`) are custom data types you can define to group together related variables into a logical unit. They are a way to create more complex, organized data.
 
 ## Defining a Structure
 
-Use the `struct` keyword to define the blueprint for a new data structure.
+You define a structure using the `struct` keyword, followed by the name of the struct and a block of fields with their types.
 
 ```boba
 // This defines a "Player" structure.
@@ -19,9 +19,33 @@ struct Player = {
 
 ## Creating an Instance
 
-Once you have defined a structure, you can create variables that use it. When you create an instance of a structure, you don't need to specify the types of the fields again.
+Once a struct is defined, you can create instances (variables) of that type.
 
 ```boba
 // Create a new variable "ada" of type "Player"
 var ada: Player = { name = "Ada", score = 100, is_active = true }
-``` 
+
+// You can also let Boba infer the type
+var boba_player = { name = "Boba", score = 9001, is_active = true }
+```
+
+## Accessing and Modifying Fields
+
+You access the data within a struct instance using dot (`.`) notation.
+
+```boba
+print("Player's score: {ada.score}") // Outputs: Player's score: 100
+
+// Fields of a `var` instance can be modified
+ada.score = ada.score + 10
+print("New score: {ada.score}") // Outputs: New score: 110
+```
+
+## Structs vs. Classes
+
+Structs are similar to [Classes](./classes.mdx), but with a key difference:
+
+-   **Structs (Value Types)**: When you assign a struct to a new variable or pass it to a function, a *copy* of the data is made. They are compared by their values.
+-   **Classes (Reference Types)**: When you work with classes, you are working with a *reference* to the object. They are compared by their reference in memory.
+
+Choose a struct when you need a simple data container. Choose a class when you need more complex behavior, methods, and inheritance. 

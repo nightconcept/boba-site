@@ -1,0 +1,64 @@
+---
+title: "11. Imports"
+description: "Learn how to organize your Boba code into multiple files and share code between them."
+---
+
+As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using the `import` keyword.
+
+## Importing from Other Files
+
+You can import public functions, classes, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
+
+### Importing Specific Items
+
+To import specific items from a file, you list them by name.
+
+```boba
+// in utils.boba
+pub fn sayHello() -> void {
+  print("Hello!")
+}
+
+// in main.boba
+import sayHello from "./utils.boba"
+
+sayHello() // Prints "Hello!"
+```
+
+### Importing Everything
+
+To import everything from a file, you can use the `*` wildcard.
+
+```boba
+// in utils.boba
+pub fn sayHello() -> void { ... }
+pub fn sayGoodbye() -> void { ... }
+
+// in main.boba
+import * from "./utils.boba"
+
+sayHello()
+sayGoodbye()
+```
+
+### Renaming Imports
+
+You can rename an imported item using the `as` keyword. This is useful to avoid naming conflicts.
+
+```boba
+// in utils.boba
+pub fn sayHello() -> void { ... }
+
+// in main.boba
+import sayHello as greet from "./utils.boba"
+
+greet() // Prints "Hello!"
+```
+
+## A Note on Paths
+
+Import paths are always relative to the current file.
+
+---
+
+Congratulations! You have completed the Boba language tutorial. You now have a solid foundation in the core concepts of the language. From here, you can explore the rest of the documentation to learn about more advanced features and start building your own Boba applications.

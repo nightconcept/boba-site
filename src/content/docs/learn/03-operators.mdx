@@ -1,0 +1,74 @@
+---
+title: "3. Operators"
+description: "Learn how to perform arithmetic, make comparisons, and use logical operators in Boba."
+---
+
+Now that you know about variables and data types, let's look at how to manipulate them using operators. Operators are special symbols that perform operations on your data.
+
+## Arithmetic Operators
+
+Boba provides a standard set of arithmetic operators for performing mathematical calculations.
+
+| Operator | Description      | Example                |
+| :------- | :--------------- | :--------------------- |
+| `+`      | Addition         | `5 + 2` results in `7`   |
+| `-`      | Subtraction      | `5 - 2` results in `3`   |
+| `*`      | Multiplication   | `5 * 2` results in `10`  |
+| `/`      | Division         | `5 / 2` results in `2.5` |
+| `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
+| `^`      | Power            | `5 ^ 2` results in `25`  |
+
+### Unary Arithmetic Operators
+
+You can also increment or decrement a number by one using the `++` and `--` operators.
+
+```boba
+var score = 10
+score++ // score is now 11
+score-- // score is now 10
+```
+
+## Comparison Operators
+
+Comparison operators are used to compare two values. They always result in a `boolean` (`true` or `false`) value.
+
+| Operator | Description          | Example               |
+| :------- | :------------------- | :-------------------- |
+| `==`     | Equal to             | `5 == 5` is `true`    |
+| `!=`     | Not equal to         | `5 != 5` is `false`   |
+| `<`      | Less than            | `5 < 8` is `true`     |
+| `>`      | Greater than         | `5 > 8` is `false`    |
+| `<=`     | Less than or equal   | `5 <= 5` is `true`    |
+| `>=`     | Greater than or equal| `5 >= 8` is `false`   |
+
+In Boba, comparisons must be explicit. You can't use a non-boolean value in a context that expects a boolean.
+
+```boba
+// WRONG
+var score: number = 100
+// if (score) { ... } // This will cause a compile error.
+
+// RIGHT
+if (score != 0) { ... } // The result of `!=` is a boolean.
+```
+
+## Logical Operators
+
+Logical operators are used to combine boolean values.
+
+| Operator | Description | Example                               |
+| :------- | :---------- | :------------------------------------ |
+| `and`    | Logical AND | `true and false` results in `false` |
+| `or`     | Logical OR  | `true or false` results in `true`   |
+| `not`    | Logical NOT | `not true` results in `false`       |
+
+```boba
+var hasKey = true
+var isDoorLocked = false
+
+if (hasKey and not isDoorLocked) {
+  print("You can open the door!")
+}
+```
+
+With these operators, you can start writing more complex and interesting programs. In the next chapter, we'll explore how to control the flow of your program using conditionals.

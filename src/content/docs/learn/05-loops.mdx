@@ -1,0 +1,56 @@
+---
+title: "5. Loops"
+description: "Learn how to repeat actions in Boba using `for`, `while`, `foreach`, and `repeat` loops."
+---
+
+Loops are used to execute a block of code multiple times. Boba provides several types of loops to handle different situations.
+
+## The `for` Loop
+
+The `for` loop is ideal when you want to repeat a block of code a specific number of times.
+
+```boba
+// This loop will print numbers from 1 to 5
+for i in 1 to 5 by 1 {
+  print("I am print {i}!")
+}
+```
+
+## The `while` Loop
+
+The `while` loop continues to execute a block of code as long as a specified condition is `true`.
+
+```boba
+var j: number = 0
+while j < 10 {
+  j++
+  print("I am print {j}!")
+  if j == 5 then break // `break` exits the loop
+}
+```
+
+## The `foreach` Loop
+
+The `foreach` loop is used to iterate over the elements of a list or map.
+
+```boba
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+
+foreach ingredient in ingredients {
+  print("We need {ingredient}.")
+}
+```
+
+## The `repeat` Loop
+
+The `repeat` loop is similar to a `while` loop, but the condition is checked at the end of the loop. This means the loop will always execute at least once.
+
+```boba
+var k: number = 0
+repeat {
+  print("Repeating!")
+  k++
+} until k == 10
+```
+
+Loops are a powerful tool for automating repetitive tasks. In the next chapter, we'll learn how to organize our code into reusable blocks called functions.

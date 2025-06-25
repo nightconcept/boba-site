@@ -2,18 +2,43 @@
 title: Maps
 ---
 
-## Maps
+Maps are collections of key-value pairs. Each key in a map must be unique. They are useful for storing associated data, like a dictionary or a lookup table.
+
+## Creating a Map
+
+You can create a map using curly braces `{}` and specifying key-value pairs.
+
+### Explicit Typing
+
+You can explicitly declare the types for the keys and values.
 
 ```boba
-// Explicit types
+// A map with string keys and number values
 var scores: [string:number] = {
   "ada": 100,
   "grace": 95
 }
+```
 
-// Inferenced types
+### Type Inference
+
+Boba can also infer the types from the data you provide.
+
+```boba
+// Types are inferred as [string:string]
 var actions = {
   "add": "added",
   "subtract": "subtracted"
 }
+```
+
+## Accessing and Modifying Values
+
+You can access and modify values in a map using their keys.
+
+```boba
+print(scores["ada"]) // Outputs 100
+
+scores["grace"] = 98 // Updates the value for the key "grace"
+scores["boba"] = 105 // Adds a new key-value pair
 ```

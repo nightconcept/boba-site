@@ -2,7 +2,11 @@
 title: Lists
 ---
 
-## Lists
+Lists are ordered, resizable collections of items of the same type. They are one of the most common ways to group data in Boba.
+
+## Creating a List
+
+You define a list by specifying the type of its elements followed by `[]`.
 
 ```boba
 // A list of numbers
@@ -11,11 +15,27 @@ var high_scores: number[] = [100, 95, 80]
 // A list of strings
 var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 
-print(ingredients[0]) // Outputs "flour"
-ingredients[2] = "tapioca pearls" // Changes the value
+// An empty list must have its type declared
+var empty_list: string[] = []
 ```
 
-## 2-D Lists
+## Accessing and Modifying Elements
+
+You access elements in a list using zero-based indexing (the first element is at index 0).
+
+```boba
+print(ingredients[0]) // Outputs "flour"
+
+// You can change the value at a specific index
+ingredients[2] = "tapioca pearls"
+print(ingredients) // Outputs ["flour", "sugar", "tapioca pearls"]
+```
+
+## Multi-dimensional Lists
+
+Boba supports multi-dimensional lists (lists of lists), which can be used to create matrices or grids.
+
+### Uniform 2D Lists (Matrices)
 
 ```boba
 // A 2x3 matrix (2 rows, 3 columns)
@@ -24,14 +44,20 @@ var matrix: number[][] = [
   [4, 5, 6]
 ]
 
-// A "jagged" list is also possible
+// Accessing an element
+var value: number = matrix[1][2] // value is 6
+```
+
+### Jagged Lists
+
+You can also create lists where the inner lists have different lengths.
+
+```boba
 var jagged: number[][] = [
   [10, 20],
   [30, 40, 50],
   [60]
 ]
 
-// Accessing elements
-var value: number = matrix[1][2] // value would be 6
 print(jagged[1][1]) // prints 40
 ```

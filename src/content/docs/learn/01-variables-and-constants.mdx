@@ -1,0 +1,65 @@
+---
+title: "1. Variables and Constants"
+description: "Learn how to store and manage data in Boba using variables and constants."
+---
+
+Welcome to Boba! Let's start with the fundamentals: how to store and manage data in your programs. In Boba, you have two ways to do this: variables and constants.
+
+## Variables
+
+Variables are used to store values that can change. You declare a variable using the `var` keyword.
+
+```boba
+// Declare a variable `score` of type `number` and initialize it to 100.
+var score: number = 100
+
+// You can change the value of a variable.
+score = 120
+```
+
+### Type Inference
+
+Boba is a smart language! If you don't explicitly specify the type of a variable, Boba will infer it from the value you assign.
+
+```boba
+// Boba infers that `health` is a `number`.
+var health = 100
+
+// Boba infers that `playerName` is a `string`.
+var playerName = "Boba Fett"
+```
+
+### Multiple Declarations
+
+You can declare multiple variables of the same type on a single line.
+
+```boba
+var x, y, z: number = 1, 2, 3
+```
+
+## Constants
+
+Constants are used to store values that will not change. You declare a constant using the `const` keyword.
+
+```boba
+const MAX_PLAYERS: number = 4
+```
+
+Once a constant is declared, you cannot change its value. This is useful for values that should remain constant throughout your program, like a configuration value or a mathematical constant.
+
+```boba
+const PI: number = 3.14159
+
+// This would cause a compile error:
+// PI = 3.14
+```
+
+## Built-in Constants
+
+Boba provides a few built-in constants for convenience:
+
+- `true`: A boolean value representing truth.
+- `false`: A boolean value representing falsehood.
+- `null`: Represents the intentional absence of any object value.
+
+Now that you know how to create variables and constants, let's move on to the different types of data you can store in them.

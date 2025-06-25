@@ -2,16 +2,42 @@
 title: Imports
 ---
 
-## Imports
+Imports allow you to use code defined in other files, enabling you to organize your project into modules. You can import public functions, classes, structs, and enums.
 
-Individual functions (they must be public) and all functions from a file can be imported. All overloads are also imported.
+## Import Syntax
 
-Circular imports are disallowed.
+Import statements are placed at the top of a Boba file.
 
-Imported functions can be renamed.
+### Importing Specific Items
+
+You can import one or more specific items from a file. This is the most common way to import.
 
 ```boba
+// Imports `func1` and `func2` from the specified file.
 import func1, func2 from "relative/path/from/this/file.boba"
+```
+
+### Importing All Items
+
+You can import all public items from a file using the `*` wildcard. Use this with caution, as it can pull in many names and potentially cause conflicts.
+
+```boba
+// Imports all public members from file2.boba
 import * from "relative/path/from/this/file2.boba"
+```
+
+### Renaming Imports
+
+You can rename an imported item using the `as` keyword. This is useful for avoiding naming collisions or for giving an item a more descriptive name in the current context.
+
+```boba
+// Imports `func1` but renames it to `func3` in the current file.
 import func1 as func3 from "relative/path/from/this/file3.boba"
 ```
+
+## Important Rules
+
+-   **Paths**: Import paths are always relative to the file containing the import statement.
+-   **Visibility**: You can only import items that are marked as `pub` (public) in the other file.
+-   **Overloads**: When you import a function, all of its overloads are imported as well.
+-   **Circular Imports**: File A cannot import File B if File B already imports File A (or if there is a longer chain of imports that leads back to File A). This is disallowed and will result in a compile error.

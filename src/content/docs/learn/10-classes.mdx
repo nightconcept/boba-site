@@ -1,0 +1,62 @@
+---
+title: "10. Classes"
+description: "Learn how to create complex objects with data and behavior using classes in Boba."
+---
+
+Classes are a powerful feature in Boba that allow you to create complex objects that have both data (properties) and behavior (methods). They are similar to structs, but with the added ability to define methods and use inheritance.
+
+## Defining a Class
+
+You define a class using the `class` keyword.
+
+```boba
+class Enemy = {
+  health: number = 100
+
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
+  }
+
+  // Class private functions are only accessible within the class
+  fn heal(amount: number) -> void {
+    self.health = self.health + amount
+  }
+}
+```
+
+## Creating an Instance of a Class
+
+You create an instance of a class using the `new` keyword.
+
+```boba
+var enemy = new Enemy()
+```
+
+## Accessing Properties and Methods
+
+You can access the properties and methods of a class instance using dot notation.
+
+```boba
+enemy.take_damage(20)
+print("Enemy health: {enemy.health}") // Prints "Enemy health: 80"
+```
+
+## Inheritance
+
+Boba supports inheritance, which allows you to create a new class that inherits the properties and methods of an existing class. This is a great way to reuse code and create a hierarchy of related objects.
+
+```boba
+class Goblin extends Enemy = {
+  gold: number = 12
+
+  pub fn taunt() {
+    print("Heh heh heh! I have {self.health} health left!")
+  }
+}
+
+var goblin = new Goblin()
+goblin.take_damage(10)
+goblin.taunt() // Prints "Heh heh heh! I have 90 health left!"
+```
+
+Classes are a cornerstone of object-oriented programming. In the final chapter of this tutorial, we'll look at how to organize your code into multiple files using imports.

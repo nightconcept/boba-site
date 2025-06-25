@@ -1,0 +1,45 @@
+---
+title: "8. Enums"
+description: "Learn how to create a type with a fixed number of possible values using enums in Boba."
+---
+
+Enums, short for enumerations, are a way to define a custom type that has a fixed set of possible values. This is useful when you have a variable that can only be one of a few possible things.
+
+## Defining an Enum
+
+You define an enum using the `enum` keyword, followed by the name of the enum and a list of its possible values (called variants).
+
+```boba
+enum Color {
+  RED,
+  GREEN,
+  BLUE
+}
+```
+
+## Using an Enum
+
+Once you have defined an enum, you can use it as a type for your variables. The variants are accessed through the enum type itself.
+
+```boba
+// The type of `myColor` is inferred as `Color`
+var myColor = Color.GREEN
+
+// You can use enums in comparisons
+if (myColor == Color.GREEN) {
+  print("The color is green!")
+}
+```
+
+## Enums with Data
+
+Boba enums can also hold data. This is particularly useful for error handling, as we'll see in the next chapter.
+
+```boba
+enum Result<T, E> {
+  Ok(T),    // The 'Success' variant, holds a value of type T
+  Err(E)    // The 'Failure' variant, holds a value of type E
+}
+```
+
+Enums are a powerful feature for making your code more expressive and safe. In the next chapter, we'll dive into error handling and see how enums play a crucial role.

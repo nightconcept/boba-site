@@ -2,8 +2,18 @@
 title: Constants
 ---
 
+Constants are special, unchangeable values that are built directly into the Boba language. They represent fundamental concepts.
+
 Boba has the following built-in constants:
 
-- `null`
-- `false`
-- `true`
+-   `true`: A `boolean` value representing truth.
+-   `false`: A `boolean` value representing falsehood.
+-   `null`: Represents the intentional absence of any object value. It is often used to indicate that a variable has no value.
+
+```boba
+var is_active: boolean = true
+var has_key: boolean = false
+var user_data = null // Could be used before user data is loaded
+```
+
+For creating your own unchangeable values, see [Variables and Constants](learn/01-variables-and-constants.mdx) and the `const` keyword.
