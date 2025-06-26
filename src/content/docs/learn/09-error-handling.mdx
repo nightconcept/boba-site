@@ -39,6 +39,9 @@ struct Config = {
 }
 
 fn load_config() -> Result<Config, error> {
+    // (In this example, read_file and parse_json are assumed to be
+    // functions from Boba's standard library.)
+
     // `read_file` returns a `Result<string, error>`.
     // If it's an `Err`, `?` returns it from `load_config`.
     // If it's `Ok`, `?` gives us the string content.

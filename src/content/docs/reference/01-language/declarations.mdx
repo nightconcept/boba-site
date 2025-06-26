@@ -195,7 +195,10 @@ class Enemy = {
 
 -   **Properties**: Variables that belong to a class instance (e.g., `health`, `mana`).
 -   **Methods**: Functions that belong to a class. Use `self` to access the current instance.
--   **`init` Block**: A special constructor method called when a new instance is created with `new`.
+-   **`init` Block**: A special initializer block that is called when a new instance is created with `new`.
+    -   It does **not** use the `fn` keyword.
+    -   It cannot have a return type and cannot use the `return` keyword.
+    -   It can be overloaded with different parameters, just like a function.
 
 ### Inheritance
 
@@ -217,7 +220,13 @@ print(goblin_scout.gold)     // New property
 
 ### Structs vs. Classes
 
--   **Structs (Value Types)**: A copy of the data is made on assignment.
--   **Classes (Reference Types)**: A reference to the object is used on assignment.
+The primary difference between `struct` and `class` lies in how they are stored and passed around in your code. Choosing the right one is key to writing efficient and correct Boba programs.
 
-Choose a struct for simple data containers and a class for complex behavior with methods and inheritance.
+| Feature         | `struct`                                | `class`                                           |
+| --------------- | --------------------------------------- | ------------------------------------------------- |
+| **Kind**        | Value Type                              | Reference Type                                    |
+| **Assignment**  | Copies the instance's data              | Copies a reference to the same instance           |
+| **Behavior**    | Simple data aggregate                   | Can have methods and `init` blocks for complex logic |
+| **Inheritance** | Not supported                           | Supported (`extends`)                             |
+
+In general, prefer `struct` for simple data containers. Use `class` when you need to define objects with complex behavior, inheritance, or when you want to share a single instance across multiple parts of your program.

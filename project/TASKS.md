@@ -41,6 +41,11 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 - [x] Create a new document in `src/content/docs/` with a `boba` code block to demonstrate highlighting.
 - [x] **Verification**: The new page renders correctly and the Boba code block shows proper syntax highlighting.
 
+### 2.4. Task: Update syntax highlighting for import statements
+
+- [x] Modify `src/grammars/boba.tmLanguage.json` to add a rule for `import`, `from`, and `as`.
+- [x] **Verification**: The `import` statements in `src/content/docs/guides/boba-syntax-highlighting.mdx` are highlighted correctly.
+
 ## 3. Epic: Additional Tasks / Backlog
 
 ### 3.1. Task: Create the machine-readable context file for the AI assistant
@@ -80,3 +85,29 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 
 - [x] Modify `astro.config.mjs` to reflect the new, nested structure of the language reference in the sidebar.
 - [x] **Verification**: The sidebar navigation accurately represents the new file structure and all links work correctly.
+
+
+## 5. Epic: Documentation Refinements
+
+**Goal**: Address user feedback to improve the clarity and completeness of the Boba Lang documentation.
+
+### 5.1. Task: Enhance `init` block documentation
+
+- [x] In `/learn`, add a section on initializers to the "Classes" chapter.
+    - [x] Show an example of an `Enemy` class with `init(start_health: number)`.
+    - [x] Demonstrate creating an instance with `var boss = new Enemy(500)`.
+- [x] In `/reference/declarations.mdx`, formalize the rules for `init`.
+    - [x] State that `init` is a special block and does not use the `fn` keyword.
+    - [x] State that `init` has no return type and cannot use the `return` keyword.
+    - [x] Mention that `init` can be overloaded.
+
+### 5.2. Task: Clarify `struct` vs. `class` distinction
+
+- [x] In `reference/declarations.mdx`, replace the "Structs vs. Classes" section with a comparison table.
+- [x] The table should compare features like Kind (Value Type vs. Reference Type), Assignment behavior, Methods/`init`, and Inheritance.
+
+### 5.3. Task: Implement minor tutorial enhancements
+
+- [x] In the "Functions" chapter (`/learn`), link `pub` to the upcoming "Imports" chapter.
+- [x] In the "Error Handling" chapter (`/learn`), add context for `read_file` and `parse_json`, noting they are assumed to be from the standard library.
+- [x] In the "Classes" chapter (`/learn`), add an explicit explanation of the `self` keyword.

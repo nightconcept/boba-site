@@ -1,5 +1,5 @@
 ---
-title: "10. Classes"
+title: "11. Classes"
 description: "Learn how to create complex objects with data and behavior using classes in Boba."
 ---
 
@@ -24,12 +24,39 @@ class Enemy = {
 }
 ```
 
+The `self` keyword refers to the current instance of the class, allowing you to access its properties and methods.
+
 ## Creating an Instance of a Class
 
 You create an instance of a class using the `new` keyword.
 
 ```boba
 var enemy = new Enemy()
+```
+
+## Initializers
+
+Classes have a special `init` block that acts as a constructor. It's called when you create a new instance and is perfect for setting up the initial state of an object. You can even add parameters to it.
+
+```boba
+class Enemy = {
+  health: number
+
+  // This init block takes a parameter to set the starting health
+  init(start_health: number) {
+    self.health = start_health
+  }
+
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
+  }
+}
+
+// Create a regular enemy and a powerful boss
+var minion = new Enemy(100)
+var boss = new Enemy(500)
+
+print("Boss health: {boss.health}") // Prints "Boss health: 500"
 ```
 
 ## Accessing Properties and Methods
@@ -43,20 +70,63 @@ print("Enemy health: {enemy.health}") // Prints "Enemy health: 80"
 
 ## Inheritance
 
-Boba supports inheritance, which allows you to create a new class that inherits the properties and methods of an existing class. This is a great way to reuse code and create a hierarchy of related objects.
+Boba supports inheritance, which allows you to create a new class (a "child" or "subclass") that inherits the properties and methods of an existing class (a "parent" or "superclass").
+
+When a child class has its own `init` block, it **must** call the parent's initializer using `super()`. This ensures that the parent part of the object is properly set up before the child adds its own properties.
+
+Let's see it in action.
 
 ```boba
-class Goblin extends Enemy = {
-  gold: number = 12
+// --- The Parent Class ---
+class Enemy {
+  health: number
+  name: string
 
-  pub fn taunt() {
-    print("Heh heh heh! I have {self.health} health left!")
+  // The parent initializer requires a name to be provided.
+  init(name: string) {
+    self.health = 100
+    self.name = name
+    print("{self.name} (an Enemy) has been created.")
+  }
+
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
   }
 }
 
-var goblin = new Goblin()
-goblin.take_damage(10)
-goblin.taunt() // Prints "Heh heh heh! I have 90 health left!"
+
+// --- The Child Class ---
+class Goblin extends Enemy {
+  gold: number
+
+  // The Goblin's initializer takes the arguments it needs.
+  init(name: string, gold_pieces: number) {
+    // 1. Call the parent's init FIRST and pass the required 'name' up to it.
+    // This is mandatory.
+    super(name)
+
+    // 2. Now that the 'Enemy' part is initialized, we can initialize
+    //    the fields specific to the Goblin.
+    self.gold = gold_pieces
+    print("...and it's a Goblin with {self.gold} gold!")
+  }
+
+  pub fn taunt() {
+    // We can now safely use 'self.health' because super() was called.
+    print("{self.name} the Goblin taunts! Health: {self.health}, Gold: {self.gold}")
+  }
+}
+
+
+// --- Usage ---
+var weak_goblin = new Goblin("Gribbly", 12)
+// Output:
+// > Gribbly (an Enemy) has been created.
+// > ...and it's a Goblin with 12 gold!
+
+weak_goblin.taunt()
+// Output:
+// > Gribbly the Goblin taunts! Health: 100, Gold: 12
 ```
 
 Classes are a cornerstone of object-oriented programming. In the final chapter of this tutorial, we'll look at how to organize your code into multiple files using imports.

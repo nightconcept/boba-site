@@ -1,4 +1,4 @@
-# Boba Lang
+# learn
 
 Welcome to Boba! Let's start with the fundamentals: how to store and manage data in your programs. In Boba, you have two ways to do this: variables and constants.
 
@@ -512,6 +512,64 @@ fn load_config() -> Result<Config, error> {
 
 This approach to error handling makes your code cleaner and more reliable. In the next chapter, we'll explore how to use classes to create more complex objects with both data and behavior.
 
+Welcome to the next step in your Boba journey! We've seen how to handle potential problems with `Result` and `?`. Now, let's learn how to make sure our program always cleans up after itself, no matter what happens.
+
+## The Problem: Forgetting to Clean Up
+
+Imagine you're working with a file. You need to open it, read some data, and then—most importantly—close it. If you don't close the file, you can cause problems like resource leaks.
+
+This gets tricky when your function has multiple ways to exit.
+
+```boba
+pub fn process_file(path: string) -> Result<string, error> {
+    var file = fs.open(path)?
+
+    var data = file.read_all()?
+    if (data.is_empty()) {
+        file.close() // We have to close it here...
+        return Err({ message = "File is empty" })
+    }
+
+    file.close() // ...and we have to close it here too.
+    return Ok("Processed data!")
+}
+```
+
+It's easy to forget one of those `file.close()` calls, leading to bugs.
+
+## The Solution: `defer`
+
+Boba provides a simple and powerful keyword to solve this: `defer`.
+
+The `defer` statement schedules a function call to be executed right before the current function exits. It doesn't matter *how* the function exits—whether by a `return`, by reaching the end, or by propagating an error with `?`.
+
+Let's rewrite our example using `defer`:
+
+```boba
+pub fn process_file(path: string) -> Result<string, error> {
+    // 1. Open the file. If this fails, we exit, no cleanup needed.
+    var file = fs.open(path)?
+
+    // 2. Defer the close call *immediately* after opening.
+    // This is now GUARANTEED to run when process_file exits.
+    defer file.close()
+
+    // 3. Now, we can focus on the logic without worrying about cleanup.
+    var data = file.read_all()?
+    if (data.is_empty()) {
+        // We can just return. `defer file.close()` will run automatically.
+        return Err({ message = "File is empty" })
+    }
+
+    // `defer file.close()` will also run automatically before this return.
+    return Ok("Processed data!")
+}
+```
+
+By placing `defer file.close()` right after `fs.open(path)?`, we make our code cleaner, safer, and easier to read. The cleanup code is right next to the resource it's cleaning up.
+
+In the next section, we'll look at how to organize our code with classes.
+
 Classes are a powerful feature in Boba that allow you to create complex objects that have both data (properties) and behavior (methods). They are similar to structs, but with the added ability to define methods and use inheritance.
 
 ## Defining a Class
@@ -630,274 +688,137 @@ Import paths are always relative to the current file.
 
 Congratulations! You have completed the Boba language tutorial. You now have a solid foundation in the core concepts of the language. From here, you can explore the rest of the documentation to learn about more advanced features and start building your own Boba applications.
 
-Classes are blueprints for creating objects. They bundle data (properties) and functions that operate on that data (methods) into a single unit. Classes in Boba support inheritance, allowing you to create a new class that builds upon an existing one.
+# reference
 
-## Defining a Class
+Collections are data structures that can hold multiple values. Boba provides two primary collection types: Lists and Maps.
 
-You define a class using the `class` keyword.
+## Lists
+
+Lists are ordered, resizable collections of items of the same type. They are one of the most common ways to group data in Boba.
+
+### Creating a List
+
+You define a list by specifying the type of its elements followed by `[]`.
 
 ```boba
-class Enemy = {
-  // Properties
-  health: number = 100
-  mana: number = 50
+// A list of numbers
+var high_scores: number[] = [100, 95, 80]
 
-  // A public method (accessible from outside the class)
-  pub fn take_damage(amount: number) -> void {
-    // `self` refers to the current instance of the class
-    self.health = self.health - amount
-    print("Enemy took {amount} damage. Health is now {self.health}.")
-  }
+// A list of strings
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 
-  // A private method (only accessible within the class)
-  fn regenerate_mana() -> void {
-    self.mana = self.mana + 5
-  }
+// An empty list must have its type declared
+var empty_list: string[] = []
+```
+
+### Accessing and Modifying Elements
+
+You access elements in a list using zero-based indexing (the first element is at index 0).
+
+```boba
+print(ingredients[0]) // Outputs "flour"
+
+// You can change the value at a specific index
+ingredients[2] = "tapioca pearls"
+print(ingredients) // Outputs ["flour", "sugar", "tapioca pearls"]
+```
+
+### Multi-dimensional Lists
+
+Boba supports multi-dimensional lists (lists of lists), which can be used to create matrices or grids.
+
+```boba
+// A 2x3 matrix (2 rows, 3 columns)
+var matrix: number[][] = [
+  [1, 2, 3],
+  [4, 5, 6]
+]
+
+// Accessing an element
+var value: number = matrix[1][2] // value is 6
+```
+
+## Maps
+
+Maps are collections of key-value pairs. Each key in a map must be unique. They are useful for storing associated data, like a dictionary or a lookup table.
+
+### Creating a Map
+
+You can create a map using curly braces `{}` and specifying key-value pairs.
+
+#### Explicit Typing
+
+You can explicitly declare the types for the keys and values.
+
+```boba
+// A map with string keys and number values
+var scores: [string:number] = {
+  "ada": 100,
+  "grace": 95
 }
 ```
 
-### Properties
-Properties are variables that belong to a class instance. They define the state of the object. In the example above, `health` and `mana` are properties.
+#### Type Inference
 
-### Methods
-Methods are functions that belong to a class. They define the behavior of the object.
--   **Public Methods**: Declared with the `pub` keyword, they can be called from anywhere you have an instance of the class.
--   **Private Methods**: Declared without `pub`, they can only be called by other methods within the same class.
--   **The `self` Keyword**: Inside a method, the `self` keyword is used to access the properties and other methods of the current object instance.
-
-## Creating an Instance
-
-To create an object from a class, you use the `new` keyword.
+Boba can also infer the types from the data you provide.
 
 ```boba
-var basic_enemy = new Enemy()
-basic_enemy.take_damage(15) // Prints: "Enemy took 15 damage. Health is now 85."
-```
-
-## Inheritance
-
-Inheritance allows a class (the child or subclass) to inherit the properties and methods of another class (the parent or superclass). This is a core concept of object-oriented programming that promotes code reuse.
-
-You use the `extends` keyword to create a subclass.
-
-```boba
-// Goblin is a subclass of Enemy
-class Goblin extends Enemy = {
-  // Add new properties specific to Goblin
-  gold: number = 12
-
-  // Add new methods specific to Goblin
-  pub fn taunt() {
-    print("Heh heh heh! I have {self.health} health left!")
-  }
-
-  // You can also override parent methods (not shown, but possible)
+// Types are inferred as [string:string]
+var actions = {
+  "add": "added",
+  "subtract": "subtracted"
 }
 ```
 
-An instance of `Goblin` has all the properties and methods of `Enemy`, plus its own.
+### Accessing and Modifying Values
+
+You can access and modify values in a map using their keys.
 
 ```boba
-var goblin_scout = new Goblin()
+print(scores["ada"]) // Outputs 100
 
-// Call a method inherited from Enemy
-goblin_scout.take_damage(20) // Prints: "Enemy took 20 damage. Health is now 80."
+scores["grace"] = 98 // Updates the value for the key "grace"
+scores["boba"] = 105 // Adds a new key-value pair
 
-// Access a property from Goblin
-print("The goblin has {goblin_scout.gold} gold.") // Prints: "The goblin has 12 gold."
+Declarations are how you introduce new names into your program, such as variables, constants, functions, and custom types.
 
-// Call a method from Goblin
-goblin_scout.taunt() // Prints: "Heh heh heh! I have 80 health left!"
-```
+## Variables and Constants (`var` and `const`)
 
-Comments are annotations in your code that are ignored by the compiler. They are used to explain what your code does, making it more understandable for yourself and others.
+In Boba, you can declare variables using the `var` and `const` keywords.
 
-Boba supports two types of comments.
+### `var`
 
-## Single-line comments
-
-Single-line comments start with `//` and continue to the end of the line. They are useful for short explanations.
+Use `var` to declare mutable variables. The type can be specified explicitly or inferred by the compiler from the value assigned at declaration.
 
 ```boba
-// This is a comment
-var x = 5 // This is also a comment
+var x: number = 2
+y, z: number = 3, 4 // y and z must be the same type
+
+// Types are inferenced at declaration
+var a = 5
+var name = "Boba"
 ```
 
-## Block comments
+### `const`
 
-Block comments start with `/*` and end with `*/`. They can span multiple lines and are useful for longer explanations.
+Use `const` to declare immutable constants. Once a value is assigned to a `const`, it cannot be changed.
 
 ```boba
-/*
-This is a block comment.
-It can span multiple lines.
-*/
-```
-Conditional statements allow you to execute different blocks of code based on whether a certain condition is true or false. Boba provides `if`, `else if`, `else`, and a `match` statement for this purpose.
+const A: number = 1
+struct Point = { x: number, y: number }
+const BEST_POINT: Point = { x = 10, y = 20 }
+var x: Point = { x = 15, y = 25 }
 
-## `if`, `else if`, and `else`
-
-This structure is used for straightforward conditional logic.
-
--   `if`: Executes a block of code if its condition is `true`.
--   `else if`: If the preceding `if` (or `else if`) condition is `false`, this block is checked. You can have multiple `else if` blocks.
--   `else`: If all preceding conditions are `false`, this block is executed.
-
-```boba
-var temperature = 20
-
-if (temperature > 30) {
-  print("It's a hot day!")
-} else if (temperature < 10) {
-  print("It's a cold day!")
-} else {
-  print("The weather is moderate.")
-}
+A = 10 // COMPILE ERROR: Cannot assign to 'A' because it is a constant.
+BEST_POINT.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
+BEST_POINT = x // COMPILE ERROR: Cannot assign to 'BEST_POINT' because it is a constant.
 ```
 
-## `match` Statement
-
-The `match` statement is a powerful tool for pattern matching that provides a more structured and readable alternative to long `if-else if` chains, especially when checking one variable against multiple possible values or patterns.
-
-```boba
-// Hypothetical Boba match statement
-match my_variable {
-  1 => print("It was one!"),
-  x where x > 100 => print("It's a big number: {x}"),
-  s: string => print("It's a string of length {s.len()}"),
-  _ => print("Default case") // `_` is a wildcard that matches any value
-}
-```
-
-Key features of `match`:
--   It compares a single value against multiple patterns.
--   It can bind values to new variables (e.g., `x` and `s`).
--   It can include conditional logic with `where` clauses.
--   The wildcard `_` acts as a default case, catching any values not matched by other arms.
-
-Constants are special, unchangeable values that are built directly into the Boba language. They represent fundamental concepts.
-
-Boba has the following built-in constants:
-
--   `true`: A `boolean` value representing truth.
--   `false`: A `boolean` value representing falsehood.
--   `null`: Represents the intentional absence of any object value. It is often used to indicate that a variable has no value.
-
-```boba
-var is_active: boolean = true
-var has_key: boolean = false
-var user_data = null // Could be used before user data is loaded
-```
-
-For creating your own unchangeable values, see [Variables and Constants](learn/01-variables-and-constants.mdx) and the `const` keyword.
-Enumerations (or enums) allow you to define a custom type by listing its possible values, known as variants. They make code clearer and safer by restricting a variable to a known set of values.
-
-## Defining a Simple Enum
-
-You define an enum with the `enum` keyword.
-
-```boba
-enum Direction {
-  NORTH,
-  SOUTH,
-  EAST,
-  WEST
-}
-```
-
-## Using an Enum
-
-Once defined, you can use the enum as a type. Variants are accessed directly through the enum's name.
-
-```boba
-var player_direction: Direction = Direction.NORTH
-
-if (player_direction == Direction.NORTH) {
-  print("You are heading north.")
-}
-```
-
-## Enums with Data (Associated Values)
-
-Boba enums can also hold additional data, making them incredibly powerful. This is a key feature for patterns like the `Result` type used in [Error Handling](./error-handling.mdx).
-
-Each variant can have different types and amounts of associated data.
-
-```boba
-enum Shape {
-  Circle(radius: number),
-  Rectangle(width: number, height: number)
-}
-
-var my_shape = Shape.Circle(radius = 10.5)
-var another_shape = Shape.Rectangle(width = 5, height = 10)
-```
-
-This allows you to store more detailed information within the enum itself, creating rich, expressive data structures.
-Boba promotes robust error handling using the `Result` enum and the `?` operator. This approach makes it clear when a function can fail and encourages you to handle potential errors explicitly.
-
-## The `Result` Enum
-
-The `Result` enum is a generic type with two variants:
-
--   `Ok(T)`: Represents a successful result, containing a value of type `T`.
--   `Err(E)`: Represents an error, containing a value of type `E`.
-
-```boba
-enum Result<T, E> {
-  Ok(T),    // The 'Success' compartment, holds a value of type T
-  Err(E)    // The 'Failure' compartment, holds a value of type E
-}
-```
-
-Functions that can fail should return a `Result` to make their behavior predictable.
-
-## The `?` Operator for Error Propagation
-
-The `?` operator provides a concise way to handle `Result` values. It simplifies the process of propagating errors up the call stack.
-
-When you append `?` to a `Result` value:
--   If the value is `Ok(T)`, the `?` operator unwraps it and gives you the inner value `T`.
--   If the value is `Err(E)`, the `?` operator immediately stops the execution of the current function and returns the `Err(E)` value.
-
-### Example Usage
-
-Consider a function that reads a configuration file and parses it as JSON.
-
-```boba
-// Assume this struct is defined elsewhere
-struct Config = {
-  hostname: string,
-  port: number,
-  enable_https: boolean
-}
-
-// This function returns a Result because reading or parsing could fail.
-fn load_config() -> Result<Config, error> {
-
-    // 1. `read_file` returns a `Result<string, error>`.
-    // 2. The `?` operator checks the Result:
-    //    - If it's `Err(e)`, `load_config` immediately returns that `Err(e)`.
-    //    - If it's `Ok(s)`, `?` unwraps it, and the string `s` is assigned to `content`.
-    var content = read_file("config.json")?
-
-    // 3. This line is only reached if `read_file` succeeded.
-    // 4. `parse_json` returns a `Result<Config, error>`.
-    // 5. The `?` operator checks this Result again, propagating any error.
-    var config = parse_json(content)?
-
-    print("Config loaded successfully!")
-
-    // 6. If both operations succeed, the final Config is wrapped in `Ok` and returned.
-    return Ok(config)
-}
-```
-
-This pattern makes error handling explicit and clean, avoiding deep nesting of `if-else` blocks and ensuring that errors are dealt with.
+## Functions (`fn`)
 
 Functions are reusable, named blocks of code that perform a specific task. They are a fundamental building block for organizing and structuring your programs.
 
-## Defining a Function
+### Defining a Function
 
 Functions are defined using the `fn` keyword. You can specify argument types and a return type.
 
@@ -921,20 +842,15 @@ fn my_private_function() -> void {
 -   **Visibility**: Use `pub` to make a function public (callable from other files). Without `pub`, a function is private by default.
 -   **Return Type**: The `->` syntax specifies the type of the value the function will return. If a function doesn't return a value, use `void`.
 
-## Parameters and Arguments
+### Advanced Function Features
 
--   **Parameters**: The variables listed in the function definition (e.g., `a` and `b` in `add`).
--   **Arguments**: The actual values passed to the function when it is called (e.g., `5` and `10` in `add(5, 10)`).
-
-## Advanced Features
-
-### Default Parameters
+#### Default Parameters
 
 You can assign a default value to a parameter, making it optional when the function is called.
 
 ```boba
 // The `port` and `use_ssl` parameters are optional.
-pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) { 
+pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) {
   // ... connection logic ...
 }
 
@@ -942,30 +858,214 @@ connect("example.com") // Uses default port and SSL settings
 connect("example.com", 8080) // Overrides the port
 ```
 
-### Overloading
+#### Overloading
 
 Boba allows you to define multiple functions with the same name but different parameter lists (either different types or a different number of parameters). The compiler will choose the correct function to call based on the arguments you provide.
 
-#### Guidance on When to Use Overloading vs. Default Parameters
-
 -   **Use Overloading for Different Semantics or Types**: Choose overloading when the function's core behavior changes based on the input types.
-
-    ```boba
-    // The behavior is fundamentally different for a size vs. existing data
-    pub fn create_buffer(size: number) { /* Allocate a new buffer */ }
-    pub fn create_buffer(from_data: number[]) { /* Copy data into a new buffer */ }
-    ```
-
 -   **Use Default Arguments for Optional Configuration**: Use default arguments when the core behavior is the same, but you want to provide optional flags or parameters to tweak it.
 
-    ```boba
-    // The behavior is always connecting, but port and ssl are optional tweaks
-    pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) { 
-      // ... 
-    }
-    ```
-
 **Restriction**: An overload set cannot contain functions that only differ by parameters with default values, as it would create ambiguity.
+
+## Structures (`struct`)
+
+Structures (or `structs`) are custom data types you can define to group together related variables into a logical unit.
+
+### Defining a Structure
+
+You define a structure using the `struct` keyword, followed by the name of the struct and a block of fields with their types.
+
+```boba
+// This defines a "Player" structure.
+struct Player = {
+  name: string,
+  score: number,
+  is_active: boolean
+}
+```
+
+### Creating an Instance
+
+Once a struct is defined, you can create instances (variables) of that type.
+
+```boba
+// Create a new variable "ada" of type "Player"
+var ada: Player = { name = "Ada", score = 100, is_active = true }
+```
+
+### Accessing and Modifying Fields
+
+You access the data within a struct instance using dot (`.`) notation.
+
+```boba
+print("Player's score: {ada.score}") // Outputs: Player's score: 100
+ada.score = ada.score + 10
+print("New score: {ada.score}") // Outputs: New score: 110
+```
+
+## Enumerations (`enum`)
+
+Enumerations (or enums) allow you to define a custom type by listing its possible values, known as variants.
+
+### Defining a Simple Enum
+
+You define an enum with the `enum` keyword.
+
+```boba
+enum Direction {
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST
+}
+```
+
+### Using an Enum
+
+```boba
+var player_direction: Direction = Direction.NORTH
+
+if (player_direction == Direction.NORTH) {
+  print("You are heading north.")
+}
+```
+
+### Enums with Data (Associated Values)
+
+Boba enums can also hold additional data. Each variant can have different types and amounts of associated data.
+
+```boba
+enum Shape {
+  Circle(radius: number),
+  Rectangle(width: number, height: number)
+}
+
+var my_shape = Shape.Circle(radius = 10.5)
+var another_shape = Shape.Rectangle(width = 5, height = 10)
+```
+
+## Classes (`class`)
+
+Classes are blueprints for creating objects. They bundle data (properties) and functions that operate on that data (methods) into a single unit.
+
+### Defining a Class
+
+You define a class using the `class` keyword.
+
+```boba
+class Enemy = {
+  // Properties
+  health: number
+  mana: number
+
+  // Initializer - sets starting values
+  init() {
+    self.health = 100
+    self.mana = 50
+  }
+
+  // A public method
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
+  }
+}
+```
+
+-   **Properties**: Variables that belong to a class instance (e.g., `health`, `mana`).
+-   **Methods**: Functions that belong to a class. Use `self` to access the current instance.
+-   **`init` Block**: A special constructor method called when a new instance is created with `new`.
+
+### Inheritance
+
+Inheritance allows a class (subclass) to inherit from another class (superclass) using the `extends` keyword.
+
+```boba
+class Goblin extends Enemy = {
+  gold: number = 12
+
+  pub fn taunt() {
+    print("Heh heh! I have {self.health} health left!")
+  }
+}
+
+var goblin_scout = new Goblin()
+goblin_scout.take_damage(20) // Inherited method
+print(goblin_scout.gold)     // New property
+```
+
+### Structs vs. Classes
+
+-   **Structs (Value Types)**: A copy of the data is made on assignment.
+-   **Classes (Reference Types)**: A reference to the object is used on assignment.
+
+Choose a struct for simple data containers and a class for complex behavior with methods and inheritance.
+
+Expressions are pieces of code that produce a value. They are the building blocks of statements. An expression can be as simple as a literal value or as complex as a combination of operators and function calls.
+
+## Literals
+
+Literals are fixed values that you write directly in your code.
+
+-   **Number Literals**: `10`, `3.14`, `-5.5`
+-   **String Literals**: `"hello"`, `'world'`
+-   **Boolean Literals**: `true`, `false`
+-   **Null Literal**: `null` (represents the absence of a value)
+-   **List Literals**: `[1, 2, 3]`
+-   **Map Literals**: `{"key": "value"}`
+
+```boba
+var is_active: boolean = true
+var user_data = null // Could be used before user data is loaded
+```
+
+## Operators
+
+Operators are special symbols that perform operations on operands (values and variables).
+
+### Arithmetic Operators
+
+| Operator | Description      | Example              |
+| :------- | :--------------- | :------------------- |
+| `+`      | Addition         | `5 + 2`  // 7         |
+| `-`      | Subtraction      | `5 - 2`  // 3         |
+| `*`      | Multiplication   | `5 * 2`  // 10        |
+| `/`      | Division         | `5 / 2`  // 2.5       |
+| `%`      | Modulo/Remainder | `5 % 2`  // 1         |
+| `^`      | Power            | `5 ^ 2`  // 25        |
+
+### Comparison and Relational Operators
+
+These operators compare two operands and return a `boolean` (`true` or `false`).
+
+| Operator | Description               |
+| :------- | :------------------------ |
+| `==`     | Equal to                  |
+| `!=`     | Not equal to              |
+| `<`      | Less than                 |
+| `>`      | Greater than              |
+| `<=`     | Less than or equal to     |
+| `>=`     | Greater than or equal to  |
+
+### Logical Operators
+
+These operators are used to combine `boolean` expressions.
+
+-   `and`: Logical AND (returns `true` if both operands are `true`).
+-   `or`: Logical OR (returns `true` if at least one operand is `true`).
+-   `not`: Logical NOT (inverts a `boolean` value).
+
+### Equality (`==` and `!=`) Behavior
+
+The behavior of equality operators depends on the type:
+
+| Type    | Behavior                                                                           |
+| :------ | :--------------------------------------------------------------------------------- |
+| `number`  | Compares numerical values.                                                         |
+| `boolean` | Compares the boolean values.                                                       |
+| `string`  | Compares the contents of the strings character by character.                       |
+| `list`    | **Compares by reference**. Two lists are equal only if they are the *same object*. |
+| `struct`  | **Compares by value**. Two structs are equal if all their corresponding fields are equal. |
+| `class`   | **Compares by reference**. Two class instances are equal only if they are the *same object*. |
 
 Imports allow you to use code defined in other files, enabling you to organize your project into modules. You can import public functions, classes, structs, and enums.
 
@@ -1006,324 +1106,113 @@ import func1 as func3 from "relative/path/from/this/file3.boba"
 -   **Visibility**: You can only import items that are marked as `pub` (public) in the other file.
 -   **Overloads**: When you import a function, all of its overloads are imported as well.
 -   **Circular Imports**: File A cannot import File B if File B already imports File A (or if there is a longer chain of imports that leads back to File A). This is disallowed and will result in a compile error.
-Lists are ordered, resizable collections of items of the same type. They are one of the most common ways to group data in Boba.
 
-## Creating a List
+Statements are the instructions that a Boba program executes. They control the flow of the program, from making decisions to repeating actions.
 
-You define a list by specifying the type of its elements followed by `[]`.
+## Conditional Statements
 
-```boba
-// A list of numbers
-var high_scores: number[] = [100, 95, 80]
+Conditional statements allow you to execute different blocks of code based on whether a certain condition is true or false.
 
-// A list of strings
-var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+### `if`, `else if`, and `else`
 
-// An empty list must have its type declared
-var empty_list: string[] = []
-```
+This structure is used for straightforward conditional logic.
 
-## Accessing and Modifying Elements
-
-You access elements in a list using zero-based indexing (the first element is at index 0).
+-   `if`: Executes a block of code if its condition is `true`.
+-   `else if`: If the preceding `if` (or `else if`) condition is `false`, this block is checked.
+-   `else`: If all preceding conditions are `false`, this block is executed.
 
 ```boba
-print(ingredients[0]) // Outputs "flour"
+var temperature = 20
 
-// You can change the value at a specific index
-ingredients[2] = "tapioca pearls"
-print(ingredients) // Outputs ["flour", "sugar", "tapioca pearls"]
+if (temperature > 30) {
+  print("It's a hot day!")
+} else if (temperature < 10) {
+  print("It's a cold day!")
+} else {
+  print("The weather is moderate.")
+}
 ```
 
-## Multi-dimensional Lists
+### `match` Statement
 
-Boba supports multi-dimensional lists (lists of lists), which can be used to create matrices or grids.
-
-### Uniform 2D Lists (Matrices)
+The `match` statement is a powerful tool for pattern matching that provides a more structured alternative to long `if-else if` chains.
 
 ```boba
-// A 2x3 matrix (2 rows, 3 columns)
-var matrix: number[][] = [
-  [1, 2, 3],
-  [4, 5, 6]
-]
-
-// Accessing an element
-var value: number = matrix[1][2] // value is 6
+match my_variable {
+  1 => print("It was one!"),
+  x where x > 100 => print("It's a big number: {x}"),
+  s: string => print("It's a string of length {s.len()}"),
+  _ => print("Default case") // `_` is a wildcard that matches any value
+}
 ```
 
-### Jagged Lists
+A `match` statement must be exhaustive, meaning every possible value must be covered. The wildcard `_` is often used to satisfy this requirement.
 
-You can also create lists where the inner lists have different lengths.
+## Loop Statements
 
-```boba
-var jagged: number[][] = [
-  [10, 20],
-  [30, 40, 50],
-  [60]
-]
+Loops are control flow structures that allow you to execute a block of code repeatedly.
 
-print(jagged[1][1]) // prints 40
-```
-Loops are control flow structures that allow you to execute a block of code repeatedly. Boba provides several types of loops to handle different scenarios.
+### `for` loop
 
-## `for` loop
-
-The `for` loop is used to iterate a specific number of times. It includes a start value, an end value, and a step value.
+The `for` loop is used to iterate a specific number of times.
 
 ```boba
 // Iterates from 1 up to and including 5, incrementing by 1
 for i in 1 to 5 by 1 {
-  // String interpolation is supported using {variable_name}
   print("I am print {i}!")
 }
-
-// To escape curly braces, use a double backslash: \\{ and \\}
 ```
 
-## `while` loop
+### `while` loop
 
-The `while` loop executes a block of code as long as a given condition remains `true`. The condition is checked *before* each iteration.
+The `while` loop executes a block of code as long as a given condition remains `true`.
 
 ```boba
 var j: number = 0
 while j < 10 {
   j++
-  print("I am print {j}!")
-  if j == 5 then break // The `break` keyword exits the loop immediately
+  if j == 5 then break // The `break` keyword exits the loop
 }
 ```
 
-## `foreach` loop
+### `foreach` loop
 
-The `foreach` loop is the idiomatic way to iterate over all elements in a collection, such as a list or a map.
+The `foreach` loop is the idiomatic way to iterate over all elements in a collection.
 
 ```boba
 var book: string[] = ["Chapter 1", "Chapter 2", "Chapter 3"]
-
 foreach page in book {
   read(page)
 }
 ```
 
-## `repeat` loop
+### `repeat` loop
 
-The `repeat` loop (also known as a do-while loop in other languages) is similar to a `while` loop, but the condition is checked *after* each iteration. This guarantees that the loop body will be executed at least once.
+The `repeat` loop (or do-while) checks its condition *after* each iteration, guaranteeing the body executes at least once.
 
 ```boba
 var k: number = 0
 repeat {
-  print("Repeating!")
   k++
 } until k == 10
 ```
-Maps are collections of key-value pairs. Each key in a map must be unique. They are useful for storing associated data, like a dictionary or a lookup table.
 
-## Creating a Map
+## `defer` Statement
 
-You can create a map using curly braces `{}` and specifying key-value pairs.
+The `defer` statement schedules a function call to be executed when the surrounding function scope is exited. This is crucial for guaranteeing cleanup tasks, like closing files.
 
-### Explicit Typing
-
-You can explicitly declare the types for the keys and values.
+When a `defer` statement is encountered, the function call is put on a stack. When the function returns (either normally or through an error), the deferred calls are executed in Last-In, First-Out (LIFO) order.
 
 ```boba
-// A map with string keys and number values
-var scores: [string:number] = {
-  "ada": 100,
-  "grace": 95
+pub fn get_file_size(path: string) -> Result<number, error> {
+    var file = fs.open(path)?
+    // This guarantees the file will be closed when the function exits.
+    defer file.close()
+
+    var contents = file.read_all()?
+    return Ok(contents.len())
 }
-```
 
-### Type Inference
-
-Boba can also infer the types from the data you provide.
-
-```boba
-// Types are inferred as [string:string]
-var actions = {
-  "add": "added",
-  "subtract": "subtracted"
-}
-```
-
-## Accessing and Modifying Values
-
-You can access and modify values in a map using their keys.
-
-```boba
-print(scores["ada"]) // Outputs 100
-
-scores["grace"] = 98 // Updates the value for the key "grace"
-scores["boba"] = 105 // Adds a new key-value pair
-```
-The `match` statement is a powerful control flow construct that allows you to compare a value against a series of patterns and execute code based on which pattern matches. It is often more readable and expressive than a long chain of `if-else if` statements.
-
-## Structure of a `match` Statement
-
-A `match` statement consists of the `match` keyword followed by an expression, and a block of `=>` separated arms. Each arm has a pattern and an expression to execute if the pattern matches.
-
-```boba
-match my_variable {
-  pattern_1 => expression_1,
-  pattern_2 => expression_2,
-  _ => default_expression // The wildcard `_` is the default case
-}
-```
-
-## Patterns
-
-`match` arms can use a variety of patterns:
-
--   **Literal Values**: Match against a specific value.
-    ```boba
-    match status_code {
-      200 => print("OK"),
-      404 => print("Not Found"),
-      _ => print("Some other status")
-    }
-    ```
--   **Variable Binding**: Bind the matched value to a new variable.
-    ```boba
-    match some_value {
-      s: string => print("It's a string of length {s.len()}"),
-      n: number => print("It's a number: {n}")
-    }
-    ```
--   **Guards**: Add a `where` clause to an arm for more complex conditions.
-    ```boba
-    match some_number {
-      x where x > 100 => print("It's a big number: {x}"),
-      x where x < 0 => print("It's a negative number: {x}"),
-      _ => print("It's a number between 0 and 100")
-    }
-    ```
--   **Wildcard**: The `_` pattern acts as a catch-all, matching any value that wasn't caught by the preceding arms. It is required for ensuring the `match` is exhaustive.
-
-## Exhaustiveness
-
-A `match` statement must be exhaustive, meaning that every possible value of the matched expression must be covered by one of the arms. The wildcard `_` is often used to satisfy this requirement.
-
-Operators are special symbols that perform operations on operands (values and variables). Boba supports a range of arithmetic, comparison, and logical operators.
-
-## Arithmetic Operators
-
-These operators perform mathematical calculations.
-
-| Operator | Description      | Example              |
-| :------- | :--------------- | :------------------- |
-| `+`      | Addition         | `5 + 2`  // 7         |
-| `-`      | Subtraction      | `5 - 2`  // 3         |
-| `*`      | Multiplication   | `5 * 2`  // 10        |
-| `/`      | Division         | `5 / 2`  // 2.5       |
-| `%`      | Modulo/Remainder | `5 % 2`  // 1         |
-| `^`      | Power            | `5 ^ 2`  // 25        |
-
-### Unary Arithmetic
-
-These operators modify a single numeric variable.
-
--   `++`: Increments the value by 1.
--   `--`: Decrements the value by 1.
-
-```boba
-var score = 10
-score++ // score is now 11
-```
-
-## Comparison and Relational Operators
-
-These operators compare two operands and return a `boolean` (`true` or `false`).
-
-| Operator | Description               |
-| :------- | :------------------------ |
-| `==`     | Equal to                  |
-| `!=`     | Not equal to              |
-| `<`      | Less than                 |
-| `>`      | Greater than              |
-| `<=`     | Less than or equal to     |
-| `>=`     | Greater than or equal to  |
-
-### Strict Boolean Evaluations
-
-In conditional contexts like `if` statements, Boba requires an actual `boolean` value. You cannot use non-boolean types as a shorthand for `true` or `false`.
-
--   **Wrong**: `if (score) { ... }` where `score` is a `number`.
--   **Correct**: `if (score != 0) { ... }` which produces a `boolean`.
-
-## Logical Operators
-
-These operators are used to combine `boolean` expressions.
-
--   `and`: Logical AND (returns `true` if both operands are `true`).
--   `or`: Logical OR (returns `true` if at least one operand is `true`).
--   `not`: Logical NOT (inverts a `boolean` value).
-
-## Equality `==` and `!=` Behavior
-
-The behavior of the equality operators depends on the type of the operands.
-
-| Type    | Behavior                                                                           | Example                                                                     |
-| :------ | :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
-| `number`  | Compares numerical values.                                                         | `5 == 5.0` is `true`                                                        |
-| `boolean` | Compares the boolean values.                                                       | `true == true` is `true`                                                    |
-| `string`  | Compares the contents of the strings character by character.                       | `"hello" == "hello"` is `true`                                              |
-| `list`    | **Compares by reference**. Two lists are equal only if they are the *same object*. | `var a = [1]; var b = [1]; a == b` is `false`. `var c = a; a == c` is `true`. |
-| `struct`  | **Compares by value**. Two structs are equal if all their corresponding fields are equal. | `var p1 = {x=1}; var p2 = {x=1}; p1 == p2` is `true`.                        |
-| `class`   | **Comares by reference**. Two class instances are equal only if they are the *same object*. | `var g1 = new G(); var g2 = new G(); g1 == g2` is `false`.                 |
-Boba supports the pipe operator `|>` for chaining function calls. The return of the initial call will be passed into the first parameter of the next function. Piping will call the object method first if it exists, then attempt to use a global method.
-
-```js
-var ingredients: string = ["flour", "sugar", "boba pearls"]
-
-ingredients[0] |> upper() |> print() // Outputs "FLOUR"
-Structures (or `structs`) are custom data types you can define to group together related variables into a logical unit. They are a way to create more complex, organized data.
-
-## Defining a Structure
-
-You define a structure using the `struct` keyword, followed by the name of the struct and a block of fields with their types.
-
-```boba
-// This defines a "Player" structure.
-struct Player = {
-  name: string,
-  score: number,
-  is_active: boolean
-}
-```
-
-## Creating an Instance
-
-Once a struct is defined, you can create instances (variables) of that type.
-
-```boba
-// Create a new variable "ada" of type "Player"
-var ada: Player = { name = "Ada", score = 100, is_active = true }
-
-// You can also let Boba infer the type
-var boba_player = { name = "Boba", score = 9001, is_active = true }
-```
-
-## Accessing and Modifying Fields
-
-You access the data within a struct instance using dot (`.`) notation.
-
-```boba
-print("Player's score: {ada.score}") // Outputs: Player's score: 100
-
-// Fields of a `var` instance can be modified
-ada.score = ada.score + 10
-print("New score: {ada.score}") // Outputs: New score: 110
-```
-
-## Structs vs. Classes
-
-Structs are similar to [Classes](./classes.mdx), but with a key difference:
-
--   **Structs (Value Types)**: When you assign a struct to a new variable or pass it to a function, a *copy* of the data is made. They are compared by their values.
--   **Classes (Reference Types)**: When you work with classes, you are working with a *reference* to the object. They are compared by their reference in memory.
-
-Choose a struct when you need a simple data container. Choose a class when you need more complex behavior, methods, and inheritance. 
 A type is a classification that tells the compiler or interpreter how a programmer intends to use a piece of data. Boba is a statically-typed language, meaning the type of every variable is known at compile time.
 
 ## Primitive Types
@@ -1362,140 +1251,7 @@ let has_permission = false // Type is inferred
 
 ## Composite Types
 
-Composite types, also known as aggregate types, are composed of primitive types and other composite types.
+Composite types, also known as aggregate types, are composed of primitive types and other composite types. These are covered in more detail in other documents:
 
-### `list`
-
-A `list` is an ordered, resizable collection of elements of a single type.
-
-For more details, see the [`list`](/docs/reference/lists/) reference.
-
-```boba
-var scores: number[] = [100, 95, 88]
-let names: string[] = ["Ada", "Grace", "Hedy"]
-```
-
-### `map`
-
-A `map` is an unordered collection of key-value pairs. All keys must be of the same type, and all values must be of the same type.
-
-For more details, see the [`map`](/docs/reference/maps/) reference.
-
-```boba
-var user_scores: [string:number] = {
-  "ada": 100,
-  "grace": 95
-}
-```
-
-### `struct`
-
-A `struct` (or structure) is a custom composite type that lets you group related variables of different types into a named collection.
-
-For more details, see the [`struct`](/docs/reference/structures/) reference.
-
-```boba
-// Definition
-struct Point {
-  x: number,
-  y: number,
-}
-
-// Usage
-var p1: Point = Point(x: 10, y: 20)
-```
-
-### `enum`
-
-An `enum` (or enumeration) allows you to define a custom type by enumerating its possible values.
-
-For more details, see the [`enum`](/docs/reference/enumerations/) reference.
-
-```boba
-// Definition
-enum Status {
-  Pending,
-  InProgress,
-  Completed,
-  Failed,
-}
-
-// Usage
-var current_status: Status = Status.InProgress
-```
-
-### `class`
-
-A `class` is a blueprint for creating objects. It bundles data (properties) and methods (functions) that operate on that data.
-
-For more details, see the [`class`](/docs/reference/classes/) reference.
-
-```boba
-// Definition
-class Player {
-  name: string
-  score: number = 0
-
-  pub fn new(name: string) {
-    self.name = name
-  }
-
-  pub fn increase_score(amount: number) {
-    self.score += amount
-  }
-}
-
-// Usage
-var player1 = Player("Zoe")
-player1.increase_score(10)
-```
-
-## Other Types
-
-### `function`
-
-Functions are also a type in Boba. This allows them to be passed as arguments to other functions or assigned to variables.
-
-For more details, see the [`function`](/docs/reference/functions/) reference.
-
-```boba
-fn add(a: number, b: number) -> number {
-  return a + b
-}
-
-// Assign a function to a variable
-var operation: fn(number, number) -> number = add
-
-// Use the variable to call the function
-var result = operation(5, 10) // result is 15
-```
-In Boba, you can declare variables using the `var` and `const` keywords.
-
-## `var`
-
-Use var to declare mutable variables. The type can be specified explicitly or inferred by the compiler from the value assigned at declaration.
-
-```boba
-var x: number = 2
-y, z: number = 3, 4 // y and z must be the same type
-
-// Types are inferenced at declaration
-var a = 5
-var name = "Boba"
-```
-
-## `const`
-
-Use `const` to declare immutable constants.
-
-```boba
-const A: number = 1
-struct Point = { x: number, y: number }
-const BEST_POINT: Point = { x = 10, y = 20 }
-var x: Point = { x = 15, y = 25 }
-
-A = 10 // COMPILE ERROR: Cannot assign to 'A' because it is a constant.
-BEST_POINT.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
-BEST_POINT = x // COMPILE ERROR: Cannot assign to 'BEST_POINT' because it is a constant.
-```
-
+-   [Lists and Maps](./collections.mdx)
+-   [Structs, Enums, and Classes](./declarations.mdx)

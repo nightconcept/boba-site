@@ -11,7 +11,7 @@ const bobaGrammar = JSON.parse(
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://boba-lang.vercel.app/',
   integrations: [
     starlight({
       title: 'Boba Lang',

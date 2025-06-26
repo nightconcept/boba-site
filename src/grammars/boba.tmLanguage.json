@@ -3,21 +3,54 @@
   "name": "Boba",
   "scopeName": "source.boba",
   "patterns": [
-    { "include": "#comments" },
-    { "include": "#strings" },
-    { "include": "#self-keyword" },
-    { "include": "#keywords" },
-    { "include": "#enums" },
-    { "include": "#entities" },
-    { "include": "#table-literals" },
-    { "include": "#constants" },
-    { "include": "#storage" },
-    { "include": "#variables" },
-    { "include": "#properties" },
-    { "include": "#operators" },
-    { "include": "#punctuation" },
-    { "include": "#numbers" },
-    { "include": "#function-calls" }
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#self-keyword"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#imports"
+    },
+    {
+      "include": "#enums"
+    },
+    {
+      "include": "#entities"
+    },
+    {
+      "include": "#table-literals"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#storage"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#properties"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#function-calls"
+    }
   ],
   "repository": {
     "comments": {
@@ -63,51 +96,91 @@
         {
           "begin": "\\b(fn|private fn|pub fn)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(\\()",
           "beginCaptures": {
-            "1": { "name": "storage.type.function" },
-            "2": { "name": "entity.name.function" },
-            "3": { "name": "punctuation.definition.parameters.begin" }
+            "1": {
+              "name": "storage.type.function"
+            },
+            "2": {
+              "name": "entity.name.function"
+            },
+            "3": {
+              "name": "punctuation.definition.parameters.begin"
+            }
           },
           "end": "(\\))",
           "endCaptures": {
-            "1": { "name": "punctuation.definition.parameters.end" }
+            "1": {
+              "name": "punctuation.definition.parameters.end"
+            }
           },
           "patterns": [
-            { "include": "#parameters" }
+            {
+              "include": "#parameters"
+            }
           ]
         },
         {
           "begin": "\\b(struct)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(=)?\\s*({)",
           "beginCaptures": {
-            "1": { "name": "storage.type" },
-            "2": { "name": "entity.name.class" },
-            "3": { "name": "keyword.operator.assignment" },
-            "4": { "name": "meta.brace.curly" }
+            "1": {
+              "name": "storage.type"
+            },
+            "2": {
+              "name": "entity.name.class"
+            },
+            "3": {
+              "name": "keyword.operator.assignment"
+            },
+            "4": {
+              "name": "meta.brace.curly"
+            }
           },
           "end": "(})",
           "endCaptures": {
-            "1": { "name": "meta.brace.curly" }
+            "1": {
+              "name": "meta.brace.curly"
+            }
           },
           "patterns": [
-            { "include": "#table-keys" },
-            { "include": "$self" }
+            {
+              "include": "#table-keys"
+            },
+            {
+              "include": "$self"
+            }
           ]
         },
         {
           "begin": "\\b(class)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\\s+(extends)\\s+([a-zA-Z_][a-zA-Z0-9_]*))?\\s*(=)?\\s*({)",
           "beginCaptures": {
-            "1": { "name": "storage.type.class" },
-            "2": { "name": "entity.name.class" },
-            "3": { "name": "storage.type" },
-            "4": { "name": "entity.other.inherited-class" },
-            "5": { "name": "keyword.operator.assignment" },
-            "6": { "name": "meta.brace.curly" }
+            "1": {
+              "name": "storage.type.class"
+            },
+            "2": {
+              "name": "entity.name.class"
+            },
+            "3": {
+              "name": "storage.type"
+            },
+            "4": {
+              "name": "entity.other.inherited-class"
+            },
+            "5": {
+              "name": "keyword.operator.assignment"
+            },
+            "6": {
+              "name": "meta.brace.curly"
+            }
           },
           "end": "(})",
           "endCaptures": {
-            "1": { "name": "meta.brace.curly" }
+            "1": {
+              "name": "meta.brace.curly"
+            }
           },
           "patterns": [
-            { "include": "$self" }
+            {
+              "include": "$self"
+            }
           ]
         }
       ]
@@ -115,29 +188,49 @@
     "table-literals": {
       "begin": "{",
       "end": "}",
-      "beginCaptures": { "0": { "name": "meta.brace.curly" } },
-      "endCaptures": { "0": { "name": "meta.brace.curly" } },
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.curly"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.curly"
+        }
+      },
       "patterns": [
-        { "include": "#table-keys" },
-        { "include": "$self" }
+        {
+          "include": "#table-keys"
+        },
+        {
+          "include": "$self"
+        }
       ]
     },
     "enums": {
       "begin": "\\b(enum)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*({)",
       "beginCaptures": {
-        "1": { "name": "storage.type" },
-        "2": { "name": "entity.name.type.enum" }
+        "1": {
+          "name": "storage.type"
+        },
+        "2": {
+          "name": "entity.name.type.enum"
+        }
       },
       "end": "(})",
       "endCaptures": {
-        "1": { "name": "meta.brace.curly" }
+        "1": {
+          "name": "meta.brace.curly"
+        }
       },
       "patterns": [
         {
           "name": "support.type.primitive",
           "match": "\\b([A-Z_][A-Z0-9_]*)\\b"
         },
-        { "include": "#punctuation" }
+        {
+          "include": "#punctuation"
+        }
       ]
     },
     "keywords": {
@@ -152,13 +245,21 @@
         }
       ]
     },
-    "storage":{
-        "patterns": [
-            {
-                "name": "storage.type",
-                "match": "\\b(var|const|fn|class|extends|private|pub|enum|struct|match|where)\\b"
-            }
-        ]
+    "imports": {
+      "patterns": [
+        {
+          "name": "storage.type",
+          "match": "\\b(import|from|as)\\b"
+        }
+      ]
+    },
+    "storage": {
+      "patterns": [
+        {
+          "name": "storage.type",
+          "match": "\\b(var|const|fn|class|extends|private|pub|enum|struct|match|where)\\b"
+        }
+      ]
     },
     "operators": {
       "patterns": [
@@ -206,10 +307,14 @@
       "begin": "(\\{)",
       "end": "(\\})",
       "beginCaptures": {
-        "1": { "name": "constant.language.boolean.true" }
+        "1": {
+          "name": "constant.language.boolean.true"
+        }
       },
       "endCaptures": {
-        "1": { "name": "constant.language.boolean.true" }
+        "1": {
+          "name": "constant.language.boolean.true"
+        }
       },
       "patterns": [
         {
@@ -244,12 +349,12 @@
           "match": ":"
         },
         {
-            "name": "punctuation.separator.comma",
-            "match": ","
+          "name": "punctuation.separator.comma",
+          "match": ","
         },
         {
-            "name": "punctuation.accessor",
-            "match": "\\."
+          "name": "punctuation.accessor",
+          "match": "\\."
         },
         {
           "name": "meta.brace.round",
@@ -274,12 +379,12 @@
       ]
     },
     "function-calls": {
-        "patterns": [
-            {
-                "match": "(?<!\\.)\\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\\()",
-                "name": "entity.name.function"
-            }
-        ]
+      "patterns": [
+        {
+          "match": "(?<!\\.)\\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\\()",
+          "name": "entity.name.function"
+        }
+      ]
     },
     "variables": {
       "patterns": [
@@ -339,8 +444,12 @@
           "name": "variable.parameter",
           "match": "([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*:)"
         },
-        { "include": "#constants" },
-        { "include": "#punctuation" }
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#punctuation"
+        }
       ]
     }
   }

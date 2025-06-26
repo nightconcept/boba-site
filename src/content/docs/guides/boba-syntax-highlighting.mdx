@@ -309,6 +309,51 @@ fn main() {
 }
 ```
 
+## Imports
+
+Imports allow you to use code from other files. Boba supports importing specific items, all items, and renaming imports.
+
+```boba
+// Importing specific items from a file
+import func1, func2 from "helpers.boba"
+
+// Importing all public items from a file
+import * from "utils.boba"
+
+// Importing an item with a new name
+import func1 as func3 from "helpers.boba"
+```
+
+### Python
+
+Python's import system is similar, using `from ... import ...`.
+
+```python
+# Importing specific items from a module
+from helpers import func1, func2
+
+# Importing all items from a module
+from utils import *
+
+# Importing an item with a new name
+from helpers import func1 as func3
+```
+
+### TypeScript
+
+TypeScript uses ES6 module syntax for imports.
+
+```typescript
+// Importing specific items from a file
+import { func1, func2 } from "./helpers";
+
+// Importing all items as a namespace
+import * as utils from "./utils";
+
+// Importing an item with a new name
+import { func1 as func3 } from "./helpers";
+```
+
 ## Advanced Features
 
 ```boba
