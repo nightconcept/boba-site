@@ -19,7 +19,7 @@ var quantity: number = 3
 var total = price * quantity // total is inferred as a number
 ```
 
-*Note: While Boba's `number` type is versatile, be mindful of standard floating-point precision limitations when working with very large integers (greater than 2^53).*
+Under the hood, Boba's `number` is an IEEE 754 double-precision floating-point number. This design choice prioritizes simplicity over the granular control offered by multiple integer and floating-point types found in languages like C or C#. However, it means that integer values above 2^53 (9,007,199,254,740,991) may begin to lose precision.
 
 ### `string`
 

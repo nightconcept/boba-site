@@ -343,7 +343,7 @@ var sum = add(5, 3) // sum will be 8
 
 ### Private Functions
 
-By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword.
+By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword. The `pub` keyword makes your functions available to other files, a concept we'll explore in the final chapter on Imports.
 
 ```boba
 // This function can only be called from this file.
@@ -494,6 +494,9 @@ struct Config = {
 }
 
 fn load_config() -> Result<Config, error> {
+    // (In this example, read_file and parse_json are assumed to be
+    // functions from Boba's standard library.)
+
     // `read_file` returns a `Result<string, error>`.
     // If it's an `Err`, `?` returns it from `load_config`.
     // If it's `Ok`, `?` gives us the string content.
@@ -591,12 +594,39 @@ class Enemy = {
 }
 ```
 
+The `self` keyword refers to the current instance of the class, allowing you to access its properties and methods.
+
 ## Creating an Instance of a Class
 
 You create an instance of a class using the `new` keyword.
 
 ```boba
 var enemy = new Enemy()
+```
+
+## Initializers
+
+Classes have a special `init` block that acts as a constructor. It's called when you create a new instance and is perfect for setting up the initial state of an object. You can even add parameters to it.
+
+```boba
+class Enemy = {
+  health: number
+
+  // This init block takes a parameter to set the starting health
+  init(start_health: number) {
+    self.health = start_health
+  }
+
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
+  }
+}
+
+// Create a regular enemy and a powerful boss
+var minion = new Enemy(100)
+var boss = new Enemy(500)
+
+print("Boss health: {boss.health}") // Prints "Boss health: 500"
 ```
 
 ## Accessing Properties and Methods
@@ -610,20 +640,63 @@ print("Enemy health: {enemy.health}") // Prints "Enemy health: 80"
 
 ## Inheritance
 
-Boba supports inheritance, which allows you to create a new class that inherits the properties and methods of an existing class. This is a great way to reuse code and create a hierarchy of related objects.
+Boba supports inheritance, which allows you to create a new class (a "child" or "subclass") that inherits the properties and methods of an existing class (a "parent" or "superclass").
+
+When a child class has its own `init` block, it **must** call the parent's initializer using `super()`. This ensures that the parent part of the object is properly set up before the child adds its own properties.
+
+Let's see it in action.
 
 ```boba
-class Goblin extends Enemy = {
-  gold: number = 12
+// --- The Parent Class ---
+class Enemy {
+  health: number
+  name: string
 
-  pub fn taunt() {
-    print("Heh heh heh! I have {self.health} health left!")
+  // The parent initializer requires a name to be provided.
+  init(name: string) {
+    self.health = 100
+    self.name = name
+    print("{self.name} (an Enemy) has been created.")
+  }
+
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
   }
 }
 
-var goblin = new Goblin()
-goblin.take_damage(10)
-goblin.taunt() // Prints "Heh heh heh! I have 90 health left!"
+
+// --- The Child Class ---
+class Goblin extends Enemy {
+  gold: number
+
+  // The Goblin's initializer takes the arguments it needs.
+  init(name: string, gold_pieces: number) {
+    // 1. Call the parent's init FIRST and pass the required 'name' up to it.
+    // This is mandatory.
+    super(name)
+
+    // 2. Now that the 'Enemy' part is initialized, we can initialize
+    //    the fields specific to the Goblin.
+    self.gold = gold_pieces
+    print("...and it's a Goblin with {self.gold} gold!")
+  }
+
+  pub fn taunt() {
+    // We can now safely use 'self.health' because super() was called.
+    print("{self.name} the Goblin taunts! Health: {self.health}, Gold: {self.gold}")
+  }
+}
+
+
+// --- Usage ---
+var weak_goblin = new Goblin("Gribbly", 12)
+// Output:
+// > Gribbly (an Enemy) has been created.
+// > ...and it's a Goblin with 12 gold!
+
+weak_goblin.taunt()
+// Output:
+// > Gribbly the Goblin taunts! Health: 100, Gold: 12
 ```
 
 Classes are a cornerstone of object-oriented programming. In the final chapter of this tutorial, we'll look at how to organize your code into multiple files using imports.
@@ -973,7 +1046,10 @@ class Enemy = {
 
 -   **Properties**: Variables that belong to a class instance (e.g., `health`, `mana`).
 -   **Methods**: Functions that belong to a class. Use `self` to access the current instance.
--   **`init` Block**: A special constructor method called when a new instance is created with `new`.
+-   **`init` Block**: A special initializer block that is called when a new instance is created with `new`.
+    -   It does **not** use the `fn` keyword.
+    -   It cannot have a return type and cannot use the `return` keyword.
+    -   It can be overloaded with different parameters, just like a function.
 
 ### Inheritance
 
@@ -995,10 +1071,16 @@ print(goblin_scout.gold)     // New property
 
 ### Structs vs. Classes
 
--   **Structs (Value Types)**: A copy of the data is made on assignment.
--   **Classes (Reference Types)**: A reference to the object is used on assignment.
+The primary difference between `struct` and `class` lies in how they are stored and passed around in your code. Choosing the right one is key to writing efficient and correct Boba programs.
 
-Choose a struct for simple data containers and a class for complex behavior with methods and inheritance.
+| Feature         | `struct`                                | `class`                                           |
+| --------------- | --------------------------------------- | ------------------------------------------------- |
+| **Kind**        | Value Type                              | Reference Type                                    |
+| **Assignment**  | Copies the instance's data              | Copies a reference to the same instance           |
+| **Behavior**    | Simple data aggregate                   | Can have methods and `init` blocks for complex logic |
+| **Inheritance** | Not supported                           | Supported (`extends`)                             |
+
+In general, prefer `struct` for simple data containers. Use `class` when you need to define objects with complex behavior, inheritance, or when you want to share a single instance across multiple parts of your program.
 
 Expressions are pieces of code that produce a value. They are the building blocks of statements. An expression can be as simple as a literal value or as complex as a combination of operators and function calls.
 

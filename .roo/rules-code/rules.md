@@ -14,7 +14,7 @@
 
 ALWAYS MUST review and use:
 
-- `Assigned Task File`: `project/epics/epic#.md` given in the prompt.
+- `Assigned Task File`: `project/epics/epic#.md` given in the prompt or if not given, `projects/TASKS.md`.
 - `Project PRD`: `project/PRD.md`
 - `Project Guidelines`: `project/guidelines.md` (Covers detailed Coding Standards, Testing Strategy, Error Handling, Security, and other specific project conventions)
 

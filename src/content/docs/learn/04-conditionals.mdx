@@ -52,7 +52,30 @@ if (hunger == "hungry" and thirst == "thirsty") {
 
 ## The `match` Statement
 
-Boba also provides a powerful `match` statement for more complex pattern matching. It's a clean way to handle multiple conditions on a single variable.
+Boba also provides a powerful `match` statement for checking a variable against a series of possible values. It's a clean way to handle multiple distinct cases.
+
+A `match` statement is often used with `enum` types.
+
+```boba
+enum TrafficLight {
+  RED,
+  YELLOW,
+  GREEN
+}
+
+var light = TrafficLight.RED
+
+match light {
+  TrafficLight.RED => print("Stop!"),
+  TrafficLight.YELLOW => print("Caution!"),
+  TrafficLight.GREEN => print("Go!"),
+  _ => print("Light is broken.") // `_` is a wildcard for any other case
+}
+```
+
+## Advanced Pattern Matching
+
+Boba's `match` statement can do much more than simple value checking. You can also match on types and use `where` clauses for complex conditions.
 
 ```boba
 var myVariable = 150
@@ -61,7 +84,7 @@ match myVariable {
   1 => print("It was one!"),
   x where x > 100 => print("It's a big number: {x}"),
   s: string => print("It's a string of length {s.len()}"),
-  _ => print("Default case") // `_` is a wildcard for any other case
+  _ => print("Default case")
 }
 ```
 

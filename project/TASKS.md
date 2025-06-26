@@ -111,3 +111,13 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 - [x] In the "Functions" chapter (`/learn`), link `pub` to the upcoming "Imports" chapter.
 - [x] In the "Error Handling" chapter (`/learn`), add context for `read_file` and `parse_json`, noting they are assumed to be from the standard library.
 - [x] In the "Classes" chapter (`/learn`), add an explicit explanation of the `self` keyword.
+### 5.4. Task: Add dedicated chapter for `struct` vs. `class`
+
+- [x] Create a new chapter in `/learn` titled "Choosing Your Type: Structs vs. Classes".
+- [x] Explain value vs. reference semantics with code examples.
+- [x] Include a note on stack vs. heap allocation.
+- [x] Provide clear guidance on when to use each type.
+### 5.5. Task: Simplify `match` statement example
+
+- [x] In the "Conditionals" chapter (`/learn`), simplify the introductory `match` example.
+- [x] Move the more complex `match` example to a new "Advanced Pattern Matching" section.
