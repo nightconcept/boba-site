@@ -1,0 +1,46 @@
+---
+title: Types
+---
+
+A type is a classification that tells the compiler or interpreter how a programmer intends to use a piece of data. Boba is a statically-typed language, meaning the type of every variable is known at compile time.
+
+## Primitive Types
+
+Primitive types are the most basic data types available in Boba.
+
+### `string`
+
+A `string` is a sequence of characters used to represent text.
+
+```boba
+var name: string = "Boba Fett"
+let constant_string = "Immutable" // Type is inferred
+```
+
+### `number`
+
+The `number` type represents a 64-bit floating-point number (double-precision). It's used for both integer and fractional values.
+
+```boba
+var price: number = 20.0
+var quantity = 3 // Type is inferred
+let pi: number = 3.14159
+```
+
+> **Note on Precision**: Boba's number type is suitable for a vast range of applications, but be aware of standard floating-point precision limitations when dealing with very large integers (greater than 2^53).
+
+### `boolean`
+
+A `boolean` represents one of two values: `true` or `false`. It's primarily used for conditional logic.
+
+```boba
+var is_active: boolean = true
+let has_permission = false // Type is inferred
+```
+
+## Composite Types
+
+Composite types, also known as aggregate types, are composed of primitive types and other composite types. These are covered in more detail in other documents:
+
+-   [Lists and Maps](./collections.mdx)
+-   [Structs, Enums, and Classes](./declarations.mdx)

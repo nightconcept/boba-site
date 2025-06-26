@@ -1,0 +1,109 @@
+---
+title: Statements
+---
+
+Statements are the instructions that a Boba program executes. They control the flow of the program, from making decisions to repeating actions.
+
+## Conditional Statements
+
+Conditional statements allow you to execute different blocks of code based on whether a certain condition is true or false.
+
+### `if`, `else if`, and `else`
+
+This structure is used for straightforward conditional logic.
+
+-   `if`: Executes a block of code if its condition is `true`.
+-   `else if`: If the preceding `if` (or `else if`) condition is `false`, this block is checked.
+-   `else`: If all preceding conditions are `false`, this block is executed.
+
+```boba
+var temperature = 20
+
+if (temperature > 30) {
+  print("It's a hot day!")
+} else if (temperature < 10) {
+  print("It's a cold day!")
+} else {
+  print("The weather is moderate.")
+}
+```
+
+### `match` Statement
+
+The `match` statement is a powerful tool for pattern matching that provides a more structured alternative to long `if-else if` chains.
+
+```boba
+match my_variable {
+  1 => print("It was one!"),
+  x where x > 100 => print("It's a big number: {x}"),
+  s: string => print("It's a string of length {s.len()}"),
+  _ => print("Default case") // `_` is a wildcard that matches any value
+}
+```
+
+A `match` statement must be exhaustive, meaning every possible value must be covered. The wildcard `_` is often used to satisfy this requirement.
+
+## Loop Statements
+
+Loops are control flow structures that allow you to execute a block of code repeatedly.
+
+### `for` loop
+
+The `for` loop is used to iterate a specific number of times.
+
+```boba
+// Iterates from 1 up to and including 5, incrementing by 1
+for i in 1 to 5 by 1 {
+  print("I am print {i}!")
+}
+```
+
+### `while` loop
+
+The `while` loop executes a block of code as long as a given condition remains `true`.
+
+```boba
+var j: number = 0
+while j < 10 {
+  j++
+  if j == 5 then break // The `break` keyword exits the loop
+}
+```
+
+### `foreach` loop
+
+The `foreach` loop is the idiomatic way to iterate over all elements in a collection.
+
+```boba
+var book: string[] = ["Chapter 1", "Chapter 2", "Chapter 3"]
+foreach page in book {
+  read(page)
+}
+```
+
+### `repeat` loop
+
+The `repeat` loop (or do-while) checks its condition *after* each iteration, guaranteeing the body executes at least once.
+
+```boba
+var k: number = 0
+repeat {
+  k++
+} until k == 10
+```
+
+## `defer` Statement
+
+The `defer` statement schedules a function call to be executed when the surrounding function scope is exited. This is crucial for guaranteeing cleanup tasks, like closing files.
+
+When a `defer` statement is encountered, the function call is put on a stack. When the function returns (either normally or through an error), the deferred calls are executed in Last-In, First-Out (LIFO) order.
+
+```boba
+pub fn get_file_size(path: string) -> Result<number, error> {
+    var file = fs.open(path)?
+    // This guarantees the file will be closed when the function exits.
+    defer file.close()
+
+    var contents = file.read_all()?
+    return Ok(contents.len())
+}

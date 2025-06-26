@@ -1,0 +1,93 @@
+---
+title: Collections
+---
+
+Collections are data structures that can hold multiple values. Boba provides two primary collection types: Lists and Maps.
+
+## Lists
+
+Lists are ordered, resizable collections of items of the same type. They are one of the most common ways to group data in Boba.
+
+### Creating a List
+
+You define a list by specifying the type of its elements followed by `[]`.
+
+```boba
+// A list of numbers
+var high_scores: number[] = [100, 95, 80]
+
+// A list of strings
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+
+// An empty list must have its type declared
+var empty_list: string[] = []
+```
+
+### Accessing and Modifying Elements
+
+You access elements in a list using zero-based indexing (the first element is at index 0).
+
+```boba
+print(ingredients[0]) // Outputs "flour"
+
+// You can change the value at a specific index
+ingredients[2] = "tapioca pearls"
+print(ingredients) // Outputs ["flour", "sugar", "tapioca pearls"]
+```
+
+### Multi-dimensional Lists
+
+Boba supports multi-dimensional lists (lists of lists), which can be used to create matrices or grids.
+
+```boba
+// A 2x3 matrix (2 rows, 3 columns)
+var matrix: number[][] = [
+  [1, 2, 3],
+  [4, 5, 6]
+]
+
+// Accessing an element
+var value: number = matrix[1][2] // value is 6
+```
+
+## Maps
+
+Maps are collections of key-value pairs. Each key in a map must be unique. They are useful for storing associated data, like a dictionary or a lookup table.
+
+### Creating a Map
+
+You can create a map using curly braces `{}` and specifying key-value pairs.
+
+#### Explicit Typing
+
+You can explicitly declare the types for the keys and values.
+
+```boba
+// A map with string keys and number values
+var scores: [string:number] = {
+  "ada": 100,
+  "grace": 95
+}
+```
+
+#### Type Inference
+
+Boba can also infer the types from the data you provide.
+
+```boba
+// Types are inferred as [string:string]
+var actions = {
+  "add": "added",
+  "subtract": "subtracted"
+}
+```
+
+### Accessing and Modifying Values
+
+You can access and modify values in a map using their keys.
+
+```boba
+print(scores["ada"]) // Outputs 100
+
+scores["grace"] = 98 // Updates the value for the key "grace"
+scores["boba"] = 105 // Adds a new key-value pair

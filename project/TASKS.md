@@ -53,3 +53,30 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 
 - [ ] Update the root `README.md` file to describe the website project itself, its purpose, and how to run it locally.
 - [ ] **Verification**: The `README.md` provides clear instructions for a new developer.
+
+
+## 4. Epic: Refactor Language Reference
+
+**Goal**: Reorganize the language reference documentation into a more logical, topic-based structure. This will improve discoverability and provide a clearer learning path.
+
+### 4.1. Task: Restructure reference documentation files
+
+- [x] Create the new directory structure under `src/content/docs/reference/`.
+- [x] Move and consolidate existing content from the old reference files into the new structure:
+    - `01-language/types.mdx`: Details on string, number, boolean.
+    - `01-language/collections.mdx`: Details on list, map.
+    - `01-language/statements.mdx`: Details on if, match, for, while, defer, etc.
+    - `01-language/declarations.mdx`: Details on fn, class, struct, enum, var, const.
+    - `01-language/expressions.mdx`: Details on operators, literals.
+    - `01-language/imports.mdx`: Details on the module system.
+- [x] Create placeholder files for the standard library section:
+    - `02-standard-library/io.mdx`
+    - `02-standard-library/fs.mdx`
+    - `02-standard-library/json.mdx`
+    - `02-standard-library/http.mdx`
+- [x] **Verification**: The new file structure is in place, and old content has been migrated. The site still builds and all links (if any) are updated.
+
+### 4.2. Task: Update sidebar navigation for new reference structure
+
+- [x] Modify `astro.config.mjs` to reflect the new, nested structure of the language reference in the sidebar.
+- [x] **Verification**: The sidebar navigation accurately represents the new file structure and all links work correctly.

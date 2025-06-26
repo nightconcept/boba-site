@@ -1,0 +1,70 @@
+---
+title: Expressions
+---
+
+Expressions are pieces of code that produce a value. They are the building blocks of statements. An expression can be as simple as a literal value or as complex as a combination of operators and function calls.
+
+## Literals
+
+Literals are fixed values that you write directly in your code.
+
+-   **Number Literals**: `10`, `3.14`, `-5.5`
+-   **String Literals**: `"hello"`, `'world'`
+-   **Boolean Literals**: `true`, `false`
+-   **Null Literal**: `null` (represents the absence of a value)
+-   **List Literals**: `[1, 2, 3]`
+-   **Map Literals**: `{"key": "value"}`
+
+```boba
+var is_active: boolean = true
+var user_data = null // Could be used before user data is loaded
+```
+
+## Operators
+
+Operators are special symbols that perform operations on operands (values and variables).
+
+### Arithmetic Operators
+
+| Operator | Description      | Example              |
+| :------- | :--------------- | :------------------- |
+| `+`      | Addition         | `5 + 2`  // 7         |
+| `-`      | Subtraction      | `5 - 2`  // 3         |
+| `*`      | Multiplication   | `5 * 2`  // 10        |
+| `/`      | Division         | `5 / 2`  // 2.5       |
+| `%`      | Modulo/Remainder | `5 % 2`  // 1         |
+| `^`      | Power            | `5 ^ 2`  // 25        |
+
+### Comparison and Relational Operators
+
+These operators compare two operands and return a `boolean` (`true` or `false`).
+
+| Operator | Description               |
+| :------- | :------------------------ |
+| `==`     | Equal to                  |
+| `!=`     | Not equal to              |
+| `<`      | Less than                 |
+| `>`      | Greater than              |
+| `<=`     | Less than or equal to     |
+| `>=`     | Greater than or equal to  |
+
+### Logical Operators
+
+These operators are used to combine `boolean` expressions.
+
+-   `and`: Logical AND (returns `true` if both operands are `true`).
+-   `or`: Logical OR (returns `true` if at least one operand is `true`).
+-   `not`: Logical NOT (inverts a `boolean` value).
+
+### Equality (`==` and `!=`) Behavior
+
+The behavior of equality operators depends on the type:
+
+| Type    | Behavior                                                                           |
+| :------ | :--------------------------------------------------------------------------------- |
+| `number`  | Compares numerical values.                                                         |
+| `boolean` | Compares the boolean values.                                                       |
+| `string`  | Compares the contents of the strings character by character.                       |
+| `list`    | **Compares by reference**. Two lists are equal only if they are the *same object*. |
+| `struct`  | **Compares by value**. Two structs are equal if all their corresponding fields are equal. |
+| `class`   | **Compares by reference**. Two class instances are equal only if they are the *same object*. |

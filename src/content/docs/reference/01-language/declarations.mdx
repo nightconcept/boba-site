@@ -1,0 +1,223 @@
+---
+title: Declarations
+---
+
+Declarations are how you introduce new names into your program, such as variables, constants, functions, and custom types.
+
+## Variables and Constants (`var` and `const`)
+
+In Boba, you can declare variables using the `var` and `const` keywords.
+
+### `var`
+
+Use `var` to declare mutable variables. The type can be specified explicitly or inferred by the compiler from the value assigned at declaration.
+
+```boba
+var x: number = 2
+y, z: number = 3, 4 // y and z must be the same type
+
+// Types are inferenced at declaration
+var a = 5
+var name = "Boba"
+```
+
+### `const`
+
+Use `const` to declare immutable constants. Once a value is assigned to a `const`, it cannot be changed.
+
+```boba
+const A: number = 1
+struct Point = { x: number, y: number }
+const BEST_POINT: Point = { x = 10, y = 20 }
+var x: Point = { x = 15, y = 25 }
+
+A = 10 // COMPILE ERROR: Cannot assign to 'A' because it is a constant.
+BEST_POINT.x = 30 // COMPILE ERROR: Cannot assign to 'x' because it is a constant.
+BEST_POINT = x // COMPILE ERROR: Cannot assign to 'BEST_POINT' because it is a constant.
+```
+
+## Functions (`fn`)
+
+Functions are reusable, named blocks of code that perform a specific task. They are a fundamental building block for organizing and structuring your programs.
+
+### Defining a Function
+
+Functions are defined using the `fn` keyword. You can specify argument types and a return type.
+
+```boba
+// A public function with no arguments and no return value
+pub fn my_function() -> void {
+  print("This is a function")
+}
+
+// A function with arguments and a return value
+pub fn add(a: number, b: number) -> number {
+  return a + b
+}
+
+// A private function (only accessible within the current file)
+fn my_private_function() -> void {
+  print("Don't tell anyone about this!")
+}
+```
+
+-   **Visibility**: Use `pub` to make a function public (callable from other files). Without `pub`, a function is private by default.
+-   **Return Type**: The `->` syntax specifies the type of the value the function will return. If a function doesn't return a value, use `void`.
+
+### Advanced Function Features
+
+#### Default Parameters
+
+You can assign a default value to a parameter, making it optional when the function is called.
+
+```boba
+// The `port` and `use_ssl` parameters are optional.
+pub fn connect(host: string, port: number = 5432, use_ssl: boolean = true) {
+  // ... connection logic ...
+}
+
+connect("example.com") // Uses default port and SSL settings
+connect("example.com", 8080) // Overrides the port
+```
+
+#### Overloading
+
+Boba allows you to define multiple functions with the same name but different parameter lists (either different types or a different number of parameters). The compiler will choose the correct function to call based on the arguments you provide.
+
+-   **Use Overloading for Different Semantics or Types**: Choose overloading when the function's core behavior changes based on the input types.
+-   **Use Default Arguments for Optional Configuration**: Use default arguments when the core behavior is the same, but you want to provide optional flags or parameters to tweak it.
+
+**Restriction**: An overload set cannot contain functions that only differ by parameters with default values, as it would create ambiguity.
+
+## Structures (`struct`)
+
+Structures (or `structs`) are custom data types you can define to group together related variables into a logical unit.
+
+### Defining a Structure
+
+You define a structure using the `struct` keyword, followed by the name of the struct and a block of fields with their types.
+
+```boba
+// This defines a "Player" structure.
+struct Player = {
+  name: string,
+  score: number,
+  is_active: boolean
+}
+```
+
+### Creating an Instance
+
+Once a struct is defined, you can create instances (variables) of that type.
+
+```boba
+// Create a new variable "ada" of type "Player"
+var ada: Player = { name = "Ada", score = 100, is_active = true }
+```
+
+### Accessing and Modifying Fields
+
+You access the data within a struct instance using dot (`.`) notation.
+
+```boba
+print("Player's score: {ada.score}") // Outputs: Player's score: 100
+ada.score = ada.score + 10
+print("New score: {ada.score}") // Outputs: New score: 110
+```
+
+## Enumerations (`enum`)
+
+Enumerations (or enums) allow you to define a custom type by listing its possible values, known as variants.
+
+### Defining a Simple Enum
+
+You define an enum with the `enum` keyword.
+
+```boba
+enum Direction {
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST
+}
+```
+
+### Using an Enum
+
+```boba
+var player_direction: Direction = Direction.NORTH
+
+if (player_direction == Direction.NORTH) {
+  print("You are heading north.")
+}
+```
+
+### Enums with Data (Associated Values)
+
+Boba enums can also hold additional data. Each variant can have different types and amounts of associated data.
+
+```boba
+enum Shape {
+  Circle(radius: number),
+  Rectangle(width: number, height: number)
+}
+
+var my_shape = Shape.Circle(radius = 10.5)
+var another_shape = Shape.Rectangle(width = 5, height = 10)
+```
+
+## Classes (`class`)
+
+Classes are blueprints for creating objects. They bundle data (properties) and functions that operate on that data (methods) into a single unit.
+
+### Defining a Class
+
+You define a class using the `class` keyword.
+
+```boba
+class Enemy = {
+  // Properties
+  health: number
+  mana: number
+
+  // Initializer - sets starting values
+  init() {
+    self.health = 100
+    self.mana = 50
+  }
+
+  // A public method
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
+  }
+}
+```
+
+-   **Properties**: Variables that belong to a class instance (e.g., `health`, `mana`).
+-   **Methods**: Functions that belong to a class. Use `self` to access the current instance.
+-   **`init` Block**: A special constructor method called when a new instance is created with `new`.
+
+### Inheritance
+
+Inheritance allows a class (subclass) to inherit from another class (superclass) using the `extends` keyword.
+
+```boba
+class Goblin extends Enemy = {
+  gold: number = 12
+
+  pub fn taunt() {
+    print("Heh heh! I have {self.health} health left!")
+  }
+}
+
+var goblin_scout = new Goblin()
+goblin_scout.take_damage(20) // Inherited method
+print(goblin_scout.gold)     // New property
+```
+
+### Structs vs. Classes
+
+-   **Structs (Value Types)**: A copy of the data is made on assignment.
+-   **Classes (Reference Types)**: A reference to the object is used on assignment.
+
+Choose a struct for simple data containers and a class for complex behavior with methods and inheritance.
