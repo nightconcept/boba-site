@@ -23,16 +23,101 @@ var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 var empty_list: string[] = []
 ```
 
-### Accessing and Modifying Elements
+### Common List Operations
 
-You access elements in a list using zero-based indexing (the first element is at index 0).
+Lists in Boba come with a set of built-in methods for common operations like getting the length, adding, and removing elements.
+
+#### Getting the Length: `len()`
+
+The `len()` method returns the number of elements currently in the list.
+
+**Method:** `len() -> number`
 
 ```boba
-print(ingredients[0]) // Outputs "flour"
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+print(ingredients.len()) // Outputs: 3
 
-// You can change the value at a specific index
-ingredients[2] = "tapioca pearls"
-print(ingredients) // Outputs ["flour", "sugar", "tapioca pearls"]
+var empty_list: number[] = []
+print(empty_list.len()) // Outputs: 0
+```
+
+#### Adding an Element: `push()` and `insert()`
+
+You can add elements to the end of a list or at a specific index.
+
+**Adding to the end (most common):** `push(item: T) -> void`
+
+This method is the most efficient way to add an element, modifying the list in-place.
+
+```boba
+var high_scores: number[] = [100, 95]
+high_scores.push(88)
+// high_scores is now [100, 95, 88]
+```
+
+**Inserting at an index:** `insert(index: number, item: T) -> void`
+
+This method inserts an element at a specific position, shifting subsequent elements. This operation is slower (O(n)) than `push`. The program will panic or throw a runtime error if the index is out of bounds.
+
+```boba
+var ingredients = ["flour", "boba pearls"]
+ingredients.insert(1, "sugar")
+// ingredients is now ["flour", "sugar", "boba pearls"]
+```
+
+#### Removing an Element: `pop()`, `remove_at()`
+
+Boba provides safe methods for removing elements that use the `Option<T>` type to prevent crashes from invalid indices.
+
+**Removing from the end (fastest):** `pop() -> Option<T>`
+
+This method removes and returns the last element. If the list is empty, it returns `None`.
+
+```boba
+var tasks = ["write code", "test code", "document code"]
+var last_task = tasks.pop() // last_task is Some("document code")
+print(tasks) // Outputs: ["write code", "test code"]
+
+var empty_list: string[] = []
+var nothing = empty_list.pop() // nothing is None
+```
+
+**Removing from a specific index:** `remove_at(index: number) -> Option<T>`
+
+This method removes and returns the element at a given index. If the index is out of bounds, it returns `None`.
+
+```boba
+var ingredients = ["flour", "sugar", "boba pearls"]
+var removed_item = ingredients.remove_at(1) // removed_item is Some("sugar")
+print(ingredients) // Outputs: ["flour", "boba pearls"]
+
+var not_found = ingredients.remove_at(99) // not_found is None
+```
+
+### Accessing Elements Safely
+
+Boba provides two ways to access elements, balancing convenience and safety.
+
+#### Unsafe Access: `[]`
+
+The subscript operator `my_list[i]` is convenient for direct access. However, it will **panic or throw a trappable runtime error** if the index is out of bounds. Use this when you are certain the index is valid.
+
+```boba
+var ingredients = ["flour", "sugar"]
+print(ingredients[0]) // "flour"
+// print(ingredients[5]) // This would cause a runtime error
+```
+
+#### Safe Access: `get()`
+
+The `get()` method provides a safe way to access an element, returning an `Option<T>`. This is the recommended approach when an index might be invalid.
+
+**Method:** `get(index: number) -> Option<T>`
+
+```boba
+var ingredients = ["flour", "sugar"]
+var item = ingredients.get(1) // item is Some("sugar")
+var no_item = ingredients.get(5) // no_item is None
 ```
 
 ### Multi-dimensional Lists
@@ -82,12 +167,93 @@ var actions = {
 }
 ```
 
-### Accessing and Modifying Values
+### Common Map Operations
 
-You can access and modify values in a map using their keys.
+Maps also have a set of built-in methods for common operations.
+
+#### Getting the Size: `len()`
+
+For consistency with Lists, Maps use the `len()` method to get the number of key-value pairs.
+
+**Method:** `len() -> number`
 
 ```boba
-print(scores["ada"]) // Outputs 100
+var scores: [string:number] = {
+  "ada": 100,
+  "grace": 95
+}
+print(scores.len()) // Outputs: 2
 
-scores["grace"] = 98 // Updates the value for the key "grace"
-scores["boba"] = 105 // Adds a new key-value pair
+var empty_map: [string:string] = {}
+print(empty_map.len()) // Outputs: 0
+```
+
+#### Checking for a Key: `contains_key()`
+
+To check if a map contains a specific key, use the `contains_key()` method.
+
+**Method:** `contains_key(key: K) -> boolean`
+
+```boba
+var scores = {"ada": 100, "grace": 95}
+
+if (scores.contains_key("ada")) {
+  print("Ada's score is present.") // This will run
+}
+
+if (not scores.contains_key("boba")) {
+  print("Boba's score is not present.") // This will run
+}
+```
+
+### Accessing Values Safely
+
+Accessing a key that doesn't exist can be a source of errors. Boba's design handles this safely by returning an `Option<V>`.
+
+The subscript operator `map[key]` returns:
+- `Some(value)` if the key exists.
+- `None` if the key does not exist.
+
+This design forces you to handle the "not found" case, preventing runtime errors.
+
+```boba
+var scores = {"ada": 100, "grace": 95}
+
+// The type of score_option is Option<number>
+var score_option = scores["grace"]
+
+match score_option {
+  Some(score) => print("Grace's score is {score}."), // Prints "Grace's score is 95."
+  None => print("Grace is not in the score list.")
+}
+
+// Now check for a key that doesn't exist
+var boba_score_option = scores["boba"] // This is perfectly safe
+
+match boba_score_option {
+  Some(score) => print("Boba's score is {score}."),
+  None => print("Boba is not in the score list.") // This branch will run
+}
+```
+
+#### Removing a Key-Value Pair: `remove()`
+
+To remove a key-value pair, use the `remove()` method. It returns an `Option<V>`, giving you the value that was removed, or `None` if the key was not found.
+
+**Method:** `remove(key: K) -> Option<V>`
+
+```boba
+var scores = {"ada": 100, "grace": 95}
+
+// Remove an existing key
+var removed_ada_score = scores.remove("ada") // removed_ada_score is Some(100)
+print(scores.len()) // Outputs: 1
+
+// Try to remove a key that isn't there
+var removed_boba_score = scores.remove("boba") // removed_boba_score is None
+
+match removed_boba_score {
+  Some(score) => print("Removed Boba's score of {score}."),
+  None => print("Could not remove Boba's score because it wasn't there.") // This runs
+}
+```

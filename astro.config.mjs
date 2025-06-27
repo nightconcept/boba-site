@@ -42,55 +42,57 @@ export default defineConfig({
             {
               label: 'Module 1: The Absolute Basics',
               items: [
-                { label: '1. Variables & Constants', link: '/learn/01-variables-and-constants' },
-                { label: '2. Data Types', link: '/learn/02-data-types' },
-                { label: '3. Operators', link: '/learn/03-operators' },
+                { label: '1. Your First Program', link: '/learn/01-your-first-program' },
+                { label: '2. Variables & Constants', link: '/learn/02-variables-and-constants' },
+                { label: '3. Data Types', link: '/learn/03-data-types' },
+                { label: '4. Operators', link: '/learn/04-operators' },
               ],
             },
             {
               label: 'Module 2: Control Flow',
               items: [
-                { label: '4. Conditional Logic: if/else', link: '/learn/04-conditional-logic' },
-                { label: '5. Looping', link: '/learn/05-loops' },
+                { label: '5. Conditional Logic: if/else', link: '/learn/05-conditional-logic' },
+                { label: '6. Looping', link: '/learn/06-loops' },
               ],
             },
             {
               label: 'Module 3: Custom Data & Matching',
               items: [
-                { label: '6. Enums', link: '/learn/06-enums' },
-                { label: "7. Matching", link: '/learn/07-match' },
+                { label: '7. Enums', link: '/learn/07-enums' },
+                { label: "8. Matching", link: '/learn/08-match' },
               ],
             },
             {
               label: 'Module 4: Building Blocks',
               items: [
-                { label: '8. Functions', link: '/learn/08-functions' },
-                { label: '9. Structs', link: '/learn/09-structs' },
+                { label: '9. Functions', link: '/learn/09-functions' },
+                { label: '10. Structs', link: '/learn/10-structs' },
               ],
             },
             {
               label: 'Module 5: Writing Robust Boba',
               items: [
-                { label: '10. Safe Absence', link: '/learn/10-safe-absence' },
-                { label: '11. Handling Errors', link: '/learn/11-handling-errors' },
-                { label: '12. Guaranteed Cleanup', link: '/learn/12-defer' },
+                { label: '11. Safe Absence', link: '/learn/11-safe-absence' },
+                { label: '12. Handling Errors', link: '/learn/12-handling-errors' },
+                { label: '13. Guaranteed Cleanup', link: '/learn/13-defer' },
               ],
             },
             {
               label: 'Module 6: Object-Oriented Programming',
               items: [
-                { label: '13. Classes & Inheritance', link: '/learn/13-classes' },
-                { label: '14. Structs vs. Classes: The Key Difference', link: '/learn/14-structs-vs-classes' },
+                { label: '14. Classes & Inheritance', link: '/learn/14-classes' },
+                { label: '15. Structs vs. Classes: The Key Difference', link: '/learn/15-structs-vs-classes' },
               ],
             },
             {
               label: 'Module 7: Project Organization',
-              items: [
-                { label: '15. Imports', link: '/learn/15-imports' },
-                { label: '16. Projects', link: '/learn/16-projects' },
-              ],
+              items: [{ label: '16. Imports', link: '/learn/16-imports' }],
             },
           ],
+        },
+        {
+          label: 'Boba Tools',
+          items: [{ label: 'Boba CLI', link: '/tools/boba-cli' }],
         },
         {
           label: 'Reference',

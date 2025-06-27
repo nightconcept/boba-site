@@ -1,9 +1,8 @@
 ---
-title: "14. Structs vs. Classes: The Key Difference"
+title: "Structs vs. Classes: The Key Difference"
 description: "Understand the crucial difference between value types (structs) and reference types (classes) to make the right choice in your code."
 ---
 
-import { Aside } from '@astrojs/starlight/components';
 
 In Boba Lang, both `structs` and `classes` allow you to create custom data structures, but they have one fundamental difference that impacts how you use them: the way they are handled when assigned or passed to functions. Understanding this distinction is crucial for writing correct and efficient code.
 
@@ -32,8 +31,8 @@ var p2 = p1 // p2 is a NEW copy of p1
 // Modify the copy
 p2.x = 20
 
-print("p1.x is still \{p1.x}") // Output: p1.x is still 10
-print("p2.x is now \{p2.x}")   // Output: p2.x is now 20
+print("p1.x is still {p1.x}") // Output: p1.x is still 10
+print("p2.x is now {p2.x}")   // Output: p2.x is now 20
 ```
 
 ### Classes: References on Assignment
@@ -43,7 +42,11 @@ Now, consider an `Enemy` class. When we assign `e1` to `e2`, both variables poin
 ```boba
 // Class (Reference Type)
 class Enemy {
-    var health = 100
+    var health: number
+
+    init(start_health: number = 100) {
+        self.health = start_health
+    }
 
     fn take_damage(amount: number) {
         self.health = self.health - amount
@@ -56,18 +59,11 @@ var e2 = e1 // e2 is a REFERENCE to the SAME object as e1
 // Modify the single object via the second reference
 e2.take_damage(20)
 
-print("e1.health is now \{e1.health}") // Output: e1.health is now 80
-print("e2.health is now \{e2.health}") // Output: e2.health is now 80
+print("e1.health is now {e1.health}") // Output: e1.health is now 80
+print("e2.health is now {e2.health}") // Output: e2.health is now 80
 ```
 
-<Aside type="note">
-**Stack vs. Heap: A Deeper Look**
-
-For those with a background in systems programming (like C or C++), you can think of this in terms of memory allocation.
-
--   **Value types** like `structs` are typically stored on the **stack**. The stack is a simple, efficient region of memory for fixed-size data. When you assign a struct, its data is copied directly on the stack.
--   **Reference types** like `classes` are stored on the **heap**. The heap is a more flexible (but slightly slower) region of memory for dynamically sized or long-lived data. The object itself lives on the heap, and what you pass around is just a small, fixed-size pointer to that memory location.
-</Aside>
+Notice the `init` block in the `Enemy` class, which acts as a constructor, contrasts with the direct literal initialization used for the `Point` struct. This highlights another common difference between reference and value types in Boba.
 
 ## When to Use Which?
 

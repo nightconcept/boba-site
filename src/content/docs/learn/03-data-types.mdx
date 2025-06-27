@@ -1,7 +1,8 @@
 ---
-title: "2. Data Types"
+title: "Data Types"
 description: "Explore the fundamental data types in Boba for handling numbers, text, and true/false values."
 ---
+
 import { Aside } from '@astrojs/starlight/components';
 
 In the last chapter, you learned how to create variables and constants. Now, let's explore the fundamental data types you'll use to store different kinds of information in Boba.
@@ -16,7 +17,7 @@ The `number` type is used to represent 64-bit floating-point numbers. This is su
 
 ```boba
 var price: number = 19.99
-var quantity: number = 3
+var quantity = 3
 var total = price * quantity // total is inferred as a number
 ```
 
@@ -58,16 +59,40 @@ var highScores: number[] = [100, 95, 80]
 var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 ```
 
+You can perform many operations on lists, like getting their size or adding new items.
+
+```boba
+print(ingredients.len()) // Outputs: 3
+
+// Add a new item to the end
+ingredients.push("tapioca pearls")
+print(ingredients.len()) // Outputs: 4
+
+// Access items by their index (starting from 0)
+print(ingredients[0]) // Outputs: "flour"
+```
+
 ### `map`
 
 A `map` is a collection of key-value pairs. Each key must be unique, and all keys must be of the same type, as must all values.
 
 ```boba
-// A map with string keys and number values
+// Create a map with string keys and number values
 var scores: [string:number] = {
   "ada": 100,
   "grace": 95
 }
+
+// Check its initial size
+print(scores.len()) // Outputs: 2
+
+// Insert a new key-value pair
+scores["boba"] = 105
+
+// Check the new size
+print(scores.len()) // Outputs: 3
 ```
+
+Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter.
 
 In the next chapter, we'll look at how to use these types with operators to perform calculations and make comparisons.

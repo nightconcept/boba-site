@@ -1,5 +1,5 @@
 ---
-title: "11. Handling Errors"
+title: "Handling Errors"
 description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
@@ -39,8 +39,8 @@ struct Config = {
 }
 
 fn load_config() -> Result<Config, error> {
-    // (In this example, read_file and parse_json are assumed to be
-    // functions from Boba's standard library.)
+    // To demonstrate this, we'll use Boba's built-in `read_file` and `parse_json`
+    // functions, which are designed to return a `Result`.
 
     // `read_file` returns a `Result<string, error>`.
     // If it's an `Err`, `?` returns it from `load_config`.

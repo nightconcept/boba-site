@@ -1,5 +1,5 @@
 ---
-title: "5. Loops"
+title: "Loops"
 description: "Learn how to repeat actions in Boba using `for`, `while`, `foreach`, and `repeat` loops."
 ---
 
@@ -7,11 +7,16 @@ Loops are used to execute a block of code multiple times. Boba provides several 
 
 ## The `for` Loop
 
-The `for` loop is ideal when you want to repeat a block of code a specific number of times.
+The `for` loop is ideal when you want to repeat a block of code a specific number of times. The `by 1` step is the default and can be omitted for simplicity.
 
 ```boba
 // This loop will print numbers from 1 to 5
-for i in 1 to 5 by 1 {
+for i in 1 to 5 {
+  print("I am print {i}!")
+}
+
+// This loop will print numbers from 1 to 5, counting by 2
+for i in 1 to 5 by 2 {
   print("I am print {i}!")
 }
 ```
@@ -77,7 +82,7 @@ The `continue` statement skips the current iteration of a loop and moves to the 
 
 ```boba
 // Let's print only the odd numbers from 1 to 10
-for i in 1 to 10 by 1 {
+for i in 1 to 10 {
   // If the number is even, skip to the next iteration.
   if (i % 2 == 0) {
     continue

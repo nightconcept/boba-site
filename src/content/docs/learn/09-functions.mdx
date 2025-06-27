@@ -1,5 +1,5 @@
 ---
-title: "8. Functions"
+title: "Functions"
 description: "Learn how to create reusable blocks of code in Boba with functions."
 ---
 
@@ -60,12 +60,21 @@ connect("myhost.com")
 
 ## The Pipe Operator `|>`
 
-Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of one function is passed as the first argument to the next function.
+Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of the expression on the left is passed as the first argument to the function call on the right.
 
 ```boba
-var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+fn add_one(n: number) -> number {
+  return n + 1
+}
 
-ingredients[0] |> upper() |> print() // Outputs "FLOUR"
+fn square(n: number) -> number {
+  return n * n
+}
+
+// The following is equivalent to square(add_one(5))
+var result = 5 |> add_one() |> square()
+
+print(result) // Outputs: 36
 ```
 
 Functions are the building blocks of any Boba program. In the next chapter, we'll explore how to group related data together using structs.
