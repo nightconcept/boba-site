@@ -1,0 +1,38 @@
+---
+title: Structs
+---
+
+Structures (or `structs`) are custom data types you can define to group together related variables into a logical unit. They are a fundamental way to model the data in your application.
+
+Structs are *value types*. When you assign a struct to a new variable or pass it to a function, the entire struct is *copied*. This means that modifications to the copy will not affect the original.
+
+## Defining a Structure
+
+You define a structure using the `struct` keyword, followed by the name of the struct and a block of fields with their types.
+
+```boba
+// This defines a "Player" structure.
+struct Player = {
+  name: string,
+  score: number,
+  is_active: boolean
+}
+```
+
+## Creating an Instance
+
+Once a struct is defined, you can create instances (variables) of that type.
+
+```boba
+// Create a new variable "ada" of type "Player"
+var ada: Player = { name = "Ada", score = 100, is_active = true }
+```
+
+## Accessing and Modifying Fields
+
+You access the data within a struct instance using dot (`.`) notation.
+
+```boba
+print("Player's score: {ada.score}") // Outputs: Player's score: 100
+ada.score = ada.score + 10
+print("New score: {ada.score}") // Outputs: New score: 110

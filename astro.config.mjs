@@ -34,7 +34,6 @@ export default defineConfig({
           items: [
             // Each item here is one entry in the navigation menu.
             { label: 'Get Started', slug: 'guides/get-started' },
-            { label: 'Boba Syntax Highlighting', slug: 'guides/boba-syntax-highlighting' },
           ],
         },
         {
@@ -86,7 +85,10 @@ export default defineConfig({
             },
             {
               label: 'Module 7: Project Organization',
-              items: [{ label: '15. Imports', link: '/learn/15-imports' }],
+              items: [
+                { label: '15. Imports', link: '/learn/15-imports' },
+                { label: '16. Projects', link: '/learn/16-projects' },
+              ],
             },
           ],
         },

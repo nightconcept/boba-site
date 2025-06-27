@@ -1,0 +1,54 @@
+---
+title: Classes
+---
+
+Classes are blueprints for creating objects. They bundle data (properties) and functions that operate on that data (methods) into a single unit.
+
+Classes are *reference types*. When you assign a class instance to a new variable, you are not creating a copy. Instead, you are creating a *reference* (or a pointer) to the exact same object in memory. Modifying the object through one reference will be reflected when accessing it through another.
+
+## Defining a Class
+
+You define a class using the `class` keyword.
+
+```boba
+class Enemy = {
+  // Properties
+  health: number
+  mana: number
+
+  // Initializer - sets starting values
+  init() {
+    self.health = 100
+    self.mana = 50
+  }
+
+  // A public method
+  pub fn take_damage(amount: number) -> void {
+    self.health = self.health - amount
+  }
+}
+```
+
+-   **Properties**: Variables that belong to a class instance (e.g., `health`, `mana`).
+-   **Methods**: Functions that belong to a class. Use `self` to access the current instance.
+-   **`init` Block**: A special initializer block that is called when a new instance is created with `new`.
+    -   It does **not** use the `fn` keyword.
+    -   It cannot have a return type and cannot use the `return` keyword.
+    -   It can be overloaded with different parameters, just like a function.
+
+## Inheritance
+
+Inheritance allows a class (subclass) to inherit from another class (superclass) using the `extends` keyword.
+
+```boba
+class Goblin extends Enemy = {
+  gold: number = 12
+
+  pub fn taunt() {
+    print("Heh heh! I have {self.health} health left!")
+  }
+}
+
+var goblin_scout = new Goblin()
+goblin_scout.take_damage(20) // Inherited method
+print(goblin_scout.gold)     // New property

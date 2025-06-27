@@ -17,7 +17,7 @@ Literals are fixed values that you write directly in your code.
 
 ```boba
 var is_active: boolean = true
-var user_data: Option<string> = None // Represents an optional value
+var user_data: Option<string> = None
 ```
 
 ## Operators
@@ -68,3 +68,24 @@ The behavior of equality operators depends on the type:
 | `list`    | **Compares by reference**. Two lists are equal only if they are the *same object*. |
 | `struct`  | **Compares by value**. Two structs are equal if all their corresponding fields are equal. |
 | `class`   | **Compares by reference**. Two class instances are equal only if they are the *same object*. |
+## Operator Precedence
+
+The following table lists all operators in order of precedence from highest to lowest.
+
+| Precedence | Operator                               | Description                      | Associativity   |
+| :--------- | :------------------------------------- | :------------------------------- | :-------------- |
+| 1          | `()`                                   | Function Call / Grouping         | N/A             |
+|            | `.`                                    | Member Access                    | Left-to-right   |
+|            | `[]`                                   | List/Map Access                  | Left-to-right   |
+| 2          | `not`                                  | Logical NOT                      | Right-to-left   |
+|            | `-`                                    | Unary Negation                   | Right-to-left   |
+|            | `++`, `--`                             | Increment/Decrement              | Right-to-left   |
+| 3          | `^`                                    | Power                            | Right-to-left   |
+| 4          | `*`, `/`, `%`                          | Multiplication, Division, Modulo | Left-to-right   |
+| 5          | `+`, `-`                               | Addition, Subtraction            | Left-to-right   |
+| 6          | `&lt;`, `&lt;=`, `&gt;`, `&gt;=`        | Relational                       | Non-associative |
+| 7          | `==`, `!=`                             | Equality                         | Non-associative |
+| 8          | `and`                                  | Logical AND                      | Left-to-right   |
+| 9          | `or`                                   | Logical OR                       | Left-to-right   |
+| 10         | `&#124;&gt;`                           | Pipe                             | Left-to-right   |
+| 11         | `?`                                    | Error Propagation                | Right-to-left   |

@@ -1,0 +1,44 @@
+---
+title: Enums
+---
+
+Enumerations (or enums) allow you to define a custom type by listing its possible values, known as variants. They are useful for creating types that can only hold a specific set of values, making your code more robust and expressive.
+
+## Defining a Simple Enum
+
+You define an enum with the `enum` keyword.
+
+```boba
+enum Direction {
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST
+}
+```
+
+## Using an Enum
+
+```boba
+var player_direction: Direction = Direction.NORTH
+
+if (player_direction == Direction.NORTH) {
+  print("You are heading north.")
+}
+```
+
+## Enums with Data (Associated Values)
+
+Boba enums can also hold additional data. Each variant can have different types and amounts of associated data. This makes them incredibly powerful for modeling complex states.
+
+```boba
+enum Shape {
+  Circle(radius: number),
+  Rectangle(width: number, height: number)
+}
+
+var my_shape = Shape.Circle(radius = 10.5)
+var another_shape = Shape.Rectangle(width = 5, height = 10)
+```
+
+When combined with the `match` statement, enums with associated values allow for elegant and type-safe handling of different cases.

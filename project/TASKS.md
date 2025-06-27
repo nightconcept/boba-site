@@ -162,6 +162,7 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 - [ ] **Module 7: Project Organization**
     - [ ] Rename `14-imports.mdx` to `15-imports.mdx`.
 - [ ] **Verification**: All files are renamed and created as specified.
+    - [x] Create `16-projects.mdx`.
 
 ### 6.2. Task: Update content and links
 
