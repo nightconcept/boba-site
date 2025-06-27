@@ -11,13 +11,13 @@ Literals are fixed values that you write directly in your code.
 -   **Number Literals**: `10`, `3.14`, `-5.5`
 -   **String Literals**: `"hello"`, `'world'`
 -   **Boolean Literals**: `true`, `false`
--   **Null Literal**: `null` (represents the absence of a value)
+-   **Option Literals**: `Some(value)` or `None` (represents an optional value)
 -   **List Literals**: `[1, 2, 3]`
 -   **Map Literals**: `{"key": "value"}`
 
 ```boba
 var is_active: boolean = true
-var user_data = null // Could be used before user data is loaded
+var user_data: Option<string> = None // Represents an optional value
 ```
 
 ## Operators

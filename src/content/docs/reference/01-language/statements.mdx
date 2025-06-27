@@ -118,6 +118,24 @@ The `defer` statement schedules a function call to be executed when the surround
 
 When a `defer` statement is encountered, the function call is put on a stack. When the function returns (either normally or through an error), the deferred calls are executed in Last-In, First-Out (LIFO) order.
 
+This LIFO behavior can be demonstrated with the following example:
+
+```boba
+fn lifo_example() {
+    print("Function Start")
+    defer print("Cleanup 1: Runs Third")
+    defer print("Cleanup 2: Runs Second")
+    defer print("Cleanup 3: Runs First")
+    print("Function End")
+}
+// Calling lifo_example() would print:
+// > Function Start
+// > Function End
+// > Cleanup 3: Runs First
+// > Cleanup 2: Runs Second
+// > Cleanup 1: Runs Third
+```
+
 ```boba
 pub fn get_file_size(path: string) -> Result<number, error> {
     var file = fs.open(path)?

@@ -14,7 +14,7 @@ A `string` is a sequence of characters used to represent text.
 
 ```boba
 var name: string = "Boba Fett"
-let constant_string = "Immutable" // Type is inferred
+var constant_string = "Immutable" // Type is inferred
 ```
 
 ### `number`
@@ -24,7 +24,7 @@ The `number` type represents a 64-bit floating-point number (double-precision). 
 ```boba
 var price: number = 20.0
 var quantity = 3 // Type is inferred
-let pi: number = 3.14159
+variable pi: number = 3.14159
 ```
 
 > **Note on Precision**: Boba's number type is suitable for a vast range of applications, but be aware of standard floating-point precision limitations when dealing with very large integers (greater than 2^53).
@@ -35,12 +35,57 @@ A `boolean` represents one of two values: `true` or `false`. It's primarily used
 
 ```boba
 var is_active: boolean = true
-let has_permission = false // Type is inferred
+var has_permission = false // Type is inferred
 ```
 
-## Composite Types
+## Core Data Structures
 
-Composite types, also known as aggregate types, are composed of primitive types and other composite types. These are covered in more detail in other documents:
+Boba includes several fundamental composite types for structuring data. For more complex user-defined types, see [Structs, Enums, and Classes](./declarations.mdx).
 
--   [Lists and Maps](./collections.mdx)
--   [Structs, Enums, and Classes](./declarations.mdx)
+### List
+
+A `list` is an ordered, dynamic collection of values of the same type, written as `T[]` where `T` is the element type. Lists are used for managing sequences of data where the order matters and the number of items may change. For more details, see the [Collections](./collections.mdx) page.
+
+```boba
+var highScores: number[] = [100, 95, 80]
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+```
+
+### Map
+
+A `map` is a collection of key-value pairs, written as `[K:V]` where `K` is the key type and `V` is the value type. Each key must be unique. Maps are ideal for associating data, such as storing properties or creating dictionaries. For more details, see the [Collections](./collections.mdx) page.
+
+```boba
+var scores: [string:number] = { "ada": 100, "grace": 95 }
+```
+
+### `Option<T>`
+
+The `Option<T>` enum is Boba's primary mechanism for handling values that may be absent, eliminating the need for `null`. An `Option<T>` is either `Some(T)`, containing a value, or `None`, representing absence. This forces developers to handle both possibilities at compile time, leading to safer, more robust code.
+
+```boba
+enum Option<T> {
+    Some(T), // Represents the presence of a value
+    None,    // Represents the absence of a value
+}
+
+fn find_user(id: number): Option<string> {
+    if id == 1 { return Some("Alice") }
+    return None
+}
+```
+
+### `Result<T, E>`
+
+The `Result<T, E>` enum is used for functions that can return either a success value or an error. It has two variants: `Ok(T)`, which contains the successful result of type `T`, and `Err(E)`, which contains an error of type `E`. This provides a standardized, type-safe way to handle operations that can fail.
+
+```boba
+enum Result<T, E> {
+  Ok(T),    // The 'Success' variant
+  Err(E)    // The 'Failure' variant
+}
+
+fn load_config(): Result<Config, error> {
+    // ...
+}
+```

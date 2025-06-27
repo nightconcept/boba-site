@@ -1,5 +1,5 @@
 ---
-title: "8. Enums"
+title: "6. Enums"
 description: "Learn how to create a type with a fixed number of possible values using enums in Boba."
 ---
 
@@ -31,15 +31,4 @@ if (myColor == Color.GREEN) {
 }
 ```
 
-## Enums with Data
-
-Boba enums can also hold data. This is particularly useful for error handling, as we'll see in the next chapter.
-
-```boba
-enum Result<T, E> {
-  Ok(T),    // The 'Success' variant, holds a value of type T
-  Err(E)    // The 'Failure' variant, holds a value of type E
-}
-```
-
-Enums are a powerful feature for making your code more expressive and safe. In the next chapter, we'll dive into error handling and see how enums play a crucial role.
+Enums are a powerful feature for making your code more expressive and safe. They become even more powerful when combined with the `match` statement, which we'll explore in the very next chapter.

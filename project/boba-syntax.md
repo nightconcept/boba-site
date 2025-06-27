@@ -57,7 +57,6 @@ Boba provides a few built-in constants for convenience:
 
 - `true`: A boolean value representing truth.
 - `false`: A boolean value representing falsehood.
-- `null`: Represents the intentional absence of any object value.
 
 Now that you know how to create variables and constants, let's move on to the different types of data you can store in them.
 
@@ -76,8 +75,9 @@ var price: number = 19.99
 var quantity: number = 3
 var total = price * quantity // total is inferred as a number
 ```
-
-*Note: While Boba's `number` type is versatile, be mindful of standard floating-point precision limitations when working with very large integers (greater than 2^53).*
+<Aside type="note">
+Under the hood, Boba's `number` is an IEEE 754 double-precision floating-point number. This design choice prioritizes simplicity over the granular control offered by multiple integer and floating-point types found in languages like C or C#. However, it means that integer values above 2^53 (9,007,199,254,740,991) may begin to lose precision.
+</Aside>
 
 ### `string`
 
@@ -244,22 +244,7 @@ if (hunger == "hungry" and thirst == "thirsty") {
 }
 ```
 
-## The `match` Statement
-
-Boba also provides a powerful `match` statement for more complex pattern matching. It's a clean way to handle multiple conditions on a single variable.
-
-```boba
-var myVariable = 150
-
-match myVariable {
-  1 => print("It was one!"),
-  x where x > 100 => print("It's a big number: {x}"),
-  s: string => print("It's a string of length {s.len()}"),
-  _ => print("Default case") // `_` is a wildcard for any other case
-}
-```
-
-Conditionals are a fundamental part of programming. In the next chapter, we'll look at another crucial concept for controlling program flow: loops.
+Conditional logic is a fundamental part of programming. In the next chapter, we'll look at another crucial concept for controlling program flow: loops.
 
 Loops are used to execute a block of code multiple times. Boba provides several types of loops to handle different situations.
 
@@ -283,7 +268,6 @@ var j: number = 0
 while j < 10 {
   j++
   print("I am print {j}!")
-  if j == 5 then break // `break` exits the loop
 }
 ```
 
@@ -311,7 +295,110 @@ repeat {
 } until k == 10
 ```
 
-Loops are a powerful tool for automating repetitive tasks. In the next chapter, we'll learn how to organize our code into reusable blocks called functions.
+## Controlling Loop Flow
+
+You can control the flow of your loops with `break` and `continue`.
+
+### Exiting with `break`
+
+The `break` statement exits the current loop prematurely. It's often used inside a conditional statement.
+
+```boba
+var j: number = 0
+while j < 10 {
+  j++
+  if j == 5 {
+    break // Exits the loop when j is 5
+  }
+  print("I am print {j}!")
+}
+```
+
+### Skipping an Iteration with `continue`
+
+The `continue` statement skips the current iteration of a loop and moves to the next one.
+
+```boba
+// Let's print only the odd numbers from 1 to 10
+for i in 1 to 10 by 1 {
+  // If the number is even, skip to the next iteration.
+  if (i % 2 == 0) {
+    continue
+  }
+  print(i)
+}
+// Output: 1, 3, 5, 7, 9
+```
+
+Loops are a powerful tool for automating repetitive tasks. In the next chapter, we'll learn how to define our own custom data types with enums.
+
+Enums, short for enumerations, are a way to define a custom type that has a fixed set of possible values. This is useful when you have a variable that can only be one of a few possible things.
+
+## Defining an Enum
+
+You define an enum using the `enum` keyword, followed by the name of the enum and a list of its possible values (called variants).
+
+```boba
+enum Color {
+  RED,
+  GREEN,
+  BLUE
+}
+```
+
+## Using an Enum
+
+Once you have defined an enum, you can use it as a type for your variables. The variants are accessed through the enum type itself.
+
+```boba
+// The type of `myColor` is inferred as `Color`
+var myColor = Color.GREEN
+
+// You can use enums in comparisons
+if (myColor == Color.GREEN) {
+  print("The color is green!")
+}
+```
+
+Enums are a powerful feature for making your code more expressive and safe. They become even more powerful when combined with the `match` statement, which we'll explore in the very next chapter.
+
+Boba provides a powerful `match` statement for checking a variable against a series of possible values. It's a clean and expressive way to handle multiple distinct cases, especially when working with `enum` types.
+
+A `match` statement is often used with `enum` types.
+
+```boba
+enum TrafficLight {
+  RED,
+  YELLOW,
+  GREEN
+}
+
+var light = TrafficLight.RED
+
+match light {
+  TrafficLight.RED => print("Stop!"),
+  TrafficLight.YELLOW => print("Caution!"),
+  TrafficLight.GREEN => print("Go!"),
+  _ => print("Light is broken.") // `_` is a wildcard for any other case
+}
+```
+
+## Advanced Pattern Matching
+
+Boba's `match` statement can do much more than simple value checking. You can also match on types and use `where` clauses for complex conditions.
+
+```boba
+var myVariable = 150
+
+match myVariable {
+  1 => print("It was one!"),
+  x where x > 100 => print("It's a big number: {x}"),
+  s: string => print("It's a string of length {s.len()}"),
+  _ => print("Default case")
+}
+```
+
+With `match`, you can write incredibly clear and robust logic. In the next chapter, we'll learn how to organize our code into reusable blocks called functions.
 
 Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
 
@@ -378,7 +465,7 @@ var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 ingredients[0] |> upper() |> print() // Outputs "FLOUR"
 ```
 
-Functions are the building blocks of any Boba program. In the next chapter, we'll explore how to group related data and functions together using structs.
+Functions are the building blocks of any Boba program. In the next chapter, we'll explore how to group related data together using structs.
 
 Structs, short for structures, allow you to create your own custom data types by grouping together related variables. This is a powerful way to organize and manage complex data in your programs.
 
@@ -415,48 +502,82 @@ print("Player name: {ada.name}") // Prints "Player name: Ada"
 ada.score = 110
 ```
 
-Structs are a great way to model the data in your application. In the next chapter, we'll look at another way to create custom types: enums.
+Structs are a great way to model the data in your application. Now that we can group data, let's look at how Boba helps us handle data that might be missing in the next chapter.
 
-Enums, short for enumerations, are a way to define a custom type that has a fixed set of possible values. This is useful when you have a variable that can only be one of a few possible things.
+In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
 
-## Defining an Enum
+To prevent this entire class of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
 
-You define an enum using the `enum` keyword, followed by the name of the enum and a list of its possible values (called variants).
+## The `Option<T>` Enum
+
+The `Option<T>` enum is defined as follows:
 
 ```boba
-enum Color {
-  RED,
-  GREEN,
-  BLUE
+enum Option<T> {
+    Some(T), // Represents the presence of a value of type T
+    None,    // Represents the absence of a value
 }
 ```
 
-## Using an Enum
+-   `Some(T)`: A variant that holds a value of type `T`.
+-   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
 
-Once you have defined an enum, you can use it as a type for your variables. The variants are accessed through the enum type itself.
+By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
+
+## Working with `Option<T>`
+
+If a variable can be absent, you must declare it with the `Option<T>` type.
 
 ```boba
-// The type of `myColor` is inferred as `Color`
-var myColor = Color.GREEN
+// A function that might not find a user
+fn find_user(id: number): Option<string> {
+    if id == 1 {
+        return Some("Alice")
+    }
+    return None
+}
 
-// You can use enums in comparisons
-if (myColor == Color.GREEN) {
-  print("The color is green!")
+var user = find_user(1) // user is Option<string>
+var missing_user = find_user(2) // missing_user is also Option<string>
+```
+
+### Safely Unwrapping with `match`
+
+The primary way to work with an `Option<T>` is the `match` statement. It allows you to safely "unwrap" the value from the `Some` variant while ensuring you handle the `None` case.
+
+```boba
+match user {
+    Some(name) => {
+        // The 'name' variable is the string "Alice"
+        print("Found user: " + name)
+    },
+    None => {
+        print("User not found.")
+    }
+}
+
+match missing_user {
+    Some(name) => {
+        print("Found user: " + name)
+    },
+    None => {
+        // This branch will be executed
+        print("User not found.")
+    }
 }
 ```
 
-## Enums with Data
+This pattern guarantees that you can only access the inner value when it is actually present (`Some`), and you are forced to provide a code path for when it is not (`None`).
 
-Boba enums can also hold data. This is particularly useful for error handling, as we'll see in the next chapter.
+## The Safety of the `Option<T>` Model
 
-```boba
-enum Result<T, E> {
-  Ok(T),    // The 'Success' variant, holds a value of type T
-  Err(E)    // The 'Failure' variant, holds a value of type E
-}
-```
+To understand the safety `Option<T>` provides, it's helpful to contrast Boba's model with that of languages that use `null`:
 
-Enums are a powerful feature for making your code more expressive and safe. In the next chapter, we'll dive into error handling and see how enums play a crucial role.
+-   **In languages with `null` (like Java or JavaScript):** A variable of type `User` could be a `User` object or `null`. You must remember to check for `null` every time. If you forget, your program can crash.
+
+-   **In Boba:** A variable of type `Option<User>` is a container that might hold a `User`. The compiler requires you to handle both the `Some(User)` and `None` cases, guaranteeing that you cannot accidentally use a value that isn't there.
+
+By embracing `Option<T>`, Boba helps you write safer, more predictable code from the start. Now that you've seen how to handle the *absence* of a value, let's look at how to handle operations that can *fail* in the next chapter.
 
 In any real-world application, things can go wrong. A file might not exist, a network request might fail, or user input might be invalid. Boba encourages a robust approach to error handling using the `Result` enum.
 
@@ -513,7 +634,7 @@ fn load_config() -> Result<Config, error> {
 }
 ```
 
-This approach to error handling makes your code cleaner and more reliable. In the next chapter, we'll explore how to use classes to create more complex objects with both data and behavior.
+This approach to error handling makes your code cleaner and more reliable. But what happens when a function that can fail also needs to clean up resources, like closing a file? In the next chapter, we'll see how `defer` solves this problem perfectly.
 
 Welcome to the next step in your Boba journey! We've seen how to handle potential problems with `Result` and `?`. Now, let's learn how to make sure our program always cleans up after itself, no matter what happens.
 
@@ -571,7 +692,7 @@ pub fn process_file(path: string) -> Result<string, error> {
 
 By placing `defer file.close()` right after `fs.open(path)?`, we make our code cleaner, safer, and easier to read. The cleanup code is right next to the resource it's cleaning up.
 
-In the next section, we'll look at how to organize our code with classes.
+Now that you've mastered writing robust Boba code, let's move on to object-oriented programming with classes in the next chapter.
 
 Classes are a powerful feature in Boba that allow you to create complex objects that have both data (properties) and behavior (methods). They are similar to structs, but with the added ability to define methods and use inheritance.
 
@@ -699,7 +820,93 @@ weak_goblin.taunt()
 // > Gribbly the Goblin taunts! Health: 100, Gold: 12
 ```
 
-Classes are a cornerstone of object-oriented programming. In the final chapter of this tutorial, we'll look at how to organize your code into multiple files using imports.
+Classes are a cornerstone of object-oriented programming. But now that you know about both structs and classes, when should you use each one? We'll answer that critical question in the next chapter.
+
+import { Aside } from '@astrojs/starlight/components';
+
+In Boba Lang, both `structs` and `classes` allow you to create custom data structures, but they have one fundamental difference that impacts how you use them: the way they are handled when assigned or passed to functions. Understanding this distinction is crucial for writing correct and efficient code.
+
+The core difference is **value semantics** vs. **reference semantics**.
+
+-   **Structs** are *value types*. When you assign a struct to a new variable or pass it to a function, the entire struct is *copied*.
+-   **Classes** are *reference types*. When you assign a class instance to a new variable, you are not creating a copy. Instead, you are creating a *reference* (or a pointer) to the exact same object in memory.
+
+## A Practical Example
+
+Let's see this in action.
+
+### Structs: Copies on Assignment
+
+Imagine we have a simple `Point` struct. When we assign `p1` to `p2`, we create a completely independent copy. Changing `p2` has no effect on `p1`.
+
+```boba
+// Struct (Value Type)
+struct Point {
+    x: number
+}
+
+var p1 = Point { x: 10 }
+var p2 = p1 // p2 is a NEW copy of p1
+
+// Modify the copy
+p2.x = 20
+
+print("p1.x is still \{p1.x}") // Output: p1.x is still 10
+print("p2.x is now \{p2.x}")   // Output: p2.x is now 20
+```
+
+### Classes: References on Assignment
+
+Now, consider an `Enemy` class. When we assign `e1` to `e2`, both variables point to the *same object*. Modifying the object through `e2` will be reflected when we access it through `e1`.
+
+```boba
+// Class (Reference Type)
+class Enemy {
+    var health = 100
+
+    fn take_damage(amount: number) {
+        self.health = self.health - amount
+    }
+}
+
+var e1 = new Enemy()
+var e2 = e1 // e2 is a REFERENCE to the SAME object as e1
+
+// Modify the single object via the second reference
+e2.take_damage(20)
+
+print("e1.health is now \{e1.health}") // Output: e1.health is now 80
+print("e2.health is now \{e2.health}") // Output: e2.health is now 80
+```
+
+<Aside type="note">
+**Stack vs. Heap: A Deeper Look**
+
+For those with a background in systems programming (like C or C++), you can think of this in terms of memory allocation.
+
+-   **Value types** like `structs` are typically stored on the **stack**. The stack is a simple, efficient region of memory for fixed-size data. When you assign a struct, its data is copied directly on the stack.
+-   **Reference types** like `classes` are stored on the **heap**. The heap is a more flexible (but slightly slower) region of memory for dynamically sized or long-lived data. The object itself lives on the heap, and what you pass around is just a small, fixed-size pointer to that memory location.
+</Aside>
+
+## When to Use Which?
+
+Here are some simple rules of thumb for deciding between a `struct` and a `class`:
+
+**Use a `struct` when:**
+
+-   The data is simple and self-contained (e.g., a 2D point, an RGB color, a size).
+-   You want to ensure that the data is not changed by another part of your program unexpectedly.
+-   The primary purpose is to group a few related values together.
+-   You don't need inheritance.
+
+**Use a `class` when:**
+
+-   You need a single, shared instance of an object that multiple parts of your program can interact with and modify (e.g., a game character, a database connection, a user profile).
+-   The object has a distinct identity and lifecycle.
+-   You want to use inheritance to create specialized versions of a base class.
+-   The object's behavior (methods) is as important as its data.
+
+With this knowledge, you can build well-structured and efficient Boba applications. In the final chapter, we'll learn how to organize your code into separate files.
 
 As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using the `import` keyword.
 
@@ -1091,13 +1298,13 @@ Literals are fixed values that you write directly in your code.
 -   **Number Literals**: `10`, `3.14`, `-5.5`
 -   **String Literals**: `"hello"`, `'world'`
 -   **Boolean Literals**: `true`, `false`
--   **Null Literal**: `null` (represents the absence of a value)
+-   **Option Literals**: `Some(value)` or `None` (represents an optional value)
 -   **List Literals**: `[1, 2, 3]`
 -   **Map Literals**: `{"key": "value"}`
 
 ```boba
 var is_active: boolean = true
-var user_data = null // Could be used before user data is loaded
+var user_data: Option<string> = None // Represents an optional value
 ```
 
 ## Operators
@@ -1253,7 +1460,7 @@ The `while` loop executes a block of code as long as a given condition remains `
 var j: number = 0
 while j < 10 {
   j++
-  if j == 5 then break // The `break` keyword exits the loop
+  if j == 5 then break
 }
 ```
 
@@ -1277,6 +1484,26 @@ var k: number = 0
 repeat {
   k++
 } until k == 10
+```
+
+### `break` and `continue`
+
+The `break` and `continue` keywords provide fine-grained control over loop execution.
+
+-   **`break`**: Immediately terminates the innermost loop.
+-   **`continue`**: Skips the remainder of the current iteration and proceeds to the next one.
+
+```boba
+for i in 1 to 10 by 1 {
+  if (i % 2 == 0) {
+    continue // Skip even numbers
+  }
+  if (i == 7) {
+    break // Exit loop if i is 7
+  }
+  print(i)
+}
+// Output: 1, 3, 5
 ```
 
 ## `defer` Statement

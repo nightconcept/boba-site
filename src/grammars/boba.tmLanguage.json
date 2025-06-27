@@ -82,8 +82,8 @@
           "match": "\\b(false)\\b"
         },
         {
-          "name": "constant.language.null",
-          "match": "\\b(null)\\b"
+          "name": "constant.language.option",
+          "match": "\\b(Some|None)\\b"
         },
         {
           "name": "support.type.primitive",

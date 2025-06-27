@@ -1,0 +1,79 @@
+---
+title: "10. Safe Absence"
+description: "Learn how Boba's built-in Option<T> type provides a robust and safe way to handle values that might be absent, preventing an entire class of null-related errors."
+---
+
+In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
+
+To prevent this entire class of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
+
+## The `Option<T>` Enum
+
+The `Option<T>` enum is defined as follows:
+
+```boba
+enum Option<T> {
+    Some(T), // Represents the presence of a value of type T
+    None,    // Represents the absence of a value
+}
+```
+
+-   `Some(T)`: A variant that holds a value of type `T`.
+-   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
+
+By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
+
+## Working with `Option<T>`
+
+If a variable can be absent, you must declare it with the `Option<T>` type.
+
+```boba
+// A function that might not find a user
+fn find_user(id: number): Option<string> {
+    if id == 1 {
+        return Some("Alice")
+    }
+    return None
+}
+
+var user = find_user(1) // user is Option<string>
+var missing_user = find_user(2) // missing_user is also Option<string>
+```
+
+### Safely Unwrapping with `match`
+
+The primary way to work with an `Option<T>` is the `match` statement. It allows you to safely "unwrap" the value from the `Some` variant while ensuring you handle the `None` case.
+
+```boba
+match user {
+    Some(name) => {
+        // The 'name' variable is the string "Alice"
+        print("Found user: " + name)
+    },
+    None => {
+        print("User not found.")
+    }
+}
+
+match missing_user {
+    Some(name) => {
+        print("Found user: " + name)
+    },
+    None => {
+        // This branch will be executed
+        print("User not found.")
+    }
+}
+```
+
+This pattern guarantees that you can only access the inner value when it is actually present (`Some`), and you are forced to provide a code path for when it is not (`None`).
+
+## The Safety of the `Option<T>` Model
+
+To understand the safety `Option<T>` provides, it's helpful to contrast Boba's model with that of languages that use `null`:
+
+-   **In languages with `null` (like Java or JavaScript):** A variable of type `User` could be a `User` object or `null`. You must remember to check for `null` every time. If you forget, your program can crash.
+
+-   **In Boba:** A variable of type `Option<User>` is a container that might hold a `User`. The compiler requires you to handle both the `Some(User)` and `None` cases, guaranteeing that you cannot accidentally use a value that isn't there.
+
+By embracing `Option<T>`, Boba helps you write safer, more predictable code from the start. Now that you've seen how to handle the *absence* of a value, let's look at how to handle operations that can *fail* in the next chapter.

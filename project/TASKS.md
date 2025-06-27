@@ -89,6 +89,16 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 
 ## 5. Epic: Documentation Refinements
 
+### 5.6. Task: Replace `null` with `Option<T>`
+
+- [x] In `src/grammars/boba.tmLanguage.json`, remove `null` and add `Some` and `None`.
+- [x] In `src/content/docs/reference/01-language/expressions.mdx`, remove `null` from the list of literals.
+- [x] In `src/content/docs/learn/08-enums.mdx`, add `Option<T>` as a built-in enum.
+- [x] Create a new chapter `src/content/docs/learn/09-handling-optional-data.mdx` explaining `Option<T>`.
+- [x] Rename `learn` chapters 09-13 to 10-14.
+- [x] In `astro.config.mjs`, update the sidebar to include the new chapter.
+- [x] **Status: Review** - The "Handling Absence" page has been rewritten to reflect a more confident, null-free approach. The page title, introduction, and comparison section have been updated as per the feedback. The reference documentation for literals has been verified as correct.
+
 **Goal**: Address user feedback to improve the clarity and completeness of the Boba Lang documentation.
 
 ### 5.1. Task: Enhance `init` block documentation
@@ -121,3 +131,46 @@ Goal: Build out the core pages and navigation structure as defined in the PRD.
 
 - [x] In the "Conditionals" chapter (`/learn`), simplify the introductory `match` example.
 - [x] Move the more complex `match` example to a new "Advanced Pattern Matching" section.
+
+
+## 6. Epic: Reorganize 'Learn' Section
+
+**Goal**: Reorganize the `src/content/docs/learn` section to create a smoother learning curve, based on the provided modular structure.
+
+### 6.1. Task: Create new file structure
+
+- [ ] **Module 1: The Absolute Basics** (No file changes)
+    - `01-variables-and-constants.mdx`
+    - `02-data-types.mdx`
+    - `03-operators.mdx`
+- [ ] **Module 2: Control Flow**
+    - [ ] Rename `04-conditionals.mdx` to `04-conditional-logic.mdx`.
+    - `05-loops.mdx`
+- [ ] **Module 3: Custom Data & Matching**
+    - [ ] Rename `08-enums.mdx` to `06-enums.mdx`.
+    - [ ] Create `07-match.mdx`.
+- [ ] **Module 4: Building Blocks**
+    - [ ] Rename `06-functions.mdx` to `08-functions.mdx`.
+    - [ ] Rename `07-structs.mdx` to `09-structs.mdx`.
+- [ ] **Module 5: Writing Robust Boba**
+    - [ ] Rename `09-handling-optional-data.mdx` to `10-handling-absence.mdx`.
+    - [ ] Rename `10-error-handling.mdx` to `11-handling-errors.mdx`.
+    - [ ] Rename `11-defer.mdx` to `12-defer.mdx`.
+- [ ] **Module 6: Object-Oriented Programming**
+    - [ ] Rename `12-classes.mdx` to `13-classes.mdx`.
+    - [ ] Rename `13-choosing-your-type.mdx` to `14-structs-vs-classes.mdx`.
+- [ ] **Module 7: Project Organization**
+    - [ ] Rename `14-imports.mdx` to `15-imports.mdx`.
+- [ ] **Verification**: All files are renamed and created as specified.
+
+### 6.2. Task: Update content and links
+
+- [ ] In `04-conditional-logic.mdx`, remove the `match` statement section. Update title and description.
+- [ ] In `07-match.mdx`, add the content extracted from the old `04-conditionals.mdx`. Update title and description.
+- [ ] Review all files in `src/content/docs/learn` and update titles, descriptions, and "next chapter" links to ensure they flow correctly according to the new structure.
+- [ ] **Verification**: Content is correctly split, and all internal links and narrative flow are updated.
+
+### 6.3. Task: Update sidebar navigation
+
+- [ ] Modify `astro.config.mjs` to reflect the new file structure, order, and titles for the "Learn Boba" section.
+- [ ] **Verification**: The sidebar navigation on the website accurately represents the new structure, and all links work.

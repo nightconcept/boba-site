@@ -1,6 +1,6 @@
 ---
-title: "9. Error Handling"
-description: "Learn how to handle errors gracefully in Boba using the `Result` enum."
+title: "11. Handling Errors"
+description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
 In any real-world application, things can go wrong. A file might not exist, a network request might fail, or user input might be invalid. Boba encourages a robust approach to error handling using the `Result` enum.
@@ -58,4 +58,4 @@ fn load_config() -> Result<Config, error> {
 }
 ```
 
-This approach to error handling makes your code cleaner and more reliable. In the next chapter, we'll explore how to use classes to create more complex objects with both data and behavior.
+This approach to error handling makes your code cleaner and more reliable. But what happens when a function that can fail also needs to clean up resources, like closing a file? In the next chapter, we'll see how `defer` solves this problem perfectly.
