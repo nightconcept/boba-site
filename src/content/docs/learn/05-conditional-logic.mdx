@@ -12,7 +12,7 @@ The `if` statement executes a block of code only if a specified condition is `tr
 ```boba
 var temperature: float = 30.0
 
-if (temperature > 25) {
+if temperature > 25 {
   print("It's a hot day!")
 }
 ```
@@ -24,7 +24,7 @@ You can use the `else` statement to provide a block of code to execute if the `i
 ```boba
 var score: int = 85
 
-if (score >= 60) {
+if score >= 60 {
   print("You passed!")
 } else {
   print("You failed. Better luck next time!")
@@ -39,11 +39,11 @@ To handle multiple conditions, you can chain `if` statements with `else if`.
 var hunger = "hungry"
 var thirst = "thirsty"
 
-if (hunger == "hungry" and thirst == "thirsty") {
+if hunger == "hungry" and thirst == "thirsty" {
   print("You are hungry and thirsty.")
-} else if (hunger == "hungry") {
+} else if hunger == "hungry" {
   print("You are only hungry.")
-} else if (thirst == "thirsty") {
+} else if thirst == "thirsty" {
   print("You are only thirsty.")
 } else {
   print("You are neither hungry nor thirsty.")
@@ -51,3 +51,20 @@ if (hunger == "hungry" and thirst == "thirsty") {
 ```
 
 Conditional logic is a fundamental part of programming. In the next chapter, we'll look at another crucial concept for controlling program flow: loops.
+
+---
+
+### New Section: Concise Conditionals with One-Liner `if/else`
+
+> For simple conditional assignments, you can use `if/else` as a one-line expression without curly braces. This is a clean and readable way to choose between two values.
+
+```boba
+let health: int = 75
+
+// The entire if/else expression evaluates to a single value.
+let status: string = if health > 50 { "Healthy" } else { "Injured" }
+
+print(f"Player status: {status}") // Outputs: Player status: Healthy
+```
+
+

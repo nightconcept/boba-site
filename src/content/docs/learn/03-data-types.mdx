@@ -58,7 +58,7 @@ let permission_flags: int = 0b1010_1111
 The `float` type is used to represent a 64-bit double-precision floating-point number. It is the correct type for scientific calculations, measurements, or any value that may have a fractional component.
 ```boba
 let price: float = 19.99
-const PI: float = 3.14159
+let PI: float = 3.14159
 var temperature = 25.5 // Inferred as float
 ```
 Note: While floats are powerful, be mindful of standard precision limitations inherent to floating-point arithmetic.
@@ -70,6 +70,22 @@ The `string` type is used to represent text.
 ```boba
 var message: string = "Hello, Boba!"
 var playerName = "Ada" // Inferred as a string
+```
+##### Formatting Strings with F-Strings
+
+> To embed variables and expressions directly into a string, Boba uses **f-strings**. An f-string is a string literal prefixed with the letter `f`. This explicitly tells the compiler to process any expressions inside curly braces `{}`.
+
+```boba
+let player_name = "Ada"
+let level: int = 10
+
+// Use an f-string to create a formatted message.
+let welcome_message = f"Welcome, {player_name} (Level {level})!" 
+print(welcome_message) // Outputs: Welcome, Ada (Level 10)!
+
+// Regular strings do not process the braces.
+let template = "This is a template: {some_value}"
+print(template) // Outputs: This is a template: {some_value}
 ```
 
 ### `boolean`

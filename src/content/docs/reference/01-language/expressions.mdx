@@ -35,6 +35,8 @@ Operators are special symbols that perform operations on operands (values and va
 | `%`      | Modulo/Remainder | `5 % 2`  // 1         |
 | `^`      | Power            | `5 ^ 2`  // 25        |
 
+> **Note on Integer Overflow:** In development and test builds, arithmetic operations on `int` types that result in an overflow (exceeding the maximum or minimum value) will cause a `panic`. This is a safety feature to prevent silent, hard-to-debug errors.
+
 ### Comparison and Relational Operators
 
 These operators compare two operands and return a `boolean` (`true` or `false`).

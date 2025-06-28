@@ -52,45 +52,41 @@ export default defineConfig({
               label: 'Module 2: Control Flow',
               items: [
                 { label: '2.1. Conditional Logic: if/else', link: '/learn/05-conditional-logic' },
-                { label: '2.2. Looping', link: '/learn/06-loops' },
+                { label: '2.2. Repeating Actions with Loops', link: '/learn/06-loops' },
               ],
             },
             {
               label: 'Module 3: Custom Data & Matching',
               items: [
                 { label: '3.1. Enums', link: '/learn/07-enums' },
-                { label: "3.2. Matching", link: '/learn/08-match' },
+                { label: '3.2. Matching', link: '/learn/08-match' },
               ],
             },
             {
               label: 'Module 4: Building Blocks',
               items: [
-                { label: '4.1. Functions', link: '/learn/09-functions' },
-                { label: '4.2. Structs', link: '/learn/10-structs' },
+                { label: '4.1. Functions', link: '/learn/08-functions' },
+                { label: '4.2. Structs', link: '/learn/09-structs' },
+                { label: '4.3. Adding Behavior with impl', link: '/learn/10-adding-behavior-with-impl' },
               ],
             },
             {
               label: 'Module 5: Writing Robust Boba',
               items: [
-                { label: '5.1. Safe Absence', link: '/learn/11-safe-absence' },
-                { label: '5.2. Handling Errors', link: '/learn/12-handling-errors' },
-                { label: '5.3. Guaranteed Cleanup', link: '/learn/13-defer' },
+                { label: '5.1. Handling Optional Data', link: '/learn/11-handling-optional-data' },
+                { label: '5.2. Error Handling', link: '/learn/12-error-handling' },
+                { label: '5.3. Guaranteed Cleanup with defer', link: '/learn/13-guaranteed-cleanup-with-defer' },
+                { label: '5.4. Panics', link: '/learn/14-panics' },
               ],
             },
             {
-              label: 'Module 6: Object-Oriented Programming',
+              label: 'Module 6: Advanced Topics',
               items: [
-                { label: '6.1. Classes & Inheritance', link: '/learn/14-classes' },
-                { label: '6.2. Structs vs. Classes', link: '/learn/15-structs-vs-classes' },
-                { label: '6.3. Philosophy: Encouraging Pure Functions', link: '/learn/16-pure-functions' },
-              ],
-            },
-            {
-              label: 'Module 7: Project Organization & Concurrency',
-              items: [
-                { label: '7.1. Imports', link: '/learn/17-imports' },
-                { label: '7.2. Concurrency: async and await', link: '/learn/18-concurrency' },
-                { label: '7.3. The Boba Style Guide (boba-fmt)', link: '/learn/19-style-guide' },
+                { label: '6.1. Pure Functions', link: '/learn/15-pure-functions' },
+                { label: '6.2. Imports', link: '/learn/16-imports' },
+                { label: '6.3. Runtime Reflection', link: '/learn/17-runtime-reflection' },
+                { label: '6.4. Concurrency', link: '/learn/18-concurrency' },
+                { label: '6.5. Style Guide', link: '/learn/19-style-guide' },
               ],
             },
           ],
@@ -104,14 +100,7 @@ export default defineConfig({
           items: [
             {
               label: 'Language',
-              items: [
-                { label: 'Types', slug: 'reference/01-language/types' },
-                { label: 'Declarations', slug: 'reference/01-language/declarations' },
-                { label: 'Expressions', slug: 'reference/01-language/expressions' },
-                { label: 'Statements', slug: 'reference/01-language/statements' },
-                { label: 'Collections', slug: 'reference/01-language/collections' },
-                { label: 'Imports', slug: 'reference/01-language/imports' },
-              ],
+              autogenerate: { directory: 'reference/01-language' },
             },
             {
               label: 'Standard Library',

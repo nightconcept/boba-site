@@ -11,9 +11,9 @@ The official tool, `boba-fmt`, automatically formats your code to match these ru
 
 ### Naming Conventions
 
--   **`PascalCase`** for all types (`class`, `struct`, `enum`).
+-   **`PascalCase`** for all types (`struct`, `enum`).
 -   **`snake_case`** for all values (functions, methods, variables).
--   **`SCREAMING_SNAKE_CASE`** for compile-time `const` declarations.
+-   **`SCREAMING_SNAKE_CASE`** for program-wide constants (declared with `let`).
 
 ### Formatting
 
@@ -23,7 +23,7 @@ The official tool, `boba-fmt`, automatically formats your code to match these ru
 
 ### Documentation
 
--   All `pub` items (functions, classes, structs, etc.) should have BobaDoc comments. This is a strong convention that makes your public APIs easy to understand and use.
+-   All `pub` items (functions, structs, etc.) should have BobaDoc comments. This is a strong convention that makes your public APIs easy to understand and use.
 
 ## Example of "Perfect" Boba Code
 
@@ -32,7 +32,7 @@ Here is a small example that follows all the `boba-fmt` style rules.
 ```boba
 //! A module for managing player data.
 
-const DEFAULT_HEALTH: int = 100
+let DEFAULT_HEALTH = 100
 
 /// Represents a player in the game.
 struct Player {

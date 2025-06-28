@@ -16,7 +16,7 @@ pub fn process_file(path: string) -> Result<string, error> {
     var file = fs.open(path)?
 
     var data = file.read_all()?
-    if (data.is_empty()) {
+    if data.is_empty() {
         file.close() // We have to close it here...
         return Err({ message = "File is empty" })
     }
@@ -47,7 +47,7 @@ pub fn process_file(path: string) -> Result<string, error> {
 
     // 3. Now, we can focus on the logic without worrying about cleanup.
     var data = file.read_all()?
-    if (data.is_empty()) {
+    if data.is_empty() {
         // We can just return. `defer file.close()` will run automatically.
         return Err({ message = "File is empty" })
     }
@@ -59,4 +59,4 @@ pub fn process_file(path: string) -> Result<string, error> {
 
 By placing `defer file.close()` right after `fs.open(path)?`, we make our code cleaner, safer, and easier to read. The cleanup code is right next to the resource it's cleaning up.
 
-Now that you've mastered writing robust Boba code, let's move on to object-oriented programming with classes in the next chapter.
+Now that you've mastered writing robust Boba code, let's look at how to handle situations that are truly unrecoverable.

@@ -18,14 +18,20 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
 | `^`      | Power (Note: some languages like Python and JavaScript use `**` for this) | `5 ^ 2` results in `25`  |
 
-### Unary Arithmetic Operators
+##### Compound Assignment Operators
 
-You can also increment or decrement a number by one using the `++` and `--` operators.
+> To modify a variable in-place, Boba provides a convenient shorthand: compound assignment operators. They combine an arithmetic or bitwise operation with an assignment.
 
 ```boba
-var score: int = 10
-score++ // score is now 11
-score-- // score is now 10
+var score: int = 100
+// Instead of: score = score + 25
+score += 25 // score is now 125
+
+var mana: int = 50
+mana -= 10 // mana is now 40
+
+var base_damage = 10
+base_damage *= 2 // base_damage is now 20
 ```
 
 ### Numeric Operations and Conversions
@@ -54,6 +60,28 @@ Comparison operators are used to compare two values. They always result in a `bo
 | `<=`     | Less than or equal   | `5 <= 5` is `true`    |
 | `>=`     | Greater than or equal| `5 >= 8` is `false`   |
 
+##### Checking for Containment with `in`
+
+> To check if an element exists within a `list`, `map`, or `string`, you can use the highly readable `in` operator.
+
+```boba
+let inventory: string[] = ["sword", "shield", "potion"]
+
+// Check if "shield" is in our inventory list.
+if "shield" in inventory {
+  print("You are well-defended!")
+}
+
+let player_skills = {"archery": 5, "magic": 3}
+
+// For maps, `in` checks if the key exists.
+if "stealth" in player_skills {
+  print("You can sneak.")
+} else {
+  print("You are not a sneaky person.") // This will print.
+}
+```
+
 In Boba, comparisons must be explicit. You can't use a non-boolean value in a context that expects a boolean.
 
 ```boba
@@ -62,7 +90,7 @@ var score: int = 100
 // if (score) { ... } // This will cause a compile error.
 
 // RIGHT
-if (score != 0) { ... } // The result of `!=` is a boolean.
+if score != 0 { ... } // The result of `!=` is a boolean.
 ```
 
 ## Logical Operators
@@ -79,66 +107,9 @@ Logical operators are used to combine boolean values.
 var hasKey = true
 var isDoorLocked = false
 
-if (hasKey and not isDoorLocked) {
+if hasKey and not isDoorLocked {
   print("You can open the door!")
 }
 ```
 
-### Bitwise Operators: Working with Individual Bits
-
-While arithmetic operators work on a number's mathematical value, **bitwise operators** allow you to manipulate the individual `1`s and `0`s (bits) that make up an `int`. This is a powerful technique for efficiently storing sets of on/off flags, working with certain data formats, and performance-critical code.
-
-#### The Scenario: Player Permissions
-
-Let's imagine we're building a game where a player has guild permissions. We can store all their permissions in a single `int`. First, we define each permission as a constant, using powers of two to ensure each one occupies a unique bit.
-
-```boba
-// Each permission corresponds to a single bit.
-const CAN_INVITE:  int = 1  // Binary: ...0001
-const CAN_KICK:    int = 2  // Binary: ...0010
-const CAN_PROMOTE: int = 4  // Binary: ...0100
-```
-
-#### Combining Flags with OR (`|`)
-
-To grant a player multiple permissions, we use the bitwise OR operator. It combines the bits from both numbers.
-```boba
-// Let's grant a player permission to invite AND kick members.
-let player_perms: int = CAN_INVITE | CAN_KICK
-// In binary: 0001 | 0010  =  0011 (Decimal 3)
-```
-
-#### Checking for a Flag with AND (`&`)
-
-To check if a player has a _specific_ permission, we use the bitwise AND operator. This is the most common bitwise operation.
-
-```boba
-// Does our player (perms value is 3) have permission to kick?
-// The result will be non-zero only if the CAN_KICK bit is set.
-if (player_perms & CAN_KICK != 0) {
-  print("Yes, this player can kick.") // This will print.
-}
-
-// Do they have permission to promote?
-if (player_perms & CAN_PROMOTE == 0) {
-  print("No, this player cannot promote.") // This will print.
-}
-```
-
-#### Other Bitwise Operators
-
-Boba also supports other standard bitwise operators for advanced use cases:
-
-- **`^` (XOR):** Toggles a bit (useful for flipping a state).
-- **`~` (NOT):** Flips all bits in a number.
-- **`<<` (Left Shift) and `>>` (Right Shift):** Move all bits to the left or right (useful for low-level data packing and fast multiplication/division by two).
-```boba
-let x: int = 4 // Binary: 0100
-
-// Left shift by 1 (multiplies by 2)
-print(x << 1) // Outputs 8 (Binary: 1000)
-
-// Right shift by 2 (divides by 4)
-print(x >> 2) // Outputs 1 (Binary: 0001)
-```
 With these operators, you can start writing more complex and interesting programs. In the next chapter, we'll explore how to control the flow of your program using conditionals.

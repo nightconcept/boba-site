@@ -11,20 +11,20 @@ You define a struct using the `struct` keyword. Inside the struct definition, yo
 
 ```boba
 // Define a `Player` struct
-struct Player = {
-  name: string,
-  score: int,
-  is_active: boolean
+struct Player {
+name: string,
+score: int,
+is_active: boolean
 }
 ```
 
 ## Creating an Instance of a Struct
 
-Once you have defined a struct, you can create instances of it, just like you would with any other data type.
+Once you have defined a struct, you can create instances of it using a struct literal.
 
 ```boba
 // Create a new variable `ada` of type `Player`
-var ada: Player = { name: "Ada", score: 100, is_active: true }
+let ada: Player = { name: "Ada", score: 100, is_active: true }
 ```
 
 ## Accessing Struct Fields
@@ -33,9 +33,6 @@ You can access the fields of a struct instance using dot notation.
 
 ```boba
 print("Player name: {ada.name}") // Prints "Player name: Ada"
-
-// You can also modify the fields of a struct instance
-ada.score = 110
 ```
 
-Structs are a great way to model the data in your application. Now that we can group data, let's look at how Boba helps us handle data that might be missing in the next chapter.
+Structs are perfect for organizing data. In the next chapter, we'll learn how to give our structs behavior by adding functions directly to them.

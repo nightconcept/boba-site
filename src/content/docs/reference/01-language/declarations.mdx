@@ -111,5 +111,29 @@ var str_sum = add("hello", "world") // Calls the second overload, returns "hello
 Boba provides three ways to define your own custom types: [Structs](./structs), [Enums](./enums), and [Classes](./classes).
 
 -   **[Structs](./structs)**: Value types for grouping related data.
--   **[Enums](./enums)**: Types that can be one of several distinct variants, perfect for representing state.
+-   **[Enenums](./enums)**: Types that can be one of several distinct variants, perfect for representing state.
 -   **[Classes](./classes)**: Reference types that bundle data and behavior, supporting inheritance.
+
+## Built-in Functions
+
+Boba includes a small set of essential built-in functions that are always available.
+
+### `panic(message: string) -> void`
+
+The `panic()` function triggers an unrecoverable error, immediately terminating the program.
+
+When called, it prints the provided error `message` to the console, followed by a stack trace to help identify the source of the error. As the program unwinds, it will execute any `defer` statements that are in scope, ensuring that critical cleanup operations (like closing files) are performed.
+
+A panic should be used only for unrecoverable errors—situations that indicate a bug in the program's logic and from which it is not safe to continue.
+
+```boba
+fn get_user_by_id(id: int) -> User {
+  let user = db.query("SELECT * FROM users WHERE id = {id}")?
+  if user == None {
+    // This state should be impossible if the database is consistent.
+    // It indicates a bug elsewhere in the system.
+    panic(f"Critical error: User with ID {id} not found, but should exist.")
+  }
+  return user
+}
+```

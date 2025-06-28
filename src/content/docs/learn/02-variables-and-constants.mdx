@@ -1,40 +1,35 @@
 ---
-title: "Immutable Bindings: let and var"
+title: "Variables and Immutability"
 description: "Learn Boba's core principle of immutability-by-default with `let` and `var`."
 ---
 
-In Boba, immutability is the default to promote safer, more predictable code. Mutability must be an explicit choice.
+In Boba, you can store data in variables. A core principle of the language is **immutability by default**, which helps you write safer, more predictable code.
 
 ### `let`: Immutable Bindings
 
-The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for all variables, as it prevents accidental modification and makes code easier to reason about.
+The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for everything, as it prevents accidental modification.
+```boba
+// An immutable binding for a regular variable.
+let message = "Hello, Boba!"
+```
+// This would be a COMPILE ERROR: // message = "Hello again!"
+
+### Convention: Using `let` for Constants
+For universal, program-wide constants, we still use `let`, but we adopt the widely-used `SCREAMING_SNAKE_CASE` naming convention. This signals to other developers that the value has a special, constant role.
 
 ```boba
-// Immutable binding, this is the preferred default.
-let message = "Hello, Boba!"
-
-// This would be a COMPILE ERROR:
-// message = "Hello again!"
+let MAX_HEALTH = 100
+let PI = 3.14159
 ```
-
-By using `let` wherever possible, you are telling other programmers (and the compiler) that this value is not intended to change.
 
 ### `var`: Mutable Variables
 
-The `var` keyword declares a **mutable variable**. You should only use `var` when you have a specific reason to change a value after it has been initialized.
+You should only use the `var` keyword when you have a specific and necessary reason to change a value after it's been created.
 
 ```boba
-// Mutable variable, used when mutation is necessary.
+// A mutable variable, used only when mutation is required.
 var counter = 0
 counter = counter + 1 // This is allowed.
 ```
 
-### `const`: Compile-Time Constants
-
-The `const` keyword is reserved for values that are known at compile-time. These are typically used for universal constants within your program.
-
-```boba
-const MAX_HEALTH = 100
-```
-
-By defaulting to `let`, you make your code's intent clearer and safer. Now, let's explore the different types of data you can work with.
+By defaulting to `let` for everything, you make your code's intent clearer and safer.

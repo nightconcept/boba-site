@@ -1,0 +1,70 @@
+---
+title: "Adding Behavior with impl"
+description: "Learn how to attach methods to your structs using an `impl` block."
+---
+
+In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
+
+### Defining an `impl` Block
+
+The `impl` block is where you define all the functions that belong to a `struct`.
+
+```boba
+struct Player {
+  name: string,
+  health: int
+}
+
+impl Player {
+  /// A method that prints the player's status.
+  /// The `self` parameter gives us read-only access to the instance.
+  pub fn print_status(self) {
+    print("{self.name}'s health is {self.health}.")
+  }
+}
+```
+
+### Creating Instances: The `new()` Convention
+
+To create an instance of a struct with behavior, the Boba convention is to create an associated function inside the `impl` block, typically named `new`. This acts as our constructor.
+
+### Modifying State with `mut self`
+
+By default, `self` is immutable. If a method needs to _change_ the struct's data, you must mark the parameter as `mut self`. This is an explicit signal that the method has side effects on the instance.
+
+```boba
+impl Player {
+    /// Creates a new Player with default health.
+    pub fn new(name: string) -> Player {
+        return Player{
+            name: name,
+            health: 100
+        }
+    }
+
+    /// A method that prints the player's status.
+    pub fn print_status(self) {
+        print("{self.name}'s health is {self.health}.")
+    }
+
+    /// Reduces the player's health by a given amount.
+    pub fn take_damage(self: mut Player, amount: int) {
+        self.health -= amount
+        print("{self.name} takes {amount} damage!")
+    }
+}
+```
+
+Now we can create a `Player` like this:
+
+```boba
+let player1 = Player.new("Ada")
+player1.print_status() // Outputs: Ada's health is 100.
+```
+
+To call a mutating method, the variable holding the struct instance must also be declared with `var`.
+
+```boba
+var player2 = Player.new("Boba")
+player2.take_damage(25) // This is allowed because player2 is mutable.
+player2.print_status()  // Outputs: Boba's health is 75.

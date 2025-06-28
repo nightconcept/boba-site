@@ -1,0 +1,74 @@
+---
+title: "Unrecoverable Errors and Panics"
+description: "Learn about panics for handling unrecoverable errors and how Boba protects against integer overflow."
+---
+
+### Chapter 14: Unrecoverable Errors and Panics
+
+In the last chapters, we learned how to handle expected failures using `Result` and how to guarantee cleanup using `defer`. But what happens when something goes wrong that should be _impossible_? This is where Boba's `panic` mechanism comes in.
+
+#### Recoverable vs. Unrecoverable Errors
+
+First, let's understand the difference:
+
+- **Recoverable Error:** An error that is expected to happen sometimes. A user might enter a bad file path, or a network request might time out. We use `Result<T, E>` to handle these because our program can gracefully continue.
+```boba
+// Trying to open a file is an action that can reasonably fail.
+let file_result = fs.open(path: "my_file.txt")
+```
+
+- **Unrecoverable Error (A Bug):** An error that indicates a critical problem with the program's logic itself. For example, trying to access a list element at an index that doesn't exist, or a mathematical impossibility. If these things happen, the program is in an unknown, unpredictable state, and continuing could lead to more errors or data corruption. For these situations, Boba **panics**.
+    
+
+#### What is a Panic?
+
+A panic is an abrupt, unrecoverable error that stops the normal execution of your program.
+
+When a panic occurs, the program will stop what it's doing and begin to **unwind the stack**. As it unwinds, it will print an error message and a stack trace to help you debug the problem.
+
+Most importantly, as the stack unwinds, the runtime will execute any **`defer`** statements it finds along the way. This is a crucial safety feature that ensures that even during a crash, critical cleanup tasks (like closing files or releasing resources) are still performed.
+
+#### Implicit Panics: Integer Overflow
+
+To protect against a common and dangerous type of bug, Boba will automatically panic on integer overflow in development and test builds.
+
+In many languages, adding 1 to the maximum possible integer value silently "wraps around" to a large negative number, leading to unpredictable behavior. Boba considers this a bug.
+
+```boba
+// For this example, let's pretend the max value for an int is 1_000.
+let max_score: int = 1_000
+var current_score = 995
+
+current_score += 5 // This is okay. current_score is now 1_000.
+
+// This next line will cause the program to stop and panic!
+current_score += 1
+
+// The program will crash with a message like:
+// panic: integer overflow occurred on addition.
+```
+
+This turns a silent, hard-to-find bug into a loud, obvious crash that you can fix immediately.
+
+#### Explicit Panics: The `panic()` Function
+
+Sometimes, you need to signal an unrecoverable error yourself. If your code reaches a state that you believe should be logically impossible, you can trigger a panic manually with the built-in `panic()` function.
+
+Let's imagine a function in our game that gets a player's guild status, but it should only ever be called for players who are actually in a guild.
+
+```boba
+fn get_guild_rank(player: Player) -> string {
+  // This function assumes the player is in a guild.
+  // We can get their rank from an Option type.
+  let rank_option = player.guild_rank() // Returns Option<string>
+
+  match rank_option {
+    Some(rank) => return rank,
+    None => {
+      // If we get here, it means another part of our code called this
+      // function with a player who wasn't in a guild. This is a bug
+      // in our program's logic.
+      panic(f"Critical error: get_guild_rank called on non-guild member {player.name}!")
+    }
+  }
+}

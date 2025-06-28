@@ -7,7 +7,7 @@ As your programs grow larger, it becomes important to organize your code into mu
 
 ## Importing from Other Files
 
-You can import public functions, classes, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
+You can import public functions, structs, enums, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
 
 ### Importing Specific Items
 
@@ -15,7 +15,7 @@ To import specific items from a file, you list them by name.
 
 ```boba
 // in utils.boba
-pub fn sayHello() -> void {
+pub fn sayHello() {
   print("Hello!")
 }
 
@@ -31,8 +31,8 @@ To import everything from a file, you can use the `*` wildcard.
 
 ```boba
 // in utils.boba
-pub fn sayHello() -> void { ... }
-pub fn sayGoodbye() -> void { ... }
+pub fn sayHello() { ... }
+pub fn sayGoodbye() { ... }
 
 // in main.boba
 import * from "./utils.boba"
@@ -47,7 +47,7 @@ You can rename an imported item using the `as` keyword. This is useful to avoid 
 
 ```boba
 // in utils.boba
-pub fn sayHello() -> void { ... }
+pub fn sayHello() { ... }
 
 // in main.boba
 import sayHello as greet from "./utils.boba"

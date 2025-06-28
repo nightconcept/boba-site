@@ -11,7 +11,7 @@ You define a function using the `fn` keyword. You can also specify the types of 
 
 ```boba
 // A simple function that takes no arguments and returns nothing.
-pub fn sayHello() -> void {
+pub fn sayHello() {
   print("Hello, Boba!")
 }
 
@@ -72,7 +72,7 @@ By default, functions are private, meaning they can only be called from within t
 
 ```boba
 // This function can only be called from this file.
-fn myPrivateFunction() -> void {
+fn myPrivateFunction() {
   print("This is a secret!")
 }
 ```
@@ -81,7 +81,7 @@ fn myPrivateFunction() -> void {
 
 Good code is well-documented. Boba has a built-in standard for documentation called BobaDoc, which is designed to be easy to write, human-readable, and machine-parsable.
 
--   **`///` (Outer Comment):** Documents the single item immediately following it (function, class, etc.). This is the primary doc comment type.
+-   **`///` (Outer Comment):** Documents the single item immediately following it (function, struct, etc.). This is the primary doc comment type.
 -   **`//!` (Inner Comment):** Documents the enclosing item. When used at the top of a file, it describes the entire module.
 
 BobaDoc uses simple `@` tags for structured data:
