@@ -20,6 +20,39 @@ let quantity: int = 3
 let current_level = 10 // Inferred as int
 ```
 
+##### Writing Numbers in Different Bases
+
+In addition to standard decimal (base-10) numbers, Boba supports hexadecimal and binary notations, which are common in systems programming, graphics, and data manipulation.
+
+- **Hexadecimal (base-16):** Prefix the number with `0x`. Uses digits `0-9` and letters `a-f`.
+- **Binary (base-2):** Prefix the number with `0b`. Uses only digits `0` and `1`.
+
+No matter how you write the number, it's still just an `int` with the same value.
+```boba
+// All of these variables hold the exact same integer value: 255
+let decimal_value: int = 255
+let hex_value: int = 0xFF
+let binary_value: int = 0b11111111
+
+print(decimal_value == hex_value) // true
+print(hex_value == binary_value) // true
+```
+
+##### Improving Readability with `_`
+
+Long number literals can be difficult to read. Boba allows you to use an underscore `_` as a visual separator anywhere inside a number. The compiler completely ignores it.
+
+This works for `int` and `float` types, as well as for hex and binary notations.
+```boba
+// These are easier to read thanks to the '_' separator.
+let one_billion: int = 1_000_000_000
+let pi: float = 3.141_592_653
+
+// This is especially useful for hex and binary values.
+let packed_color: int = 0xFF_AB_00_FF
+let permission_flags: int = 0b1010_1111
+```
+
 ### `float`
 
 The `float` type is used to represent a 64-bit double-precision floating-point number. It is the correct type for scientific calculations, measurements, or any value that may have a fractional component.
