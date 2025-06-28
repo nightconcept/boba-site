@@ -1,0 +1,48 @@
+---
+title: "Concurrency: async and await"
+description: "Learn how to write non-blocking, asynchronous code in Boba using `async` and `await`."
+---
+
+Asynchronous programming is essential for building responsive and efficient applications, especially when dealing with tasks like network requests or file I/O that can take time. Boba makes writing asynchronous, non-blocking code as easy and readable as traditional, synchronous code.
+
+## The `async` and `await` Keywords
+
+Boba's concurrency model is built around two keywords: `async` and `await`.
+
+-   **`async`**: A keyword that modifies a function declaration (`async fn ...`). An `async` function does not block when called. Its return type is implicitly wrapped in a `Future<T>` (or a similar construct) that is managed by the Boba runtime.
+-   **`await`**: An operator that can only be used inside an `async` function. It pauses the execution of the async function until the `Future` it is waiting on has completed, at which point it unwraps the result. While the function is paused, the Boba runtime is free to execute other tasks.
+
+### Example: Concurrent Data Fetching
+
+Let's look at a practical example where we need to fetch a user's profile and their permissions from two different API endpoints concurrently.
+
+```boba
+//! Example of fetching data concurrently.
+
+/// Fetches the user profile from one API.
+async fn fetch_user(id: int) -> Result<User, error> { /* ... */ }
+
+/// Fetches the user's permissions from another API.
+async fn fetch_permissions(id: int) -> Result<Permissions, error> { /* ... */ }
+
+/// Gets a complete user profile by running fetches concurrently.
+async fn get_full_profile(user_id: int) -> Result<FullProfile, error> {
+  print("Starting profile fetch for user {user_id}")
+
+  // Start both fetches without blocking.
+  // The `async` functions immediately return a Future.
+  let user_future = fetch_user(user_id: user_id)
+  let perms_future = fetch_permissions(user_id: user_id)
+
+  // Now, `await` the results.
+  // The code will pause here until `user_future` is complete.
+  let user = await user_future?
+  // Then it will pause here until `perms_future` is complete.
+  let permissions = await perms_future?
+
+  print("Both fetches complete. Assembling profile.")
+  return Ok(FullProfile{ user: user, permissions: permissions })
+}
+```
+
+By starting both operations before awaiting either, we allow the Boba runtime to work on both tasks in parallel, significantly reducing the total wait time. This powerful pattern is fundamental to writing high-performance Boba applications.

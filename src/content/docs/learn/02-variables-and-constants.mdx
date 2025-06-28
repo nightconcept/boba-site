@@ -1,64 +1,40 @@
 ---
-title: "Variables and Constants"
-description: "Learn how to store and manage data in Boba using variables and constants."
+title: "Immutable Bindings: let and var"
+description: "Learn Boba's core principle of immutability-by-default with `let` and `var`."
 ---
 
-In Boba, you have two ways to store and manage data in your programs: variables and constants.
+In Boba, immutability is the default to promote safer, more predictable code. Mutability must be an explicit choice.
 
-## Variables
+### `let`: Immutable Bindings
 
-Variables are used to store values that can change. You declare a variable using the `var` keyword.
-
-```boba
-// Declare a variable `score` of type `number` and initialize it to 100.
-var score: number = 100
-
-// You can change the value of a variable.
-score = 120
-```
-
-### Type Inference
-
-Boba is a smart language! If you don't explicitly specify the type of a variable, Boba will infer it from the value you assign.
+The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for all variables, as it prevents accidental modification and makes code easier to reason about.
 
 ```boba
-// Boba infers that `health` is a `number`.
-var health = 100
+// Immutable binding, this is the preferred default.
+let message = "Hello, Boba!"
 
-// Boba infers that `playerName` is a `string`.
-var playerName = "Boba Fett"
+// This would be a COMPILE ERROR:
+// message = "Hello again!"
 ```
 
-### Multiple Declarations
+By using `let` wherever possible, you are telling other programmers (and the compiler) that this value is not intended to change.
 
-You can declare multiple variables of the same type on a single line. This is a convenient shorthand, but declaring each variable on its own line is also perfectly fine and often easier to read.
+### `var`: Mutable Variables
+
+The `var` keyword declares a **mutable variable**. You should only use `var` when you have a specific reason to change a value after it has been initialized.
 
 ```boba
-var x, y, z: number = 1, 2, 3
+// Mutable variable, used when mutation is necessary.
+var counter = 0
+counter = counter + 1 // This is allowed.
 ```
 
-## Constants
+### `const`: Compile-Time Constants
 
-Constants are used to store values that will not change. You declare a constant using the `const` keyword.
+The `const` keyword is reserved for values that are known at compile-time. These are typically used for universal constants within your program.
 
 ```boba
-const MAX_PLAYERS: number = 4
+const MAX_HEALTH = 100
 ```
 
-Once a constant is declared, you cannot change its value. This is useful for values that should remain constant throughout your program, like a configuration value or a mathematical constant.
-
-```boba
-const PI: number = 3.14159
-
-// This would cause a compile error:
-// PI = 3.14
-```
-
-## Built-in Constants
-
-Boba provides a few built-in constants for convenience:
-
-- `true`: A boolean value representing truth.
-- `false`: A boolean value representing falsehood.
-
-Now that you know how to create variables and constants, let's move on to the different types of data you can store in them.
+By defaulting to `let`, you make your code's intent clearer and safer. Now, let's explore the different types of data you can work with.

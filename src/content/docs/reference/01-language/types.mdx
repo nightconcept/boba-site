@@ -17,17 +17,26 @@ var name: string = "Boba Fett"
 var constant_string = "Immutable" // Type is inferred
 ```
 
-### `number`
+### `int`
 
-The `number` type represents a 64-bit floating-point number (double-precision). It's used for both integer and fractional values.
+The `int` type is used to represent a 64-bit signed integer (a whole number). It is the ideal type for counting, indexing into collections, representing IDs, and any situation where fractional values are not needed.
 
 ```boba
-var price: number = 20.0
-var quantity = 3 // Type is inferred
-variable pi: number = 3.14159
+let score: int = 100
+let quantity: int = 3
+let current_level = 10 // Inferred as int
 ```
 
-> **Note on Precision**: Boba's number type is suitable for a vast range of applications, but be aware of standard floating-point precision limitations when dealing with very large integers (greater than 2^53).
+### `float`
+
+The `float` type is used to represent a 64-bit double-precision floating-point number. It is the correct type for scientific calculations, measurements, or any value that may have a fractional component.
+
+```boba
+let price: float = 19.99
+const PI: float = 3.14159
+var temperature = 25.5 // Inferred as float
+```
+Note: While floats are powerful, be mindful of standard precision limitations inherent to floating-point arithmetic.
 
 ### `boolean`
 
@@ -47,7 +56,7 @@ Boba includes several fundamental composite types for structuring data. For more
 A `list` is an ordered, dynamic collection of values of the same type, written as `T[]` where `T` is the element type. Lists are used for managing sequences of data where the order matters and the number of items may change. For more details, see the [Collections](./collections.mdx) page.
 
 ```boba
-var highScores: number[] = [100, 95, 80]
+var highScores: int[] = [100, 95, 80]
 var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 ```
 
@@ -56,7 +65,7 @@ var ingredients: string[] = ["flour", "sugar", "boba pearls"]
 A `map` is a collection of key-value pairs, written as `[K:V]` where `K` is the key type and `V` is the value type. Each key must be unique. Maps are ideal for associating data, such as storing properties or creating dictionaries. For more details, see the [Collections](./collections.mdx) page.
 
 ```boba
-var scores: [string:number] = { "ada": 100, "grace": 95 }
+var scores: [string:int] = { "ada": 100, "grace": 95 }
 ```
 
 ### `Option<T>`
@@ -69,7 +78,7 @@ enum Option<T> {
     None,    // Represents the absence of a value
 }
 
-fn find_user(id: number): Option<string> {
+fn find_user(id: int): Option<string> {
     if id == 1 { return Some("Alice") }
     return None
 }

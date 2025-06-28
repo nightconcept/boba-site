@@ -13,6 +13,9 @@
       "include": "#self-keyword"
     },
     {
+      "include": "#generics"
+    },
+    {
       "include": "#keywords"
     },
     {
@@ -26,6 +29,9 @@
     },
     {
       "include": "#table-literals"
+    },
+    {
+      "include": "#custom-types"
     },
     {
       "include": "#constants"
@@ -71,6 +77,22 @@
         }
       ]
     },
+    "custom-types": {
+      "patterns": [
+        {
+          "name": "string",
+          "match": "\\b(Result|User|error|Permissions|FullProfile)\\b"
+        }
+      ]
+    },
+    "string-as-yellow": {
+      "patterns": [
+        {
+          "name": "string",
+          "match": "\\b(string)\\b"
+        }
+      ]
+    },
     "constants": {
       "patterns": [
         {
@@ -87,7 +109,7 @@
         },
         {
           "name": "support.type.primitive",
-          "match": "\\b(string|number|function|boolean|table|void)\\b"
+          "match": "\\b(string|int|float|function|boolean|table|void)\\b"
         }
       ]
     },
@@ -237,11 +259,15 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|for|in|to|by|while|do|foreach|repeat|until|return|break)\\b"
+          "match": "\\b(if|else|for|in|to|by|while|do|foreach|repeat|until|return|break|continue)\\b"
         },
         {
           "name": "keyword.operator.logical",
           "match": "\\b(and|or|not)\\b"
+        },
+        {
+          "name": "storage.type",
+          "match": "\\b(defer)\\b"
         }
       ]
     },
@@ -257,7 +283,7 @@
       "patterns": [
         {
           "name": "storage.type",
-          "match": "\\b(var|const|fn|class|extends|private|pub|enum|struct|match|where)\\b"
+          "match": "\\b(let|var|const|fn|class|extends|private|pub|enum|struct|match|where|async|await)\\b"
         }
       ]
     },
@@ -435,6 +461,38 @@
         {
           "name": "entity.name.function",
           "match": "\\b(self)\\b"
+        }
+      ]
+    },
+    "generics": {
+      "begin": "(?<=[a-zA-Z_][a-zA-Z0-9_])(<)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.bracket"
+        }
+      },
+      "end": "(>)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.bracket"
+        }
+      },
+      "name": "meta.generic",
+      "patterns": [
+        {
+          "include": "#generics"
+        },
+        {
+          "include": "#string-as-yellow"
+        },
+        {
+          "include": "#custom-types"
+        },
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#punctuation"
         }
       ]
     },

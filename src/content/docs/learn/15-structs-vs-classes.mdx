@@ -22,7 +22,7 @@ Imagine we have a simple `Point` struct. When we assign `p1` to `p2`, we create 
 ```boba
 // Struct (Value Type)
 struct Point {
-    x: number
+    x: int
 }
 
 var p1 = Point { x: 10 }
@@ -42,13 +42,13 @@ Now, consider an `Enemy` class. When we assign `e1` to `e2`, both variables poin
 ```boba
 // Class (Reference Type)
 class Enemy {
-    var health: number
+    var health: int
 
-    init(start_health: number = 100) {
+    init(start_health: int = 100) {
         self.health = start_health
     }
 
-    fn take_damage(amount: number) {
+    fn take_damage(amount: int) {
         self.health = self.health - amount
     }
 }

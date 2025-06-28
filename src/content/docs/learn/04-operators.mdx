@@ -23,10 +23,23 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 You can also increment or decrement a number by one using the `++` and `--` operators.
 
 ```boba
-var score = 10
+var score: int = 10
 score++ // score is now 11
 score-- // score is now 10
 ```
+
+### Numeric Operations and Conversions
+
+When you mix integer (`int`) and floating-point (`float`) numbers, Boba follows simple rules to keep things predictable.
+
+1.  **Mixed-Type Math**: If you perform math (`+`, `-`, `*`) between an `int` and a `float`, the result is always a `float`.
+    -   `10 (int) + 2.5 (float)` results in `12.5 (float)`.
+
+2.  **Division Always Returns a Float**: The division operator `/` always produces a `float` to avoid bugs where whole number division gives unexpected results.
+    -   `5 (int) / 2 (int)` results in `2.5 (float)`.
+
+3.  **Explicit Conversion**: To turn a `float` into an `int`, you must be explicit with the `as` keyword, which truncates the decimal.
+    -   `let my_float: float = 9.9; let my_int = my_float as int; // my_int is 9`
 
 ## Comparison Operators
 
@@ -45,7 +58,7 @@ In Boba, comparisons must be explicit. You can't use a non-boolean value in a co
 
 ```boba
 // WRONG
-var score: number = 100
+var score: int = 100
 // if (score) { ... } // This will cause a compile error.
 
 // RIGHT

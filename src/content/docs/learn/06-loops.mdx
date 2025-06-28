@@ -7,7 +7,7 @@ Loops are used to execute a block of code multiple times. Boba provides several 
 
 ## The `for` Loop
 
-The `for` loop is ideal when you want to repeat a block of code a specific number of times. The `by 1` step is the default and can be omitted for simplicity.
+The `for` loop is ideal when you want to repeat a block of code a specific number of times. The loop variable (`i` in the example below) and the range bounds (`1` and `5`) are always of type `int`. The `by 1` step is the default and can be omitted for simplicity.
 
 ```boba
 // This loop will print numbers from 1 to 5
@@ -26,7 +26,7 @@ for i in 1 to 5 by 2 {
 The `while` loop continues to execute a block of code as long as a specified condition is `true`.
 
 ```boba
-var j: number = 0
+var j: int = 0
 while j < 10 {
   j++
   print("I am print {j}!")
@@ -50,7 +50,7 @@ foreach ingredient in ingredients {
 The `repeat` loop is similar to a `while` loop, but the condition is checked at the end of the loop. This means the loop will always execute at least once.
 
 ```boba
-var k: number = 0
+var k: int = 0
 repeat {
   print("Repeating!")
   k++
@@ -66,7 +66,7 @@ You can control the flow of your loops with `break` and `continue`.
 The `break` statement exits the current loop prematurely. It's often used inside a conditional statement.
 
 ```boba
-var j: number = 0
+var j: int = 0
 while j < 10 {
   j++
   if j == 5 {

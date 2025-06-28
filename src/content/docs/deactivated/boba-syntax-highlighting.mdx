@@ -54,11 +54,12 @@ greeter.sayHello("TypeScript");
 
 ```boba
 // Variable declarations
-var counter = 0
+let counter = 0
 const max_value = 100
 var message: string = "Welcome to Boba!"
 var enabled: boolean = true
 var items: [string:string] = {}
+let item = "Boba"
 ```
 
 ### TypeScript
@@ -70,6 +71,7 @@ const maxValue = 100;
 let message: string = "Welcome to TypeScript!";
 let enabled: boolean = true;
 let items: Record<string, any> = {};
+let item = "Boba"
 ```
 
 ## Control Flow and Operators
@@ -93,8 +95,11 @@ while counter <= max_value {
     counter++
     if counter == 50 {
         break
-    }
-}
+     }
+     if i % 2 == 0 {
+        continue
+     }
+ }
 ```
 
 ### TypeScript
@@ -131,7 +136,7 @@ while (counter <= maxValue) {
 
 ```boba
 // Public function definition with arrow syntax
-pub fn calculate(x: number, y: number) -> number {
+pub fn calculate(x: int, y: int) -> int {
     return x * y + 10
 }
 
@@ -141,19 +146,19 @@ fn internal_helper(data: table) -> string {
 }
 
 class Enemy = {
-  health: number = 100
+  health: int = 100
 
   // Init always exists and does not need fn
   init() {
     self.health = 200
   }
 
-  pub fn take_damage(amount: number) -> void {
+  pub fn take_damage(amount: int) -> void {
     self.health = self.health = self.health - amount
   }
 
   // Class private functions are only accessible within the class
-  fn heal(amount: number) -> void {
+  fn heal(amount: int) -> void {
     self.health = self.health + amount
   }
 }
@@ -248,7 +253,7 @@ let myColor: Color = Color.GREEN;
 ```boba
 struct Player = {
   name: string,
-  score: number,
+  score: int,
   is_active: boolean
 }
 
@@ -278,7 +283,7 @@ const player1: Player = {
 ## Match Expressions
 
 ```boba
-fn get_http_message(status_code: number) -> string {
+fn get_http_message(status_code: int) -> string {
   match status_code {
     200 => "OK",
     404 => "Not Found",
@@ -363,7 +368,7 @@ import { func1 as func3 } from "./helpers";
    and advanced operators
 */
 class Calculator extends BaseCalculator {
-    fn compute(values: table) -> number {
+    fn compute(values: table) -> int {
         var sum = 0
         
         foreach item in values {
@@ -417,7 +422,7 @@ class Calculator extends BaseCalculator {
 
 ```boba
 // Numbers and expressions
-var pi = 3.14159
+var pi: float = 3.14159
 var result = (10 + 5) * 2 - 1
 
 // String interpolation in different contexts
@@ -426,7 +431,7 @@ var template = "The result is {result} and pi is {pi.toFixed(2)}"
 // Table access and methods
 var data: table = {
     name: string = "Boba",
-    version: number = 1.0
+    version: float = 1.0
     features: string = ["type safety", "classes", "interfaces"]
 }
 
@@ -466,9 +471,128 @@ This comprehensive example showcases all the major syntax highlighting features 
 
 - **Comments**: Single-line (`//`) and multi-line (`/* */`)
 - **Keywords**: Control flow, loops, and declarations
-- **Types**: Primitive types like `string`, `number`, `boolean`, `table`
+- **Types**: Primitive types like `string`, `int`, `float`, `boolean`, `table`
 - **Operators**: Arithmetic, comparison, logical, assignment, and the special piping operator (`|>`)
 - **String interpolation**: Using `{expression}` syntax
 - **Functions**: Regular and private function declarations
 - **Classes**: Class definitions with inheritance
 - **Punctuation**: Proper highlighting of braces, brackets, and other delimiters
+
+## Concurrency
+
+```boba
+//! Example of fetching data concurrently.
+
+/// Fetches the user profile from one API.
+async fn fetch_user(id: int) -> Result<User, error> { /* ... */ }
+
+/// Fetches the user's permissions from another API.
+async fn fetch_permissions(id: int) -> Result<Permissions, error> { /* ... */ }
+
+/// Gets a complete user profile by running fetches concurrently.
+async fn get_full_profile(user_id: int) -> Result<FullProfile, error> {
+  print("Starting profile fetch for user {user_id}")
+
+  // Start both fetches without blocking.
+  // The `async` functions immediately return a Future.
+  let user_future = fetch_user(user_id: user_id)
+  let perms_future = fetch_permissions(user_id: user_id)
+
+  // Now, `await` the results.
+  // The code will pause here until `user_future` is complete.
+  let user = await user_future?
+  // Then it will pause here until `perms_future` is complete.
+  let permissions = await perms_future?
+
+  print("Both fetches complete. Assembling profile.")
+  return Ok(FullProfile{ user: user, permissions: permissions })
+}
+```
+
+## Defer
+
+```boba
+pub fn process_file(path: string) -> Result<string, error> {
+    // 1. Open the file. If this fails, we exit, no cleanup needed.
+    var file = fs.open(path)?
+
+    // 2. Defer the close call *immediately* after opening.
+    // This is now GUARANTEED to run when process_file exits.
+    defer file.close()
+
+    // 3. Now, we can focus on the logic without worrying about cleanup.
+    var data = file.read_all()?
+    if (data.is_empty()) {
+        // We can just return. `defer file.close()` will run automatically.
+        return Err({ message = "File is empty" })
+    }
+
+    // `defer file.close()` will also run automatically before this return.
+    return Ok("Processed data!")
+}
+```
+
+### Go
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func processFile(path string) (string, error) {
+	// 1. Open the file.
+	file, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+
+	// 2. Defer the close call *immediately* after opening.
+	// This is now GUARANTEED to run when processFile exits.
+	defer file.Close()
+
+	// 3. Now, we can focus on the logic without worrying about cleanup.
+	// (Simplified for example)
+	data := make([]byte, 100)
+	count, err := file.Read(data)
+	if err != nil {
+		return "", err
+	}
+
+	if count == 0 {
+		return "", fmt.Errorf("file is empty")
+	}
+
+	return "Processed data!", nil
+}
+```
+
+### TypeScript
+
+```typescript
+// Example of fetching data concurrently.
+
+// Fetches the user profile from one API.
+async function fetchUser(id: number): Promise<User> { /* ... */ }
+
+// Fetches the user's permissions from another API.
+async function fetchPermissions(id: number): Promise<Permissions> { /* ... */ }
+
+// Gets a complete user profile by running fetches concurrently.
+async function getFullProfile(userId: number): Promise<FullProfile> {
+  console.log(`Starting profile fetch for user ${userId}`);
+
+  // Start both fetches without blocking.
+  const userPromise = fetchUser(userId);
+  const permsPromise = fetchPermissions(userId);
+
+  // Now, `await` the results.
+  const user = await userPromise;
+  const permissions = await permsPromise;
+
+  console.log("Both fetches complete. Assembling profile.");
+  return { user, permissions };
+}
+```

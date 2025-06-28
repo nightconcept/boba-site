@@ -68,6 +68,20 @@ The behavior of equality operators depends on the type:
 | `list`    | **Compares by reference**. Two lists are equal only if they are the *same object*. |
 | `struct`  | **Compares by value**. Two structs are equal if all their corresponding fields are equal. |
 | `class`   | **Compares by reference**. Two class instances are equal only if they are the *same object*. |
+
+### Numeric Operations and Conversions
+
+Introducing two number types creates new rules for how they interact.
+
+1.  **Mixed-Type Arithmetic**: When an operation (`+`, `-`, `*`) is performed between an `int` and a `float`, the result is always "promoted" to a `float`.
+    -   **Example**: `10 (int) + 2.5 (float)` results in `12.5 (float)`.
+
+2.  **Division (`/`)**: To maintain predictable behavior, the division operator `/` _always_ produces a `float`, even when dividing two `int`s. This avoids the common bug in other languages where `5 / 2` results in `2`.
+    -   **Example**: `5 (int) / 2 (int)` results in `2.5 (float)`.
+
+3.  **Explicit Casting**: Converting a `float` to an `int` is a "lossy" operation (you lose the fractional part). Therefore, it must be done explicitly using the `as` keyword. This conversion truncates (cuts off) the decimal part.
+    -   **Example**: `let my_float: float = 9.9; let my_int = my_float as int; // my_int is now 9`
+
 ## Operator Precedence
 
 The following table lists all operators in order of precedence from highest to lowest.

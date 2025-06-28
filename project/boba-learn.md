@@ -35,7 +35,7 @@ Hello, world!
 
 Now that you've seen a complete program in action, let's break down the fundamental building blocks of the language, starting with how to store data in variables and constants.
 
-Welcome to Boba! Let's start with the fundamentals: how to store and manage data in your programs. In Boba, you have two ways to do this: variables and constants.
+In Boba, you have two ways to store and manage data in your programs: variables and constants.
 
 ## Variables
 
@@ -63,7 +63,7 @@ var playerName = "Boba Fett"
 
 ### Multiple Declarations
 
-You can declare multiple variables of the same type on a single line.
+You can declare multiple variables of the same type on a single line. This is a convenient shorthand, but declaring each variable on its own line is also perfectly fine and often easier to read.
 
 ```boba
 var x, y, z: number = 1, 2, 3
@@ -109,7 +109,7 @@ The `number` type is used to represent 64-bit floating-point numbers. This is su
 
 ```boba
 var price: number = 19.99
-var quantity: number = 3
+var quantity = 3
 var total = price * quantity // total is inferred as a number
 ```
 
@@ -169,24 +169,23 @@ print(ingredients[0]) // Outputs: "flour"
 A `map` is a collection of key-value pairs. Each key must be unique, and all keys must be of the same type, as must all values.
 
 ```boba
-// A map with string keys and number values
+// Create a map with string keys and number values
 var scores: [string:number] = {
   "ada": 100,
   "grace": 95
 }
-```
 
-You can access values in a map using their key. Accessing a map key returns an `Option` type, which is Boba's safe way of handling values that might not exist. We'll cover `Option` in detail in a later chapter, but for now, just know that it's a container that can be either `Some(value)` or `None`.
+// Check its initial size
+print(scores.len()) // Outputs: 2
 
-```boba
-// The type of ada_score is Option<number>
-var ada_score = scores["ada"] // ada_score is Some(100)
-
-// Let's add a new score
+// Insert a new key-value pair
 scores["boba"] = 105
 
+// Check the new size
 print(scores.len()) // Outputs: 3
 ```
+
+Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter.
 
 In the next chapter, we'll look at how to use these types with operators to perform calculations and make comparisons.
 
@@ -203,7 +202,7 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `*`      | Multiplication   | `5 * 2` results in `10`  |
 | `/`      | Division         | `5 / 2` results in `2.5` |
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
-| `^`      | Power            | `5 ^ 2` results in `25`  |
+| `^`      | Power (Note: some languages like Python and JavaScript use `**` for this) | `5 ^ 2` results in `25`  |
 
 ### Unary Arithmetic Operators
 
@@ -313,11 +312,16 @@ Loops are used to execute a block of code multiple times. Boba provides several 
 
 ## The `for` Loop
 
-The `for` loop is ideal when you want to repeat a block of code a specific number of times.
+The `for` loop is ideal when you want to repeat a block of code a specific number of times. The `by 1` step is the default and can be omitted for simplicity.
 
 ```boba
 // This loop will print numbers from 1 to 5
-for i in 1 to 5 by 1 {
+for i in 1 to 5 {
+  print("I am print {i}!")
+}
+
+// This loop will print numbers from 1 to 5, counting by 2
+for i in 1 to 5 by 2 {
   print("I am print {i}!")
 }
 ```
@@ -383,7 +387,7 @@ The `continue` statement skips the current iteration of a loop and moves to the 
 
 ```boba
 // Let's print only the odd numbers from 1 to 10
-for i in 1 to 10 by 1 {
+for i in 1 to 10 {
   // If the number is even, skip to the next iteration.
   if (i % 2 == 0) {
     continue
@@ -425,38 +429,52 @@ if (myColor == Color.GREEN) {
 
 Enums are a powerful feature for making your code more expressive and safe. They become even more powerful when combined with the `match` statement, which we'll explore in the very next chapter.
 
-Boba provides a powerful `match` statement for checking a variable against a series of possible values. It's a clean and expressive way to handle multiple distinct cases, especially when working with `enum` types.
+Boba provides a powerful `match` statement for checking a variable against a series of possible values. It's a clean and expressive way to handle multiple distinct cases.
 
-A `match` statement is often used with `enum` types.
+## Matching on Enums and Literals
+
+A `match` statement is often used with `enum` types, but it works just as well with simple literal values like numbers and strings.
 
 ```boba
-enum TrafficLight {
-  RED,
-  YELLOW,
-  GREEN
-}
-
+// Matching on an enum
+enum TrafficLight { RED, YELLOW, GREEN }
 var light = TrafficLight.RED
 
 match light {
   TrafficLight.RED => print("Stop!"),
   TrafficLight.YELLOW => print("Caution!"),
   TrafficLight.GREEN => print("Go!"),
-  _ => print("Light is broken.") // `_` is a wildcard for any other case
+  _ => print("Light is broken.")
+}
+
+// Matching on a number
+var statusCode = 200
+match statusCode {
+  200 => print("OK"),
+  404 => print("Not Found"),
+  _ => print("Unknown status")
 }
 ```
 
 ## Advanced Pattern Matching
 
-Boba's `match` statement can do much more than simple value checking. You can also match on types and use `where` clauses for complex conditions.
+Boba's `match` statement can do much more than simple value checking. You can bind matched values to new variables, match on types, and use `where` clauses for complex conditions.
 
 ```boba
-var myVariable = 150
+// To demonstrate type matching, we need a variable that can hold different types.
+// We'll use a function that returns a value of type `any`.
+fn get_random_value() -> any {
+  // In a real program, this might return different types based on some logic.
+  // For this example, we'll just return a number.
+  return 150
+}
+
+var myVariable = get_random_value()
 
 match myVariable {
   1 => print("It was one!"),
-  x where x > 100 => print("It's a big number: {x}"),
   s: string => print("It's a string of length {s.len()}"),
+  n: number where n > 100 => print("It's a big number: {n}"),
   _ => print("Default case")
 }
 ```
@@ -520,12 +538,21 @@ connect("myhost.com")
 
 ## The Pipe Operator `|>`
 
-Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of one function is passed as the first argument to the next function.
+Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of the expression on the left is passed as the first argument to the function call on the right.
 
 ```boba
-var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+fn add_one(n: number) -> number {
+  return n + 1
+}
 
-ingredients[0] |> upper() |> print() // Outputs "FLOUR"
+fn square(n: number) -> number {
+  return n * n
+}
+
+// The following is equivalent to square(add_one(5))
+var result = 5 |> add_one() |> square()
+
+print(result) // Outputs: 36
 ```
 
 Functions are the building blocks of any Boba program. In the next chapter, we'll explore how to group related data together using structs.
@@ -551,7 +578,7 @@ Once you have defined a struct, you can create instances of it, just like you wo
 
 ```boba
 // Create a new variable `ada` of type `Player`
-var ada: Player = { name = "Ada", score = 100, is_active = true }
+var ada: Player = { name: "Ada", score: 100, is_active: true }
 ```
 
 ## Accessing Struct Fields
@@ -678,8 +705,8 @@ struct Config = {
 }
 
 fn load_config() -> Result<Config, error> {
-    // (In this example, read_file and parse_json are assumed to be
-    // functions from Boba's standard library.)
+    // To demonstrate this, we'll use Boba's built-in `read_file` and `parse_json`
+    // functions, which are designed to return a `Result`.
 
     // `read_file` returns a `Result<string, error>`.
     // If it's an `Err`, `?` returns it from `load_config`.
@@ -885,8 +912,6 @@ weak_goblin.taunt()
 
 Classes are a cornerstone of object-oriented programming. But now that you know about both structs and classes, when should you use each one? We'll answer that critical question in the next chapter.
 
-import { Aside } from '@astrojs/starlight/components';
-
 In Boba Lang, both `structs` and `classes` allow you to create custom data structures, but they have one fundamental difference that impacts how you use them: the way they are handled when assigned or passed to functions. Understanding this distinction is crucial for writing correct and efficient code.
 
 The core difference is **value semantics** vs. **reference semantics**.
@@ -914,8 +939,8 @@ var p2 = p1 // p2 is a NEW copy of p1
 // Modify the copy
 p2.x = 20
 
-print("p1.x is still \{p1.x}") // Output: p1.x is still 10
-print("p2.x is now \{p2.x}")   // Output: p2.x is now 20
+print("p1.x is still {p1.x}") // Output: p1.x is still 10
+print("p2.x is now {p2.x}")   // Output: p2.x is now 20
 ```
 
 ### Classes: References on Assignment
@@ -925,7 +950,11 @@ Now, consider an `Enemy` class. When we assign `e1` to `e2`, both variables poin
 ```boba
 // Class (Reference Type)
 class Enemy {
-    var health = 100
+    var health: number
+
+    init(start_health: number = 100) {
+        self.health = start_health
+    }
 
     fn take_damage(amount: number) {
         self.health = self.health - amount
@@ -938,18 +967,11 @@ var e2 = e1 // e2 is a REFERENCE to the SAME object as e1
 // Modify the single object via the second reference
 e2.take_damage(20)
 
-print("e1.health is now \{e1.health}") // Output: e1.health is now 80
-print("e2.health is now \{e2.health}") // Output: e2.health is now 80
+print("e1.health is now {e1.health}") // Output: e1.health is now 80
+print("e2.health is now {e2.health}") // Output: e2.health is now 80
 ```
 
-<Aside type="note">
-**Stack vs. Heap: A Deeper Look**
-
-For those with a background in systems programming (like C or C++), you can think of this in terms of memory allocation.
-
--   **Value types** like `structs` are typically stored on the **stack**. The stack is a simple, efficient region of memory for fixed-size data. When you assign a struct, its data is copied directly on the stack.
--   **Reference types** like `classes` are stored on the **heap**. The heap is a more flexible (but slightly slower) region of memory for dynamically sized or long-lived data. The object itself lives on the heap, and what you pass around is just a small, fixed-size pointer to that memory location.
-</Aside>
+Notice the `init` block in the `Enemy` class, which acts as a constructor, contrasts with the direct literal initialization used for the `Point` struct. This highlights another common difference between reference and value types in Boba.
 
 ## When to Use Which?
 
@@ -1029,64 +1051,6 @@ Import paths are always relative to the current file.
 
 ---
 
-Congratulations! You have completed the Boba language tutorial. You now have a solid foundation in the core concepts of the language. From here, you can explore the rest of the documentation to learn about more advanced features and start building your own Boba applications.
+Congratulations! You have completed the Boba language tutorial. You've learned about variables, data types, control flow, functions, and how to structure your code. You now have a solid foundation in the core concepts of the language.
 
-## Project Mode
-
-This mode is active when you run `boba` commands like `build`, `run`, or `test` without a file path.
-
--   **Invocation:** `boba build`, `boba run`, `boba test`
-
--   **Behavior:** The `boba` tool will look in the current directory (and parent directories) for a `boba.toml` file.
-    -   If it finds one, it considers that directory the project root.
-    -   All operations are now relative to this root. For example, `boba run` will know to look for a `src/main.boba` file and execute its `main()` function. `boba build` will place artifacts in a `build/` or `target/` directory within the project root.
-
-## Designing `boba init`
-
-The `boba init` command is your user's entry point into Project Mode. It's your chance to establish a clean, standard project structure that solves the "ecosystem tax" from day one.
-
-When a user runs `boba init my_awesome_project`, the tool should create the following structure:
-
-```text
-my_awesome_project/
-├── .gitignore
-├── boba.toml
-└── src/
-    └── main.boba
-```
-
-### `boba.toml`: A pre-populated project manifest
-
-```toml
-[project]
-name = "my_awesome_project"
-version = "0.1.0"
-license = "MIT"
-
-[dependencies]
-
-# To specify a git repository, you use an inline table.
-# At a minimum, you must provide the git URL.
-# By default, Boba will use the latest commit on the default branch.
-http = { git = "https://github.com/boba-lang/http" }
-
-# To pin to a specific version tag (BEST PRACTICE for releases)
-json = { git = "https://github.com/boba-lang/json", tag = "v1.2.0" }
-
-# To pin to a specific commit hash for absolute reproducibility
-data_structures = { git = "https://github.com/user/boba-dstruct", rev = "f4aa7b123c..." }
-
-# To pin to a specific branch (for development or bleeding-edge versions)
-# WARNING: This is not recommended for stable applications.
-logging = { git = "https://github.com/boba-lang/log", branch = "feature/new-format" }
-
-```
-
-### `src/main.boba`: A default entry point file
-
-```boba
-// The main entry point for the project.
-// This function is executed when you run `boba run` in the project directory.
-pub fn main() -> void {
-  print("Hello, world!")
-}
+The journey doesn't end here. The next logical step is to explore the guides on how to configure your project and use the Boba tooling effectively. Happy coding!

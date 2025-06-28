@@ -22,7 +22,7 @@ match light {
 }
 
 // Matching on a number
-var statusCode = 200
+var statusCode: int = 200
 match statusCode {
   200 => print("OK"),
   404 => print("Not Found"),
@@ -48,7 +48,7 @@ var myVariable = get_random_value()
 match myVariable {
   1 => print("It was one!"),
   s: string => print("It's a string of length {s.len()}"),
-  n: number where n > 100 => print("It's a big number: {n}"),
+  n: int where n > 100 => print("It's a big number: {n}"),
   _ => print("Default case")
 }
 ```

@@ -29,7 +29,7 @@ If a variable can be absent, you must declare it with the `Option<T>` type.
 
 ```boba
 // A function that might not find a user
-fn find_user(id: number): Option<string> {
+fn find_user(id: int): Option<string> {
     if id == 1 {
         return Some("Alice")
     }

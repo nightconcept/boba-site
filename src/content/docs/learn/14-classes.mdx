@@ -11,14 +11,14 @@ You define a class using the `class` keyword.
 
 ```boba
 class Enemy = {
-  health: number = 100
+  health: int = 100
 
-  pub fn take_damage(amount: number) -> void {
+  pub fn take_damage(amount: int) -> void {
     self.health = self.health - amount
   }
 
   // Class private functions are only accessible within the class
-  fn heal(amount: number) -> void {
+  fn heal(amount: int) -> void {
     self.health = self.health + amount
   }
 }
@@ -40,14 +40,14 @@ Classes have a special `init` block that acts as a constructor. It's called when
 
 ```boba
 class Enemy = {
-  health: number
+  health: int
 
   // This init block takes a parameter to set the starting health
-  init(start_health: number) {
+  init(start_health: int) {
     self.health = start_health
   }
 
-  pub fn take_damage(amount: number) -> void {
+  pub fn take_damage(amount: int) -> void {
     self.health = self.health - amount
   }
 }
@@ -79,7 +79,7 @@ Let's see it in action.
 ```boba
 // --- The Parent Class ---
 class Enemy {
-  health: number
+  health: int
   name: string
 
   // The parent initializer requires a name to be provided.
@@ -89,7 +89,7 @@ class Enemy {
     print("{self.name} (an Enemy) has been created.")
   }
 
-  pub fn take_damage(amount: number) -> void {
+  pub fn take_damage(amount: int) -> void {
     self.health = self.health - amount
   }
 }
@@ -97,10 +97,10 @@ class Enemy {
 
 // --- The Child Class ---
 class Goblin extends Enemy {
-  gold: number
+  gold: int
 
   // The Goblin's initializer takes the arguments it needs.
-  init(name: string, gold_pieces: number) {
+  init(name: string, gold_pieces: int) {
     // 1. Call the parent's init FIRST and pass the required 'name' up to it.
     // This is mandatory.
     super(name)

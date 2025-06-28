@@ -42,51 +42,56 @@ export default defineConfig({
             {
               label: 'Module 1: The Absolute Basics',
               items: [
-                { label: '1. Your First Program', link: '/learn/01-your-first-program' },
-                { label: '2. Variables & Constants', link: '/learn/02-variables-and-constants' },
-                { label: '3. Data Types', link: '/learn/03-data-types' },
-                { label: '4. Operators', link: '/learn/04-operators' },
+                { label: '1.1. Your First Program', link: '/learn/01-your-first-program' },
+                { label: '1.2. Immutable Bindings: let and var', link: '/learn/02-variables-and-constants' },
+                { label: '1.3. Data Types', link: '/learn/03-data-types' },
+                { label: '1.4. Operators', link: '/learn/04-operators' },
               ],
             },
             {
               label: 'Module 2: Control Flow',
               items: [
-                { label: '5. Conditional Logic: if/else', link: '/learn/05-conditional-logic' },
-                { label: '6. Looping', link: '/learn/06-loops' },
+                { label: '2.1. Conditional Logic: if/else', link: '/learn/05-conditional-logic' },
+                { label: '2.2. Looping', link: '/learn/06-loops' },
               ],
             },
             {
               label: 'Module 3: Custom Data & Matching',
               items: [
-                { label: '7. Enums', link: '/learn/07-enums' },
-                { label: "8. Matching", link: '/learn/08-match' },
+                { label: '3.1. Enums', link: '/learn/07-enums' },
+                { label: "3.2. Matching", link: '/learn/08-match' },
               ],
             },
             {
               label: 'Module 4: Building Blocks',
               items: [
-                { label: '9. Functions', link: '/learn/09-functions' },
-                { label: '10. Structs', link: '/learn/10-structs' },
+                { label: '4.1. Functions', link: '/learn/09-functions' },
+                { label: '4.2. Structs', link: '/learn/10-structs' },
               ],
             },
             {
               label: 'Module 5: Writing Robust Boba',
               items: [
-                { label: '11. Safe Absence', link: '/learn/11-safe-absence' },
-                { label: '12. Handling Errors', link: '/learn/12-handling-errors' },
-                { label: '13. Guaranteed Cleanup', link: '/learn/13-defer' },
+                { label: '5.1. Safe Absence', link: '/learn/11-safe-absence' },
+                { label: '5.2. Handling Errors', link: '/learn/12-handling-errors' },
+                { label: '5.3. Guaranteed Cleanup', link: '/learn/13-defer' },
               ],
             },
             {
               label: 'Module 6: Object-Oriented Programming',
               items: [
-                { label: '14. Classes & Inheritance', link: '/learn/14-classes' },
-                { label: '15. Structs vs. Classes: The Key Difference', link: '/learn/15-structs-vs-classes' },
+                { label: '6.1. Classes & Inheritance', link: '/learn/14-classes' },
+                { label: '6.2. Structs vs. Classes', link: '/learn/15-structs-vs-classes' },
+                { label: '6.3. Philosophy: Encouraging Pure Functions', link: '/learn/16-pure-functions' },
               ],
             },
             {
-              label: 'Module 7: Project Organization',
-              items: [{ label: '16. Imports', link: '/learn/16-imports' }],
+              label: 'Module 7: Project Organization & Concurrency',
+              items: [
+                { label: '7.1. Imports', link: '/learn/17-imports' },
+                { label: '7.2. Concurrency: async and await', link: '/learn/18-concurrency' },
+                { label: '7.3. The Boba Style Guide (boba-fmt)', link: '/learn/19-style-guide' },
+              ],
             },
           ],
         },
@@ -113,6 +118,10 @@ export default defineConfig({
               autogenerate: { directory: 'reference/02-standard-library' },
             },
           ],
+        },
+        {
+          label: 'Development',
+          items: [{ label: 'Syntax Highlighting', slug: 'deactivated/boba-syntax-highlighting' }],
         },
       ],
     }),
