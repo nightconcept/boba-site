@@ -5,7 +5,7 @@ description: "Learn about panics for handling unrecoverable errors and how Boba 
 
 In the last chapters, we learned how to handle expected failures using `Result` and how to guarantee cleanup using `defer`. But what happens when something goes wrong that should be _impossible_? This is where Boba's `panic` mechanism comes in.
 
-#### Recoverable vs. Unrecoverable Errors
+## Recoverable vs. Unrecoverable Errors
 
 First, let's understand the difference:
 
@@ -16,9 +16,21 @@ let file_result = fs.open(path: "my_file.txt")
 ```
 
 - **Unrecoverable Error (A Bug):** An error that indicates a critical problem with the program's logic itself. For example, trying to access a list element at an index that doesn't exist, or a mathematical impossibility. If these things happen, the program is in an unknown, unpredictable state, and continuing could lead to more errors or data corruption. For these situations, Boba **panics**.
-    
 
-#### What is a Panic?
+### When to Use `Option` vs. `Result`
+
+Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline is based on whether a situation is an expected absence or a failure.
+
+* Use **`Option<T>`** when a value could be absent, and this is a normal, expected outcome. It answers the question: "Is there a value here or not?"
+    * `find_user_by_id()`: A user might not exist. This isn't an error.
+    * `map.get(key)`: A key may not be in a map. This is normal.
+
+* Use **`Result<T, E>`** when a function that is *supposed* to succeed could fail for some external reason. It answers the question: "Did this operation work or not?"
+    * `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full.
+    * `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
+
+
+## What is a Panic?
 
 A panic is an abrupt, unrecoverable error that stops the normal execution of your program.
 
@@ -26,7 +38,7 @@ When a panic occurs, the program will stop what it's doing and begin to **unwind
 
 Most importantly, as the stack unwinds, the runtime will execute any **`defer`** statements it finds along the way. This is a crucial safety feature that ensures that even during a crash, critical cleanup tasks (like closing files or releasing resources) are still performed.
 
-#### Implicit Panics: Integer Overflow
+## Implicit Panics: Integer Overflow
 
 To protect against a common and dangerous type of bug, Boba will automatically panic on integer overflow in development and test builds.
 
@@ -48,7 +60,7 @@ current_score += 1
 
 This turns a silent, hard-to-find bug into a loud, obvious crash that you can fix immediately.
 
-#### Explicit Panics: The `panic()` Function
+## Explicit Panics: The `panic()` Function
 
 Sometimes, you need to signal an unrecoverable error yourself. If your code reaches a state that you believe should be logically impossible, you can trigger a panic manually with the built-in `panic()` function.
 
@@ -70,3 +82,20 @@ fn get_guild_rank(player: Player) -> string {
     }
   }
 }
+```
+For those familiar with languages like Java, C#, or JavaScript, `panic` is similar to throwing an un-caught exception. The key philosophical difference in Boba is that panics are reserved exclusively for unrecoverable errors that indicate a bug, not for regular error conditions, which should always be handled with `Result`.
+
+## Summary: The Boba Safety Model
+
+Congratulations, you've now seen all the pieces of Boba's model for safety and error handling. Here is a simple guide for when to use each tool:
+
+* **Is a value sometimes absent? (This is expected)**
+    * Use **`Option<T>`** to represent `Some(value)` or `None`.
+* **Can an operation fail? (This is recoverable)**
+    * Use **`Result<T, E>`** to return `Ok(value)` or `Err(error)`. Use `?` to propagate errors.
+* **Does my function need to clean up a resource? (File, network connection, etc.)**
+    * Use **`defer`** to guarantee cleanup code runs before the function exits.
+* **Has my code entered an impossible state? (This is a bug)**
+    * Use **`panic!()`** to stop the program immediately. This signals a programmer error that must be fixed.
+
+This compile-time toolkit is designed to help you write exceptionally robust and predictable programs.

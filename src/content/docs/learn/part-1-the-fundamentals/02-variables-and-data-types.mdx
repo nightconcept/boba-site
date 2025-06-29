@@ -16,8 +16,12 @@ let message = "Hello, Boba!"
 message = "Hello, Dave!" // COMPILE ERROR: This is NOT allowed.
 ```
 
+> **A Note for JavaScript/TypeScript Developers**
+>
+> In Boba, `let` creates a binding that cannot be reassigned, similar to `const` in JavaScript. This is different from JavaScript's `let`, which creates a mutable variable. For mutable variables in Boba, you must use `var`.
+
 ### Convention: Using `let` for Constants
-For universal, program-wide constants, we still use `let`, but we adopt the widely-used `SCREAMING_SNAKE_CASE` naming convention. This signals to other developers that the value has a special, constant role.
+Boba uses a combination of an immutable `let` binding and a naming convention for program-wide constants. By convention, these values are given `SCREAMING_SNAKE_CASE` names to signal to other developers that they represent a foundational, constant value within the program's domain.
 
 ```boba
 let MAX_HEALTH = 100
@@ -35,6 +39,10 @@ counter = counter + 1 // This is allowed.
 ```
 
 By defaulting to `let` for everything, you make your code's intent clearer and safer.
+
+### Type Inference: Letting Boba Do the Work
+
+In the examples, you may have noticed that sometimes we declare a type (`let score: int = 100`) and sometimes we don't (`let current_level = 10`). When you assign a value as you declare a variable, Boba can usually figure out, or infer, the type for you. `10` is clearly an `int`, `"Ada"` is a `string`, and `true` is a `boolean`. This is a convenience feature to keep your code concise. You should add an explicit type annotation when it helps improve clarity or when you want to be more specific than the inferred default (e.g., `let price: float = 20` instead of letting it be an `int`).
 
 ## Primitive Types
 
@@ -87,10 +95,15 @@ let permission_flags: int = 0b1010_1111
 ### `float`
 
 The `float` type is used to represent a 64-bit double-precision floating-point number. It is the correct type for scientific calculations, measurements, or any value that may have a fractional component.
+
 ```boba
 let price: float = 19.99
-let PI: float = 3.14159
-var temperature = 25.5 // Inferred as float
+let PI: float = 3.14159 // Constant
+let milk_percentage = 0.02 // Inferred as float due to the decimal point.
+
+var piggy_bank_value: float = 50.43
+var temperature = 25.5
+var test_grade = 90.0 // Inferred as float due to the decimal point when it is .0
 ```
 Note: While floats are powerful, be mindful of standard precision limitations inherent to floating-point arithmetic.
 
@@ -99,7 +112,8 @@ Note: While floats are powerful, be mindful of standard precision limitations in
 The `string` type is used to represent text.
 
 ```boba
-var message: string = "Hello, Boba!"
+let message: string = "Hello, Boba!"
+
 var player_name = "June" // Inferred as a string
 ```
 ##### Formatting Strings with F-Strings
@@ -178,4 +192,11 @@ scores["boba"] = 105
 print(scores.len()) // Outputs: 3
 ```
 
-Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter.
+Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a **later chapter**.
+
+## Chapter Summary
+
+- Use `let` for immutable bindings by default, which is Boba's version of a constant.
+- Use `var` only when you specifically need to change a variable's value.
+- Boba has familiar primitive types (`int`, `float`, `string`, `boolean`) and composite types (`list`, `map`).
+- Boba often uses type inference to determine a variable's type from its initial value.

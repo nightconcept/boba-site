@@ -5,7 +5,7 @@ description: "Learn how to attach methods to your structs using an `impl` block.
 
 In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
 
-### Defining an `impl` Block
+## The `impl` Block
 
 The `impl` block is where you define all the functions that belong to a `struct`.
 
@@ -16,23 +16,68 @@ struct Player {
 }
 
 impl Player {
-  /// A method that prints the player's status.
-  /// The `self` parameter gives us read-only access to the instance.
-  pub fn print_status(self) {
-    print("{self.name}'s health is {self.health}.")
-  }
+  // All functions related to Player will go in here.
 }
 ```
 
-### Creating Instances: The `new()` Convention
+## Associated Functions and Constructors
 
-To create an instance of a struct with behavior, the Boba convention is to create an associated function inside the `impl` block, typically named `new`. This acts as our constructor.
+An **associated function** is a function that belongs to a type but is not called on a specific instance (like a `static` method in other languages). The most common associated function is `new()`, which is the idiomatic Boba convention for a constructor.
 
-### Modifying State with `mut self`
+```boba
+impl Player {
+    /// Creates a new Player with default health.
+    pub fn new(name: string) -> Player {
+        return Player{
+            name: name,
+            health: 100
+        }
+    }
+}
+```
+
+## Methods and the `self` Parameter
+
+A **method** is a function within an `impl` block that takes `self` as its first parameter. `self` represents the specific instance of the struct the method is being called on.
+
+> For developers coming from languages like JavaScript, Python, or Java, `self` is the equivalent of `this`.
+
+```boba
+impl Player {
+    // ... new() function from before ...
+
+    /// A method that prints the player's status.
+    /// The `self` parameter gives us read-only access to the instance.
+    pub fn print_status(self) {
+        print("{self.name}'s health is {self.health}.")
+    }
+}
+```
+
+## Mutating State with `mut self`
 
 By default, `self` is immutable. If a method needs to _change_ the struct's data, you must mark the parameter as `mut self`. This is an explicit signal that the method has side effects on the instance.
 
 ```boba
+impl Player {
+    // ... new() and print_status() from before ...
+
+    /// Reduces the player's health by a given amount.
+    pub fn take_damage(mut self, amount: int) {
+        self.health -= amount
+        print("{self.name} takes {amount} damage!")
+    }
+}
+```
+
+Here is the complete `impl` block and its usage:
+
+```boba
+struct Player {
+  name: string,
+  health: int
+}
+
 impl Player {
     /// Creates a new Player with default health.
     pub fn new(name: string) -> Player {
@@ -48,23 +93,25 @@ impl Player {
     }
 
     /// Reduces the player's health by a given amount.
-    pub fn take_damage(self: mut Player, amount: int) {
+    pub fn take_damage(mut self, amount: int) {
         self.health -= amount
         print("{self.name} takes {amount} damage!")
     }
 }
-```
 
-Now we can create a `Player` like this:
-
-```boba
-let player1 = Player.new("Ada")
+// Create an immutable player
+let player1 = Player.new(name: "Ada")
 player1.print_status() // Outputs: Ada's health is 100.
+
+// To call a mutating method, the instance must be mutable.
+var player2 = Player.new(name: "Boba")
+player2.take_damage(amount: 25) // This is allowed because player2 is mutable.
+player2.print_status()  // Outputs: Boba's health is 75.
 ```
 
-To call a mutating method, the variable holding the struct instance must also be declared with `var`.
+## Chapter Summary
 
-```boba
-var player2 = Player.new("Boba")
-player2.take_damage(25) // This is allowed because player2 is mutable.
-player2.print_status()  // Outputs: Boba's health is 75.
+- Use an `impl` block to define functions associated with a `struct`.
+- **Associated functions** (like `Player.new()`) belong to the struct type itself.
+- **Methods** (like `player.print_status()`) are called on a specific instance and take `self` as the first parameter.
+- To modify an instance's data, a method must take `mut self`, and the instance variable must be declared with `var`.

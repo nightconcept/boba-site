@@ -5,58 +5,54 @@ description: "Learn how to organize your Boba code into multiple files and share
 
 As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using modules and the `import` keyword.
 
-By default, all items (functions, structs, etc.) are private, meaning they can only be accessed from within the same file. To make an item accessible from other files, you must use the `pub` keyword.
+By default, all items you define in a file—functions, structs, etc.—are private, meaning they can only be used within that same file. To make an item part of a file's public API so it can be imported elsewhere, you must mark it with the `pub` keyword.
 
 ## Importing from Other Files
 
 You can import public functions, structs, enums, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
 
-### Importing Specific Items
+## Importing Specific Items
 
-To import specific items from a file, you list them by name.
+To import specific items from a file, you list them by name inside curly braces `{}`, and can optionally rename them with `as`.
 
 ```boba
 // in utils.boba
-pub fn sayHello() {
-  print("Hello!")
+pub fn say_hello() {
+    print("Hello!")
+}
+pub fn say_goodbye() {
+    print("Goodbye!")
 }
 
 // in main.boba
-import sayHello from "./utils.boba"
+import { say_hello, say_goodbye as farewell } from "./utils.boba"
 
-sayHello() // Prints "Hello!"
+say_hello() // Prints "Hello!"
+farewell() // Prints "Goodbye!"
 ```
 
-### Importing Everything
+## Importing Everything as a Namespace
 
-To import everything from a file, you can use the `*` wildcard.
+To import everything from a file as a single namespace, you can use the `* as <name>` syntax.
 
 ```boba
 // in utils.boba
-pub fn sayHello() { ... }
-pub fn sayGoodbye() { ... }
+pub fn say_hello() { /* ... */ }
+pub fn say_goodbye() { /* ... */ }
 
 // in main.boba
-import * from "./utils.boba"
+import * as utils from "./utils.boba"
 
-sayHello()
-sayGoodbye()
-```
-
-### Renaming Imports
-
-You can rename an imported item using the `as` keyword. This is useful to avoid naming conflicts.
-
-```boba
-// in utils.boba
-pub fn sayHello() { ... }
-
-// in main.boba
-import sayHello as greet from "./utils.boba"
-
-greet() // Prints "Hello!"
+utils.say_hello()
+utils.say_goodbye()
 ```
 
 ## A Note on Paths
 
 Import paths are always relative to the current file.
+
+## Chapter Summary
+
+- Use the `pub` keyword to make items in a file (functions, structs, etc.) public and importable.
+- Use `import { item1, item2 as alias } from "./path/to/file.boba"` to import and optionally rename specific items.
+- Use `import * as namespace from "./path/to/file.boba"` to import all public items from a file under a single namespace.

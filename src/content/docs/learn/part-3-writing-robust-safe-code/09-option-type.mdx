@@ -21,6 +21,8 @@ enum Option<T> {
 -   `Some(T)`: A variant that holds a value of type `T`.
 -   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
 
+A helpful analogy is to think of `Option<T>` as a sealed box: the box is either empty (`None`) or it contains a value of type `T` (`Some(T)`).
+
 By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
 
 ## Working with `Option<T>`
@@ -40,7 +42,7 @@ var user = find_user(1) // user is Option<string>
 var missing_user = find_user(2) // missing_user is also Option<string>
 ```
 
-### Safely Unwrapping with `match`
+## Safely Unwrapping with `match`
 
 The primary way to work with an `Option<T>` is the `match` statement. It allows you to safely "unwrap" the value from the `Some` variant while ensuring you handle the `None` case.
 
@@ -68,6 +70,31 @@ match missing_user {
 
 This pattern guarantees that you can only access the inner value when it is actually present (`Some`), and you are forced to provide a code path for when it is not (`None`).
 
+## Shortcut: Unwrapping with a Default using ??
+
+A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`. This works identically to the nullish coalescing operator (`??`) in modern JavaScript.
+
+Let's say you want to get a value from a map, but provide a default if the key isn't found.
+
+The match way:
+```boba
+// map.get(key) returns an Option
+let value = match config_map.get("timeout") {
+    Some(t) => t,
+    None => 5000, // The default value
+}
+```
+
+The ?? shortcut:
+The ?? operator does the exact same thing in a single, highly readable line.
+
+```boba
+// If the left side is Some(t), use t. If it's None, use the right side.
+let value = config_map.get("timeout") ?? 5000
+```
+
+This operator makes your code cleaner by removing the boilerplate of a match statement for the simple "use this or a default" pattern.
+
 ## The Safety of the `Option<T>` Model
 
 To understand the safety `Option<T>` provides, it's helpful to contrast Boba's model with that of languages that use `null`:
@@ -75,3 +102,11 @@ To understand the safety `Option<T>` provides, it's helpful to contrast Boba's m
 -   **In languages with `null` (like Java or JavaScript):** A variable of type `User` could be a `User` object or `null`. You must remember to check for `null` every time. If you forget, your program can crash.
 
 -   **In Boba:** A variable of type `Option<User>` is a container that might hold a `User`. The compiler requires you to handle both the `Some(User)` and `None` cases, guaranteeing that you cannot accidentally use a value that isn't there.
+
+## Chapter Summary
+
+- Boba does not have `null`. Instead, it uses the `Option<T>` enum to represent values that may be absent.
+- `Option<T>` has two variants: `Some(T)` for a present value and `None` for an absent value.
+- The compiler forces you to handle both `Some` and `None` cases, preventing null-related runtime errors.
+- Use a `match` statement to safely unwrap and handle both possibilities.
+- Use the `??` operator as a concise shortcut to provide a default value when an `Option` is `None`.

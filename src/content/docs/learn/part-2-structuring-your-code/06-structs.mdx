@@ -3,7 +3,7 @@ title: "Chapter 6: Creating Custom Data Types: Structs"
 description: "Learn how to create your own custom data types in Boba using structs."
 ---
 
-Structs, short for structures, allow you to create your own custom data types by grouping together related variables. This is a powerful way to organize and manage complex data in your programs.
+Structs, short for structures, are custom data types you can create by grouping together related variables. Think of a struct definition as a blueprint: it defines the shape and fields for a concept in your program. From that blueprint, you can then create multiple concrete instances.
 
 ## Defining a Struct
 
@@ -12,9 +12,9 @@ You define a struct using the `struct` keyword. Inside the struct definition, yo
 ```boba
 // Define a `Player` struct
 struct Player {
-name: string,
-score: int,
-is_active: boolean
+  name: string,
+  score: int,
+  is_active: boolean
 }
 ```
 
@@ -33,3 +33,5 @@ You can access the fields of a struct instance using dot notation.
 
 ```boba
 print("Player name: {ada.name}") // Prints "Player name: Ada"
+
+You now know how to bundle related data together. This is the first half of creating powerful custom types. In the next chapter, we will bring this data to life by giving our structs behavior with methods.

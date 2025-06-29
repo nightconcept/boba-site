@@ -1,0 +1,147 @@
+---
+title: "Chapter 14: Writing Idiomatic Boba"
+description: "Learn the official Boba code style and the philosophy behind it."
+---
+
+Welcome to the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths in the way its designers intended. This chapter covers the conventions for structure, naming, documentation, and feature usage that define professional Boba code. Adherence to these principles is enforced by the official `boba fmt` tool, ensuring all code in the ecosystem is instantly familiar.
+
+## 1. File & Module Structure
+
+A well-organized file is easy to navigate. All Boba files (`.boba`) should follow this structure from top to bottom:
+
+- **Module-level Documentation:** A `//!` comment that describes the purpose of the entire file.
+- **Import Statements:** All `import` statements grouped at the top.
+- **Constants:** All program-wide constants (declared with `let` and `SCREAMING_SNAKE_CASE`).
+- **Type Definitions:** All `struct` and `enum` definitions for the module.
+- **Public Implementations & Functions:** All `pub impl` blocks and `pub fn` functions that form the module's public API.
+- **Private Implementations & Functions:** Any private helper functions or `impl` blocks used by the public API, grouped at the bottom.
+
+## 2. Naming Conventions
+
+Consistent naming makes code predictable.
+
+- **`PascalCase` for Types:** All `struct` and `enum` types.
+  - `struct PlayerProfile`, `enum RequestStatus`
+- **`snake_case` for Values:** All functions, methods, and variables.
+  - `fn get_user_data`, `let current_score`, `var remaining_attempts`
+- **`SCREAMING_SNAKE_CASE` for Constants:** Global or module-level constants declared with `let`.
+  - `let MAX_CONNECTIONS = 100`
+
+## 3. Formatting (boba fmt)
+
+The `boba fmt` tool handles this automatically, but these are the core rules:
+
+- **Indentation:** 2 spaces. No tabs.
+- **Braces:** The opening brace (`{`) always goes on the same line as the declaration (`struct`, `fn`, `if`, etc.).
+- **Line Length:** A soft limit of 100 characters. For readability, `boba fmt` may exceed this for long string literals or complex signatures. Long function calls or struct literals should be broken into multiple lines.
+
+```boba
+// Good: A long struct literal broken into multiple lines.
+let player = Player {
+    name: "Ada Lovelace",
+    score: 100,
+    is_active: true,
+}
+```
+
+## 4. Documentation (BobaDoc)
+
+Documenting your public API is essential for a healthy ecosystem.
+
+- **Use `///` for Public APIs:** Every `pub struct`, `pub enum`, and `pub fn` must have a documentation comment.
+- **Use `//!` for Module-Level Docs:** Explain the purpose of the file at the top.
+- **Use Standard Tags:** Use `@param`, `@returns`, and `@panics` to provide structured information.
+- **Include an `@example`:** A runnable example is the best documentation.
+
+## 5. Comments
+
+- Use BobaDoc (`///`) to explain the *what* and *how* for users of your API. This is for the public interface.
+- Use inline comments (`//`) to explain the *why* for maintainers of your code. Explain complex logic, non-obvious choices, or the reasoning behind a particular algorithm. Avoid comments that just restate what the code does (e.g., `// increment score`).
+
+## 6. Error Handling Idioms
+
+- **Prefer `?` for Propagation:** Use the `?` operator to propagate errors cleanly up the call stack. This is the primary and most idiomatic way to handle `Result` types.
+- **Use `match` for Specific Error Handling:** Only use a `match` statement on a `Result` when you need to handle different error types in different ways or need to add specific recovery logic.
+
+## 7. Mutability
+
+- **`let` is the Default:** Always declare variables with `let`.
+- **Use `var` Sparingly:** Only use `var` when you have a clear, intentional need for a value to be mutated after its creation. If you find yourself using `var` frequently, consider if your function could be rewritten to transform data and return a new value instead.
+
+## Putting It All Together: An Example Module
+
+This example file, `config.boba`, demonstrates all the style guide rules in practice. It defines a simple module for loading and parsing a JSON configuration file.
+
+```boba
+//! A module for loading and parsing application configuration from a JSON file.
+//! This provides a safe, structured way to access config values.
+
+import json from "std/json" // Hypothetical standard library import
+import fs from "std/fs"     // Hypothetical standard library import
+
+// Naming: `SCREAMING_SNAKE_CASE` for a module-level constant.
+let DEFAULT_TIMEOUT_MS = 5000
+
+// Naming: `PascalCase` for a struct type.
+/// Represents the application's configuration structure.
+/// All public fields should be documented.
+pub struct Config {
+    /// The hostname of the server to connect to.
+    pub hostname: string,
+    /// The port number for the connection.
+    pub port: int,
+    /// The connection timeout in milliseconds.
+    pub timeout_ms: int,
+}
+
+// Organization: `impl` block for the public `Config` type.
+impl Config {
+    /// Safely loads, parses, and validates the configuration from a given path.
+    ///
+    /// @param path: The file system path to the `config.json` file.
+    /// @returns: A `Result` containing the valid `Config` on success, or an
+    ///           `error` if the file cannot be read, parsed, or validated.
+    /// @example:
+    ///   let my_config = Config.load("path/to/config.json")?
+    pub fn load(path: string) -> Result<Config, error> {
+        // Comments: Explain the *why*. We use a helper for testability.
+        let raw_text = fs.read_file(path)?
+        return Self.parse_and_validate(raw_text)
+    }
+
+    /// A private helper function to separate parsing logic from file I/O.
+    /// This makes the function easier to test by passing in string content directly.
+    fn parse_and_validate(content: string) -> Result<Config, error> {
+        let parsed_json = json.parse(content)?
+
+        // Use `match` for detailed error handling when `?` is not enough.
+        match parsed_json {
+            // Pattern matching to extract values.
+            { hostname: h: string, port: p: int } => {
+                // Logic: Use the ?? operator to provide a default value if one isn't present.
+                let timeout = parsed_json["timeout_ms"] ?? DEFAULT_TIMEOUT_MS
+
+                // Formatting: Long struct literal is broken into multiple lines.
+                return Ok(Config{
+                    hostname: h,
+                    port: p,
+                    timeout_ms: timeout,
+                })
+            },
+            // Handle the case where the JSON is valid but missing required fields.
+            _ => return Err({
+                code: "INVALID_CONFIG",
+                message: "Config is missing required 'hostname' or 'port' fields.",
+            }),
+        }
+    }
+}
+
+## Chapter Summary
+
+- **Structure:** Organize files consistently (docs, imports, constants, types, public API, private helpers).
+- **Naming:** Use `PascalCase` for types, `snake_case` for values, and `SCREAMING_SNAKE_CASE` for constants.
+- **Formatting:** Trust `boba fmt` to handle formatting automatically.
+- **Error Handling:** Prefer `?` for propagating `Result` errors; use `match` for specific recovery logic.
+- **Mutability:** Default to `let` for immutability; use `var` only when mutation is necessary.
+- Following these idioms makes your code clear, predictable, and easy for any Boba developer to understand.

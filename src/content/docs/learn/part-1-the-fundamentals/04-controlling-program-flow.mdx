@@ -62,6 +62,7 @@ let status: string = if health > 50 { "Healthy" } else { "Injured" }
 
 print(f"Player status: {status}") // Outputs: Player status: Healthy
 ```
+This is similar to the ternary operator (`condition ? expr_if_true : expr_if_false`) found in languages like C++, Java, and JavaScript, but is designed for greater readability.
 
 ## Repeating Actions with Loops
 
@@ -117,13 +118,13 @@ print("Mana is full!")
 
 ## Exhaustive Pattern Matching with `match`
 
-Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility.
+Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
 
 ### The Rule of Exhaustiveness
 
 A `match` statement in Boba must be **exhaustive**. This means you must provide a branch for every possible value the type can have. The Boba compiler will give you an error if you forget a case, preventing a whole class of bugs.
 
-Let's see this with an `enum`.
+The `match` statement is most powerful when used with types that have a fixed number of variations. A perfect example of this is an `enum`, a custom type that we'll cover in more detail later. For now, just know that an `enum` lets us define a type that can only be one of a few specific values. Let's define a `TrafficLight` enum:
 ```boba
 enum TrafficLight {
     RED,
@@ -179,3 +180,11 @@ match result {
     // Bind the value inside Err to the variable 'msg'
     Err(msg) => print("An error occurred: {msg}")
 }
+```
+
+## Chapter Summary
+
+- Use `if`, `else if`, and `else` for basic conditional logic.
+- Use a one-line `if/else` expression for concisely assigning one of two values.
+- Iterate over collections and ranges with `for..in` loops, or loop based on a condition with `while`.
+- Use the powerful `match` statement for exhaustive pattern matching, which ensures all possible cases are handled at compile time.

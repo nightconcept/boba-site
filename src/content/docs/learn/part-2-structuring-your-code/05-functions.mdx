@@ -21,7 +21,7 @@ sayHello()
 
 ### Function Calls: Mandatory Named Arguments
 
-To maximize clarity, Boba requires function arguments to be called with their names by default. This makes function call sites self-documenting.
+To maximize clarity, Boba requires function arguments to be called with their names by default. This makes function call sites self-documenting. This approach is built into the language to achieve the clarity that developers in other languages like JavaScript or Python often simulate by passing a single 'options' object to a function.
 
 **Rule 1: Named Arguments by Default**
 
@@ -125,9 +125,13 @@ connect("myhost.com", 8080, false)
 connect("myhost.com")
 ```
 
+## Understanding Return Values
+
+As you've seen, you can specify a function's return type using `-> Type`. A function can return a value of any type, from a simple `int` to a complex `struct` you've defined. If you do not specify a return type, the function returns a special 'unit' type (similar to `void`). This signifies that the function is called for its side effects—like printing to the console—rather than to produce a result.
+
 ## The Pipe Operator `|>`
 
-Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of the expression on the left is passed as the first argument to the function call on the right.
+Boba supports the pipe operator `|>` for chaining function calls in a more readable way. The result of the expression on the left is passed as the first argument to the function call on the right. This is a highly idiomatic way to write Boba code as it emphasizes a clear, sequential flow of data transformations. It's especially powerful because, as you'll see in more advanced topics, functions in Boba are first-class citizens and can be passed around just like any other value.
 
 ```boba
 fn add_one(n: int) -> int {

@@ -34,6 +34,8 @@ var base_damage = 10
 base_damage *= 2 // base_damage is now 20
 ```
 
+Boba's operators follow a standard order of operations, often remembered by acronyms like PEMDAS or BODMAS. For example, multiplication and division are performed before addition and subtraction. When in doubt, or to make your code clearer for other readers, always use parentheses `()` to group operations and ensure they are evaluated in the order you intend.
+
 ### Numeric Operations and Conversions
 
 When you mix integer (`int`) and floating-point (`float`) numbers, Boba follows simple rules to keep things predictable.
@@ -82,6 +84,21 @@ if "stealth" in player_skills {
 }
 ```
 
+##### Explicit Comparisons Required
+
+In Boba, a condition must explicitly evaluate to a boolean. Unlike languages such as JavaScript or Python, you cannot use non-boolean values in a boolean context (sometimes called "truthy" or "falsy" values). This is a safety feature that prevents common bugs.
+
+```boba
+// WRONG: This will cause a compile error because 'score' is an integer, not a boolean.
+var score: int = 100
+// if score { ... }
+
+// RIGHT: The result of the '!=' comparison is a boolean.
+if score != 0 {
+    print("You have a non-zero score!")
+}
+```
+
 ## Logical Operators
 
 Logical operators are used to combine boolean values.
@@ -93,14 +110,30 @@ Logical operators are used to combine boolean values.
 | `not`    | Logical NOT | `not true` results in `false`       |
 
 ```boba
-var hasKey = true
-var isDoorLocked = false
+var has_key = true
+var is_door_locked = false
 
-if hasKey and not isDoorLocked {
+if has_key and not is_door_locked {
   print("You can open the door!")
 }
 ```
 
-## Bitwise Operators (Advanced)
+### Advanced: Working with Bits
 
-Bitwise operators are used to perform operations on individual bits of a number. This is an advanced topic, but it's good to know they exist.
+While arithmetic operators work on a number's mathematical value, bitwise operators manipulate its individual 1s and 0s (bits). This is an advanced technique used for performance-critical code, data packing, or managing sets of flags efficiently.
+A common use-case is for permissions. Imagine each permission is a unique bit:
+
+```boba
+let CAN_INVITE: int = 1 // Binary: ...0001
+let CAN_KICK:   int = 2 // Binary: ...0010
+let CAN_PROMOTE:int = 4 // Binary: ...0100
+
+// Grant permissions with the bitwise OR operator `|`
+let permissions = CAN_INVITE | CAN_PROMOTE // ...0101 (value is 5)
+
+// Check for a permission with the bitwise AND operator `&`
+if permissions & CAN_PROMOTE != 0 {
+    print("This user can promote members.")
+}
+```
+Boba also supports `^` (XOR), `~` (NOT), and shift operators (`<<`, `>>`).

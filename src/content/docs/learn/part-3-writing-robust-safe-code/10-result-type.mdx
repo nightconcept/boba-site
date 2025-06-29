@@ -3,7 +3,7 @@ title: "Chapter 10: Handling Recoverable Errors: The Result Type"
 description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
-In any real-world application, things can go wrong. A file might not exist, a network request might fail, or user input might be invalid. Boba encourages a robust approach to error handling using the `Result` enum.
+In any real-world application, things can go wrong. While other languages often rely on exceptions and `try...catch` blocks, Boba encourages a more explicit approach to error handling using the `Result` enum. A file might not exist, a network request might fail, or user input might be invalid. Boba encourages a robust approach to error handling using the `Result` enum.
 
 ## The `Result` Enum
 
@@ -19,11 +19,20 @@ enum Result<T, E> {
 - `T` is a generic placeholder for the type of data you expect on success.
 - `E` is a generic placeholder for the type of error you expect on failure.
 
+What is the `E` or `error` type? It can be anything you want, but it's typically a custom struct that contains detailed information. A good error struct might include a unique code for programmatic checking, and a human-readable message:
+```boba
+struct FileSystemError {
+    code: string, // e.g., "FILE_NOT_FOUND"
+    message: string,
+}
+```
+This makes your errors much more powerful than simple strings.
+
 ## The `?` Operator
 
 Boba provides the `?` operator as a convenient way to work with `Result` values. It simplifies error handling by propagating errors up the call stack.
 
-Here's how it works:
+This operator is powerful syntactic sugar for a `match` statement that handles the `Err` case for you. Here's how it works:
 
 - If the `Result` is `Ok(value)`, the `?` operator unwraps the `Result` and gives you the `value` inside.
 - If the `Result` is `Err(error)`, the `?` operator immediately stops the current function and returns the `Err(error)`.
@@ -39,8 +48,7 @@ struct Config {
 }
 
 fn load_config() -> Result<Config, error> {
-    // To demonstrate this, we'll use Boba's built-in `read_file` and `parse_json`
-    // functions, which are designed to return a `Result`.
+    // For this example, we'll assume Boba's standard library provides the `read_file` and `parse_json` functions, both of which can fail and therefore return a `Result`.
 
     // `read_file` returns a `Result<string, error>`.
     // If it's an `Err`, `?` returns it from `load_config`.
@@ -56,3 +64,10 @@ fn load_config() -> Result<Config, error> {
     // If everything succeeds, we wrap the `Config` in an `Ok` and return it.
     return Ok(config)
 }
+
+## Chapter Summary
+
+- Use the `Result<T, E>` enum for functions that can fail in a recoverable way.
+- `Result<T, E>` has two variants: `Ok(T)` for success and `Err(E)` for failure.
+- The `?` operator is the idiomatic way to handle `Result` values. It unwraps the value from an `Ok` or returns the `Err` from the current function.
+- This model encourages explicit, robust error handling throughout your application.

@@ -248,6 +248,86 @@ enum Color {
 let myColor: Color = Color.GREEN;
 ```
 
+## Enumerations with Data
+
+Boba enums can also hold data, much like in Rust. This is useful for representing a value that can be one of several different kinds, such as a value that might be absent.
+
+```boba
+enum Option<T> {
+    Some(T), // Represents the presence of a value of type T
+    None,    // Represents the absence of a value
+}
+```
+
+### Rust
+
+Rust's `Option<T>` is a core part of the language and is defined almost identically, making it a great comparison for Boba's capabilities.
+
+```rust
+enum Option<T> {
+    Some(T),
+    None,
+}
+```
+
+## Error Handling with Result
+
+Boba provides a `Result` type for robust error handling, closely mirroring the pattern found in languages like Rust. This allows functions to return either a success value or an error, which can be handled gracefully by the caller.
+
+```boba
+enum Result<T, E> {
+  Ok(T),    // The 'Success' variant, holds a value of type T
+  Err(E)    // The 'Failure' variant, holds a value of type E
+}
+
+fn load_config() -> Result<Config, error> {
+    // To demonstrate this, we'll use Boba's built-in `read_file` and `parse_json`
+    // functions, which are designed to return a `Result`.
+
+    // `read_file` returns a `Result<string, error>`.
+    // If it's an `Err`, `?` returns it from `load_config`.
+    // If it's `Ok`, `?` gives us the string content.
+    var content = read_file("config.json")?
+
+    // `parse_json` returns a `Result<Config, error>`.
+    // `?` works the same way here.
+    var config = parse_json(content)?
+
+    print("Config loaded!")
+
+    // If everything succeeds, we wrap the `Config` in an `Ok` and return it.
+    return Ok(config)
+}
+```
+
+### Rust
+
+The `Result` type and the `?` operator in Rust work almost identically to Boba, providing a powerful and ergonomic way to propagate errors.
+
+```rust
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+
+// Assuming 'Config' and a custom 'Error' type are defined elsewhere.
+// The function signature is very similar to Boba's.
+fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
+    // std::fs::read_to_string returns a Result<String, std::io::Error>.
+    // The `?` operator will automatically convert the error type if needed
+    // and return early if there's an Err.
+    let content = std::fs::read_to_string("config.json")?;
+
+    // serde_json::from_str returns a Result<T, serde_json::Error>.
+    // The `?` operator works just the same here.
+    let config: Config = serde_json::from_str(&content)?;
+
+    println!("Config loaded!");
+
+    // If both operations succeed, we return the config wrapped in Ok.
+    Ok(config)
+}
+```
 ## Structs
 
 ```boba

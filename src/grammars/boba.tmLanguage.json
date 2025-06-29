@@ -56,6 +56,9 @@
     },
     {
       "include": "#function-calls"
+    },
+    {
+      "include": "#return-types"
     }
   ],
   "repository": {
@@ -81,7 +84,7 @@
       "patterns": [
         {
           "name": "string",
-          "match": "\\b(Result|User|error|Permissions|FullProfile)\\b"
+          "match": "\\b(User|error|Permissions|FullProfile)\\b"
         }
       ]
     },
@@ -236,7 +239,7 @@
           "name": "storage.type"
         },
         "2": {
-          "name": "entity.name.type.enum"
+          "name": "source"
         }
       },
       "end": "(})",
@@ -247,7 +250,7 @@
       },
       "patterns": [
         {
-          "name": "support.type.primitive",
+          "name": "source",
           "match": "\\b([A-Z_][A-Z0-9_]*)\\b"
         },
         {
@@ -283,7 +286,7 @@
       "patterns": [
         {
           "name": "storage.type",
-          "match": "\\b(let|var|const|fn|class|extends|private|pub|enum|struct|match|where|async|await)\\b"
+          "match": "\\b(let|var|const|fn|class|extends|private|pub|enum|struct|match|where|async|await|impl)\\b"
         }
       ]
     },
@@ -400,7 +403,7 @@
       "patterns": [
         {
           "name": "constant.numeric",
-          "match": "\\b([0-9]+(\\.[0-9]+)?)\\b"
+          "match": "\\b(0[xX][0-9a-fA-F_]+|0[bB][01_]+|[0-9][0-9_]*(\\.[0-9_]+)?)\\b"
         }
       ]
     },
@@ -501,6 +504,57 @@
         {
           "name": "variable.parameter",
           "match": "([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*:)"
+        },
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#punctuation"
+        }
+      ]
+    },
+    "return-types": {
+      "patterns": [
+        {
+          "begin": "(->)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow"
+            }
+          },
+          "end": "(?=\\s*\\{)",
+          "name": "support.type.primitive",
+          "patterns": [
+            {
+              "include": "#return-type-generics"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        }
+      ]
+    },
+    "return-type-generics": {
+      "begin": "(?<=[a-zA-Z_][a-zA-Z0-9_])(<)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.bracket"
+        }
+      },
+      "end": "(>)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.bracket"
+        }
+      },
+      "name": "meta.generic",
+      "patterns": [
+        {
+          "include": "#return-type-generics"
+        },
+        {
+          "include": "#string-as-yellow"
         },
         {
           "include": "#constants"

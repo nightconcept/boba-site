@@ -32,7 +32,7 @@ It's easy to forget one of those `file.close()` calls, leading to bugs.
 
 Boba provides a simple and powerful keyword to solve this: `defer`.
 
-The `defer` statement schedules a function call to be executed right before the current function exits. It doesn't matter *how* the function exits—whether by a `return`, by reaching the end, or by propagating an error with `?`.
+The `defer` statement schedules a function call to be executed right before the current function exits. It doesn't matter *how* the function exits—whether by a `return`, by reaching the end, or by propagating an error with `?`. For developers coming from other languages, `defer` serves a similar purpose to a `finally` block in a `try...catch...finally` statement, but is often more ergonomic.
 
 Let's rewrite our example using `defer`:
 
@@ -58,3 +58,29 @@ pub fn process_file(path: string) -> Result<string, error> {
 ```
 
 By placing `defer file.close()` right after `fs.open(path)?`, we make our code cleaner, safer, and easier to read. The cleanup code is right next to the resource it's cleaning up.
+
+## Multiple defer Statements: LIFO Order
+
+You can have more than one `defer` statement in a function. When the function exits, the deferred calls are executed in Last-In, First-Out (LIFO) order. Think of it as a stack of cleanup tasks—the last one you add is the first one to be performed.
+```boba
+fn process() {
+    print("Start Processing")
+    defer print("Cleanup Task 1 (Last to run)")
+    defer print("Cleanup Task 2 (First to run)")
+    print("Finish Processing")
+}
+
+// Calling process() will print:
+// Start Processing
+// Finish Processing
+// Cleanup Task 2 (First to run)
+// Cleanup Task 1 (Last to run)
+```
+This LIFO order is deliberate and very useful. It ensures that resources are de-initialized in the reverse order of their initialization, which is almost always what you want.
+
+## Chapter Summary
+
+- The `defer` statement schedules a function call to be executed just before the current function exits.
+- This guarantees that cleanup code (like `file.close()`) runs, regardless of how the function returns (normally, via `return`, or via `?`).
+- Place `defer` statements immediately after acquiring a resource to make code safer and more readable.
+- Multiple `defer` statements are executed in Last-In, First-Out (LIFO) order.

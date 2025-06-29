@@ -5,11 +5,11 @@ description: "Learn how to write and run your first Boba program."
 
 Welcome to Boba! The best way to start learning any new programming language is to write a program. Let's write one that prints the classic message: "Hello, world!".
 
-#### Step 1: Create Your File
+### Step 1: Create Your File
 
 First, create a new file named `hello.boba`.
 
-#### Step 2: Write the Code
+### Step 2: Write the Code
 
 Open `hello.boba` in your favorite text editor and type the following single line of code:
 ```boba
@@ -18,14 +18,18 @@ print("Hello, world!")
 
 This line uses Boba's built-in `print()` function to display text, called a `string`, to your console.
 
-#### Step 3: Run Your Program
+### Step 3: Run Your Program
 
 Now, open your terminal, navigate to the directory where you saved `hello.boba`, and run the following command:
 ```sh
 boba run hello.boba
 ```
 
-The `boba` command-line tool will compile and execute your file.
+The `boba` command is the main entry point to Boba's development tools. The `run` command specifically compiles your code and, if successful, immediately executes the resulting program.
+
+> **Note: Are you in the right directory?**
+>
+> Your terminal needs to be open to the same folder where you saved `hello.boba`. If you see an error like `file not found`, you can use the `cd` (change directory) command to navigate to the correct location.
 
 #### Step 4: See the Output!
 
@@ -34,4 +38,4 @@ You should see the following output in your terminal:
 Hello, world!
 ```
 
-**Congratulations!** You have just written and run your very first Boba program. You've already used a built-in function (`print`) and a data type (`string`) without even thinking about it.
+**Congratulations!** You have just written and run your very first Boba program. You've already used the Boba toolchain (`boba run`), a built-in function (`print`), and a core data type (`string`).
