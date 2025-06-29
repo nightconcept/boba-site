@@ -66,3 +66,36 @@ create_user(101, name: "Ada", is_admin: false)
 
 // COMPILE ERROR: Positional argument cannot follow a named argument.
 // create_user(name: "Ada", 101, is_admin: false)
+```
+
+### Chaining Functions with the Pipe Operator
+
+Boba includes a special pipe operator (`|>`) to make chaining function calls more readable. It takes the result of the expression on its left and passes it as the first argument to the function on its right.
+
+This operator is purely for developer ergonomics. It helps turn deeply nested function calls into a clean, linear flow of data.
+
+Consider a set of functions to process text:
+
+```boba
+fn trim(s: string) -> string { /* ... */ }
+fn to_uppercase(s: string) -> string { /* ... */ }
+fn emphasize(s: string) -> string { f"**{s}**" }
+```
+
+Without the pipe operator, processing a message requires nesting the calls, which is read from the inside out and can be hard to follow:
+
+```boba
+let message = "  hello world  "
+let formatted = emphasize(to_uppercase(trim(message)))
+// formatted is "**HELLO WORLD**"
+```
+
+With the pipe operator, you can express the same logic as a clear, left-to-right sequence of transformations:
+
+```boba
+let message = "  hello world  "
+let formatted = message |> trim |> to_uppercase |> emphasize
+// formatted is "**HELLO WORLD**"
+```
+
+This style is a cornerstone of functional programming and is highly encouraged in Boba for creating readable data processing pipelines.

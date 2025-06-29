@@ -111,6 +111,15 @@ let score: int = 100
 let current_level = 10 // Inferred as int
 ```
 
+### `float`
+
+The `float` type is used for 64-bit floating-point numbers (numbers with a decimal point). It's essential for any calculations involving fractional values, such as financial data, measurements, or scientific computations.
+
+```boba
+let price: float = 4.99
+let temperature = -15.5 // Inferred as float
+```
+
 ### `string`
 
 The `string` type is used to represent text.
@@ -219,6 +228,39 @@ create_user(101, name: "Ada", is_admin: false)
 
 // COMPILE ERROR: Positional argument cannot follow a named argument.
 // create_user(name: "Ada", 101, is_admin: false)
+```
+
+### Chaining Functions with the Pipe Operator
+
+Boba includes a special pipe operator (`|>`) to make chaining function calls more readable. It takes the result of the expression on its left and passes it as the first argument to the function on its right.
+
+This operator is purely for developer ergonomics. It helps turn deeply nested function calls into a clean, linear flow of data.
+
+Consider a set of functions to process text:
+
+```boba
+fn trim(s: string) -> string { /* ... */ }
+fn to_uppercase(s: string) -> string { /* ... */ }
+fn emphasize(s: string) -> string { f"**{s}**" }
+```
+
+Without the pipe operator, processing a message requires nesting the calls, which is read from the inside out and can be hard to follow:
+
+```boba
+let message = "  hello world  "
+let formatted = emphasize(to_uppercase(trim(message)))
+// formatted is "**HELLO WORLD**"
+```
+
+With the pipe operator, you can express the same logic as a clear, left-to-right sequence of transformations:
+
+```boba
+let message = "  hello world  "
+let formatted = message |> trim |> to_uppercase |> emphasize
+// formatted is "**HELLO WORLD**"
+```
+
+This style is a cornerstone of functional programming and is highly encouraged in Boba for creating readable data processing pipelines.
 
 ## Chapter 4: Manipulating Data: Operators
 
@@ -518,7 +560,46 @@ print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
 
 But what happens if you try to access a key that doesn't exist? This is a common source of errors in other languages. Boba solves this safely. Accessing a key in a map doesn't return the value directly. Instead, it returns a special Option type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter on error handling.
 
-## Chapter 8: Creating Custom Types: structs
+## Chapter 8: Defining State with enums
+
+While Boba provides powerful built-in enums like `Option` and `Result`, one of its key features is the ability to define your own. An **enum** (short for enumeration) is a custom type that can only be one of a specific, fixed set of possible values, called "variants."
+
+This is incredibly useful for modeling state. For example, if you are tracking the status of a job, you can define an enum to ensure the status can *only* be one of the states you've defined, preventing bugs from invalid string values.
+
+### Defining an Enum
+
+You define an enum with the `enum` keyword, listing all its possible variants.
+
+```boba
+// This enum can only be one of three possible values.
+enum JobStatus {
+  Pending,
+  Complete,
+  Failed
+}
+```
+
+### Using an Enum
+
+Once defined, you can use the enum as a type for variables and function parameters. You access a specific variant using `EnumName.VariantName`.
+
+```boba
+// Create a variable of type JobStatus.
+let current_status: JobStatus = JobStatus.Pending
+
+// You can use enums with `match` for exhaustive state handling.
+match current_status {
+  JobStatus.Pending => print("The job is waiting to be processed."),
+  JobStatus.Complete => print("The job finished successfully."),
+  JobStatus.Failed => print("The job failed to complete.")
+}
+```
+
+By using an enum, you make your code more robust. The compiler guarantees that a `JobStatus` variable can *never* hold a value other than `Pending`, `Complete`, or `Failed`. This eliminates an entire class of bugs related to invalid state.
+
+This chapter provides a foundation for creating your own types. In the next chapter, you'll learn about `structs`, which let you group related data together.
+
+## Chapter 9: Creating Custom Types: structs
 
 Structs, short for structures, are custom data types you can create by grouping together related variables. Think of a struct definition as a blueprint: it defines the shape and fields for a concept in your program. From that blueprint, you can then create multiple concrete instances.
 
@@ -552,6 +633,25 @@ You can access the fields of a struct instance using dot notation.
 print(f"Player name: {ada.name}") // Prints "Player name: Ada"
 ```
 
+### Field Visibility and the `pub` Keyword
+
+By default, all fields in a struct are **private**. This means they can only be accessed by code in the same file where the struct is defined. This is a core principle of encapsulation, preventing external code from relying on the internal structure of your data.
+
+To make a field part of the struct's public API, you must explicitly mark it with the `pub` keyword.
+
+Think of it like a building: some rooms (private fields) are for internal staff only, while the reception area (`pub` fields) is accessible to the public.
+
+```boba
+// in a file named `user.boba`
+
+pub struct User {
+  pub id: int,      // This field is public and can be accessed from other files.
+  username: string, // This field is private to `user.boba`.
+  email: string,    // This is also private.
+}
+```
+
+If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
 ### Mutating a Struct
 In a new paragraph, explain that you use the `var` keyword to create mutable struct instances.
 ```boba
@@ -568,7 +668,7 @@ print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
 
 You now know how to bundle related data together. This is the first half of creating powerful custom types. In the next chapter, we will bring this data to life by giving our structs behavior with methods.
 
-## Chapter 9: Adding Behavior: Methods and impl
+## Chapter 10: Adding Behavior: Methods and impl
 
 In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
 
@@ -659,7 +759,7 @@ boba_dev.take_damage(amount: 25)
 print(f"Updated health: {boba_dev.health}") // Outputs: Updated health: 75
 ```
 
-## Chapter 10: Structuring Your Project: Modules
+## Chapter 11: Structuring Your Project: Modules
 
 As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using modules and the `import` keyword.
 
@@ -671,7 +771,7 @@ By default, functions are private, meaning they can only be called from within t
 
 ```boba
 // This function can only be called from this file.
-fn myPrivateFunction() {
+fn my_private_function() {
   print("This is a secret!")
 }
 ```
@@ -696,6 +796,7 @@ pub fn say_goodbye() {
 }
 
 // in main.boba
+// The `./` is important! It tells Boba to look in the current directory.
 say_hello() // Prints "Hello!"
 farewell() // Prints "Goodbye!"
 ```
@@ -710,10 +811,11 @@ pub fn say_hello() { /* ... */ }
 pub fn say_goodbye() { /* ... */ }
 
 // in main.boba
+// The `* as <name>` syntax imports all public items under a single namespace.
 utils.say_hello()
 utils.say_goodbye()
 
-## Chapter 11: Testing Your Code
+## Chapter 12: Testing Your Code
 
 Writing code is only half the battle. To build robust and reliable software, you need to verify that your code works as you expect it to. Boba's integrated tooling makes testing a simple, first-class part of the development workflow, without requiring any external libraries.
 
@@ -897,7 +999,7 @@ fn test_various_assertions() {
     test.assert_ne(result, 5)
 }
 
-## Chapter 12: Handling Failures: The Result Type
+## Chapter 13: Handling Failures: The Result Type
 
 In any real-world application, things can go wrong. While other languages often rely on exceptions and `try...catch` blocks, Boba encourages a more explicit approach to error handling using the `Result` enum. A file might not exist, a network request might fail, or user input might be invalid.
 
@@ -951,7 +1053,7 @@ fn load_config() -> Result<Config, error> {
 
 Now it's your turn. Look for opportunities in your own code to refactor functions to return a `Result`. Use the `?` operator to clean up your error handling and make your code more robust and readable.
 
-## Chapter 13: Handling Absence: The Option Type
+## Chapter 14: Handling Absence: The Option Type
 
 In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
 
@@ -1011,7 +1113,7 @@ Both `Option` and `Result` deal with the possibility of a value not being what y
 >
 > Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
 
-## Chapter 14: Powerful Control Flow: Pattern Matching
+## Chapter 15: Powerful Control Flow: Pattern Matching
 
 Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. `match` is the most fundamental tool in Boba for working with enum types, especially `Option` and `Result`. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
 
@@ -1065,7 +1167,7 @@ match status_code {
 >
 > The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.
 
-## Chapter 15: Guaranteed Cleanup: defer and panic
+## Chapter 16: Guaranteed Cleanup: defer and panic
 
 ## Guaranteed Cleanup with `defer`
 
@@ -1118,7 +1220,7 @@ fn get_guild_rank(player: Player) -> string {
 
 It's time to practice what you've learned. The next exercises will challenge you to refactor a function to use `defer` for resource cleanup and write a function that correctly panics when its input violates a critical precondition.
 
-## Chapter 16: Asynchronous Programming: async/await
+## Chapter 17: Asynchronous Programming: async/await
 
 Asynchronous programming is essential for building responsive and efficient applications, especially when dealing with tasks like network requests or file I/O that can take time. Boba makes writing asynchronous, non-blocking code as easy and readable as traditional, synchronous code.
 
@@ -1182,7 +1284,7 @@ This elegant composition is key to writing robust, readable asynchronous Boba co
 
 You're ready to tackle asynchronous tasks. The next exercises will prompt you to convert synchronous functions to be `async` and to use `await` to retrieve their results, preparing you for real-world I/O tasks.
 
-## Chapter 17: Writing Professional Code: Idiomatic Boba
+## Chapter 18: Writing Professional Code: Idiomatic Boba
 
 Welcome to the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths in the way its designers intended.
 

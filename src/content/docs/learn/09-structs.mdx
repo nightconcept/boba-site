@@ -1,5 +1,5 @@
 ---
-title: "Chapter 8: Creating Custom Types: structs"
+title: "Chapter 9: Creating Custom Types: structs"
 description: "Learn how to create your own custom data types in Boba using structs."
 ---
 
@@ -35,6 +35,25 @@ You can access the fields of a struct instance using dot notation.
 print(f"Player name: {ada.name}") // Prints "Player name: Ada"
 ```
 
+### Field Visibility and the `pub` Keyword
+
+By default, all fields in a struct are **private**. This means they can only be accessed by code in the same file where the struct is defined. This is a core principle of encapsulation, preventing external code from relying on the internal structure of your data.
+
+To make a field part of the struct's public API, you must explicitly mark it with the `pub` keyword.
+
+Think of it like a building: some rooms (private fields) are for internal staff only, while the reception area (`pub` fields) is accessible to the public.
+
+```boba
+// in a file named `user.boba`
+
+pub struct User {
+  pub id: int,      // This field is public and can be accessed from other files.
+  username: string, // This field is private to `user.boba`.
+  email: string,    // This is also private.
+}
+```
+
+If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
 ### Mutating a Struct
 In a new paragraph, explain that you use the `var` keyword to create mutable struct instances.
 ```boba

@@ -1,5 +1,5 @@
 ---
-title: "Chapter 10: Structuring Your Project: Modules"
+title: "Chapter 11: Structuring Your Project: Modules"
 description: "Learn how to organize your Boba code into multiple files and share code between them using the `import` keyword."
 ---
 
@@ -13,7 +13,7 @@ By default, functions are private, meaning they can only be called from within t
 
 ```boba
 // This function can only be called from this file.
-fn myPrivateFunction() {
+fn my_private_function() {
   print("This is a secret!")
 }
 ```
@@ -38,7 +38,8 @@ pub fn say_goodbye() {
 }
 
 // in main.boba
-import { say_hello, say_goodbye as farewell } from "utils.boba"
+// The `./` is important! It tells Boba to look in the current directory.
+import { say_hello, say_goodbye as farewell } from "./utils.boba"
 
 say_hello() // Prints "Hello!"
 farewell() // Prints "Goodbye!"
@@ -54,6 +55,7 @@ pub fn say_hello() { /* ... */ }
 pub fn say_goodbye() { /* ... */ }
 
 // in main.boba
+// The `* as <name>` syntax imports all public items under a single namespace.
 import * as utils from "./utils.boba"
 
 utils.say_hello()

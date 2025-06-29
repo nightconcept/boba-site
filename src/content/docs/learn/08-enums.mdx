@@ -1,0 +1,41 @@
+---
+title: "Chapter 8: Defining State with enums"
+description: "Learn how to create your own custom types with a fixed set of variants using enums."
+---
+
+While Boba provides powerful built-in enums like `Option` and `Result`, one of its key features is the ability to define your own. An **enum** (short for enumeration) is a custom type that can only be one of a specific, fixed set of possible values, called "variants."
+
+This is incredibly useful for modeling state. For example, if you are tracking the status of a job, you can define an enum to ensure the status can *only* be one of the states you've defined, preventing bugs from invalid string values.
+
+### Defining an Enum
+
+You define an enum with the `enum` keyword, listing all its possible variants.
+
+```boba
+// This enum can only be one of three possible values.
+enum JobStatus {
+  Pending,
+  Complete,
+  Failed
+}
+```
+
+### Using an Enum
+
+Once defined, you can use the enum as a type for variables and function parameters. You access a specific variant using `EnumName.VariantName`.
+
+```boba
+// Create a variable of type JobStatus.
+let current_status: JobStatus = JobStatus.Pending
+
+// You can use enums with `match` for exhaustive state handling.
+match current_status {
+  JobStatus.Pending => print("The job is waiting to be processed."),
+  JobStatus.Complete => print("The job finished successfully."),
+  JobStatus.Failed => print("The job failed to complete.")
+}
+```
+
+By using an enum, you make your code more robust. The compiler guarantees that a `JobStatus` variable can *never* hold a value other than `Pending`, `Complete`, or `Failed`. This eliminates an entire class of bugs related to invalid state.
+
+This chapter provides a foundation for creating your own types. In the next chapter, you'll learn about `structs`, which let you group related data together.
