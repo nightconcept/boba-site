@@ -1,0 +1,94 @@
+---
+title: "Chapter 4: Manipulating Data: Operators"
+description: "Learn how to perform arithmetic, make comparisons, and use logical operators in Boba."
+---
+
+Now that you know about variables and data types, let's look at how to manipulate them using operators. Operators are special symbols that perform operations on your data.
+
+## Arithmetic Operators
+
+Boba provides a standard set of arithmetic operators for performing mathematical calculations.
+
+| Operator | Description      | Example                |
+| :------- | :--------------- | :--------------------- |
+| `+`      | Addition         | `5 + 2` results in `7`   |
+| `-`      | Subtraction      | `5 - 2` results in `3`   |
+| `*`      | Multiplication   | `5 * 2` results in `10`  |
+| `/`      | Division         | `5 / 2` results in `2.5` |
+| `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
+| `^`      | Power (Note: some languages like Python and JavaScript use `**` for this) | `5 ^ 2` results in `25`  |
+
+```boba
+let score = 10
+let bonus = score * 2
+let total_score = score + bonus
+let final_level = total_score / 10
+
+print(f"Final level is: {final_level}") // Outputs: Final level is: 3
+// Note: 30 / 10 results in an integer. We will discuss float division later.
+```
+
+## Comparison Operators
+
+Comparison operators are used to compare two values. They always result in a `boolean` (`true` or `false`) value.
+
+| Operator | Description          | Example               |
+| :------- | :------------------- | :-------------------- |
+| `==`     | Equal to             | `5 == 5` is `true`    |
+| `!=`     | Not equal to         | `5 != 5` is `false`   |
+| `<`      | Less than            | `5 < 8` is `true`     |
+| `>`      | Greater than         | `5 > 8` is `false`    |
+| `<=`     | Less than or equal   | `5 <= 5` is `true`    |
+| `>=`     | Greater than or equal| `5 >= 8` is `false`   |
+
+```boba
+let score = 85
+let is_passing = score >= 60
+
+print(f"Is the student passing? {is_passing}") // Outputs: Is the student passing? true
+```
+
+### Checking for Containment with 'in'
+
+To check if an element exists within a `list`, `map`, or `string`, you can use the highly readable `in` operator.
+
+```boba
+let inventory: string[] = ["sword", "shield", "potion"]
+
+// Check if "shield" is in our inventory list.
+if "shield" in inventory {
+  print("You are well-defended!")
+}
+
+let player_skills = {"archery": 5, "magic": 3}
+
+// For maps, `in` checks if the key exists.
+if "stealth" in player_skills {
+  print("You can sneak.")
+} else {
+  print("You are not a sneaky person.") // This will print.
+}
+```
+
+## Logical Operators
+
+Logical operators are used to combine boolean values.
+
+| Operator | Description | Example                               |
+| :------- | :---------- | :------------------------------------ |
+| `and`    | Logical AND | `true and false` results in `false` |
+| `or`     | Logical OR  | `true or false` results in `true`   |
+| `not`    | Logical NOT | `not true` results in `false`       |
+
+```boba
+let has_key = true
+let is_door_locked = false
+
+if has_key and not is_door_locked {
+  print("You can enter the room.") // This will print.
+}
+```
+
+> #### **Time to Practice!**
+>
+> You now have the tools to manipulate data. The next set of exercises in your `boba-learning` course will test your knowledge of all these operators to solve small challenges.

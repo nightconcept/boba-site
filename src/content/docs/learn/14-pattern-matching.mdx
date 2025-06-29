@@ -1,0 +1,38 @@
+---
+title: "Chapter 14: Powerful Control Flow: Pattern Matching"
+description: "Learn how to use the powerful `match` statement for exhaustive pattern matching."
+---
+
+Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
+
+### The Rule of Exhaustiveness
+
+A `match` statement in Boba must be **exhaustive**. This means you must provide a branch for every possible value the type can have. The Boba compiler will give you an error if you forget a case, preventing a whole class of bugs.
+
+The `match` statement is most powerful when used with types that have a fixed number of variations, like `Option` and `Result`.
+
+```boba
+// Safely unwrapping an Option
+match find_user(1) {
+    Some(name) => print("Found user: {name}"),
+    None => print("User not found.")
+}
+```
+
+This exhaustiveness is what makes `match` so safe and powerful. It guarantees at compile time that you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases.
+
+### The Default Case: `_`
+
+Sometimes, you don't want to handle every single case explicitly. For these situations, you can use the wildcard pattern, a single underscore (`_`), as a default or "catch-all" branch. The `_` will match any value that hasn't been matched by the preceding branches.
+
+This is useful when matching on types with many possibilities, like numbers or strings.
+
+```boba
+var status_code: int = 418
+
+match status_code {
+    200 => print("OK"),
+    404 => print("Not Found"),
+    // The `_` handles every other possible integer value.
+    _ => print("An unexpected error occurred.")
+}

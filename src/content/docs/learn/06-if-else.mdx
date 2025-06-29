@@ -1,0 +1,65 @@
+---
+title: "Chapter 6: Making Decisions: if/else Expressions"
+description: "Learn how to control the flow of your Boba programs with conditionals."
+---
+
+In programming, you often need to execute different code depending on certain conditions. Boba uses the familiar `if`, `else if`, and `else` keywords to handle conditional logic.
+
+## The `if` Statement
+
+The `if` statement executes a block of code only if a specified condition is `true`.
+
+```boba
+var temperature: float = 30.0
+
+if temperature > 25 {
+  print("It's a hot day!")
+}
+```
+
+## The `else` Statement
+
+You can use the `else` statement to provide a block of code to execute if the `if` condition is `false`.
+
+```boba
+var score: int = 85
+
+if score >= 60 {
+  print("You passed!")
+} else {
+  print("You failed. Better luck next time!")
+}
+```
+
+## The `else if` Statement
+
+To handle multiple conditions, you can chain `if` statements with `else if`.
+
+```boba
+var hunger = "hungry"
+var thirst = "thirsty"
+
+if hunger == "hungry" and thirst == "thirsty" {
+  print("You are hungry and thirsty.")
+} else if hunger == "hungry" {
+  print("You are only hungry.")
+} else if thirst == "thirsty" {
+  print("You are only thirsty.")
+} else {
+  print("You are neither hungry nor thirsty.")
+}
+```
+
+### Concise Conditionals with One-Liner `if/else`
+
+> For simple conditional assignments, you can use `if/else` as a one-line expression without curly braces. This is a clean and readable way to choose between two values.
+
+```boba
+let health: int = 75
+
+// The entire if/else expression evaluates to a single value.
+let status: string = if health > 50 { "Healthy" } else { "Injured" }
+
+print(f"Player status: {status}") // Outputs: Player status: Healthy
+```
+This is similar to the ternary operator (`condition ? expr_if_true : expr_if_false`) found in languages like C++, Java, and JavaScript, but is designed for greater readability.

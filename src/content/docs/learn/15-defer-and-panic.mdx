@@ -1,0 +1,52 @@
+---
+title: "Chapter 15: Guaranteed Cleanup: defer and panic"
+description: "Learn how to ensure resource cleanup with `defer` and handle unrecoverable errors with `panic`."
+---
+
+## Guaranteed Cleanup with `defer`
+
+The `defer` statement schedules a function call to be executed right before the current function exits. It doesn't matter *how* the function exits—whether by a `return`, by reaching the end, or by propagating an error with `?`.
+
+```boba
+pub fn process_file(path: string) -> Result<string, error> {
+    // 1. Open the file. If this fails, we exit, no cleanup needed.
+    var file = fs.open(path)?
+
+    // 2. Defer the close call *immediately* after opening.
+    // This is now GUARANTEED to run when process_file exits.
+    defer file.close()
+
+    // 3. Now, we can focus on the logic without worrying about cleanup.
+    var data = file.read_all()?
+    if data.is_empty() {
+        // We can just return. `defer file.close()` will run automatically.
+        return Err({ message = "File is empty" })
+    }
+
+    // `defer file.close()` will also run automatically before this return.
+    return Ok("Processed data!")
+}
+```
+
+## Unrecoverable Errors with `panic`
+
+A panic is an abrupt, unrecoverable error that stops the normal execution of your program. A panic should be used for unrecoverable errors, which is another word for a bug.
+
+When a panic occurs, the program will stop what it's doing and begin to **unwind the stack**. As it unwinds, it will execute any **`defer`** statements it finds along the way.
+
+You can trigger a panic manually with the built-in `panic()` function.
+
+```boba
+fn get_guild_rank(player: Player) -> string {
+  // This function assumes the player is in a guild.
+  let rank_option = player.guild_rank() // Returns Option<string>
+
+  match rank_option {
+    Some(rank) => return rank,
+    None => {
+      // If we get here, it means another part of our code called this
+      // function with a player who wasn't in a guild. This is a bug.
+      panic(f"Critical error: get_guild_rank called on non-guild member {player.name}!")
+    }
+  }
+}

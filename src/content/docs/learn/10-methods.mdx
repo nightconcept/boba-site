@@ -1,5 +1,5 @@
 ---
-title: "Chapter 7: Adding Behavior: Methods & Implementations"
+title: "Chapter 10: Adding Behavior: Methods and impl"
 description: "Learn how to attach methods to your structs using an `impl` block."
 ---
 
@@ -68,50 +68,3 @@ impl Player {
         print("{self.name} takes {amount} damage!")
     }
 }
-```
-
-Here is the complete `impl` block and its usage:
-
-```boba
-struct Player {
-  name: string,
-  health: int
-}
-
-impl Player {
-    /// Creates a new Player with default health.
-    pub fn new(name: string) -> Player {
-        return Player{
-            name: name,
-            health: 100
-        }
-    }
-
-    /// A method that prints the player's status.
-    pub fn print_status(self) {
-        print("{self.name}'s health is {self.health}.")
-    }
-
-    /// Reduces the player's health by a given amount.
-    pub fn take_damage(mut self, amount: int) {
-        self.health -= amount
-        print("{self.name} takes {amount} damage!")
-    }
-}
-
-// Create an immutable player
-let player1 = Player.new(name: "Ada")
-player1.print_status() // Outputs: Ada's health is 100.
-
-// To call a mutating method, the instance must be mutable.
-var player2 = Player.new(name: "Boba")
-player2.take_damage(amount: 25) // This is allowed because player2 is mutable.
-player2.print_status()  // Outputs: Boba's health is 75.
-```
-
-## Chapter Summary
-
-- Use an `impl` block to define functions associated with a `struct`.
-- **Associated functions** (like `Player.new()`) belong to the struct type itself.
-- **Methods** (like `player.print_status()`) are called on a specific instance and take `self` as the first parameter.
-- To modify an instance's data, a method must take `mut self`, and the instance variable must be declared with `var`.

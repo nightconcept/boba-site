@@ -1,0 +1,53 @@
+---
+title: "Chapter 7: Repeating Actions: for and while Loops"
+description: "Learn how to repeat actions in your code using for and while loops."
+---
+
+Loops are used to execute a block of code multiple times. Boba provides two primary loops: `for` for iterating over sequences and `while` for looping as long as a condition is true.
+
+#### The `for` Loop: The Main Iteration Tool
+
+The `for` loop is Boba's most powerful and common loop. It can iterate over a collection of items or a range of numbers.
+
+**1. Iterating Over Collections** This is the idiomatic way to work with every item in a `list` or `map`.
+
+```boba
+let ingredients: string[] = ["healing potion", "sword", "shield"]
+
+// The `for...in` loop will go through each item in the list.
+for item in ingredients {
+  print(f"Player inventory contains: {item}")
+}
+```
+
+**2. Iterating Over a Range of Numbers** To repeat an action a specific number of times, you can use a range. A range is created with the `..` (exclusive) or `..=` (inclusive) operator.
+
+```boba
+// A range from 0 up to, but not including, 5 (0, 1, 2, 3, 4).
+// This will run 5 times.
+for i in 0..5 {
+  print(f"Executing task {i}...")
+}
+
+// An inclusive range from 1 up to, and including, 5 (1, 2, 3, 4, 5).
+for i in 1..=5 {
+  player.take_poison_damage(amount: 2)
+  print(f"Poison damage tick {i}. Player health is now {player.health}.")
+}
+```
+
+#### The `while` Loop
+
+The `while` loop continues to execute a block of code as long as a specified condition remains `true`.
+
+```boba
+var player_mana: int = 100
+
+// Regenerate mana until it is full.
+while player_mana < 100 {
+  player_mana += 5 // Using the earmarked compound assignment for example
+  print(f"Regenerating... mana is now {player_mana}.")
+  timer.sleep(ms: 500) // Assuming a standard library timer
+}
+
+print("Mana is full!")

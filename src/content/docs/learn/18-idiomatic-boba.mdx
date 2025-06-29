@@ -1,0 +1,58 @@
+---
+title: "Chapter 17: Writing Professional Code: Idiomatic Boba"
+description: "Learn the official Boba code style, documentation standards, and the philosophy behind them."
+---
+
+Welcome to the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths in the way its designers intended.
+
+## Naming Conventions
+
+Consistent naming makes code predictable.
+
+- **`PascalCase` for Types:** All `struct` and `enum` types.
+  - `struct PlayerProfile`, `enum RequestStatus`
+- **`snake_case` for Values:** All functions, methods, and variables.
+  - `fn get_user_data`, `let current_score`, `var remaining_attempts`
+- **`SCREAMING_SNAKE_CASE` for Constants:** Global or module-level constants declared with `let`.
+  - `let MAX_CONNECTIONS = 100`
+
+## Formatting (`boba fmt`)
+
+The `boba fmt` tool handles formatting automatically, ensuring all code in the ecosystem is instantly familiar.
+
+## BobaDoc: The Standardized Documentation Engine
+
+Good code is well-documented. Boba has a built-in standard for documentation called BobaDoc, which is designed to be easy to write, human-readable, and machine-parsable.
+
+-   **`///` (Outer Comment):** Documents the single item immediately following it (function, struct, etc.). This is the primary doc comment type.
+-   **`//!` (Inner Comment):** Documents the enclosing item. When used at the top of a file, it describes the entire module.
+
+BobaDoc uses simple `@` tags for structured data:
+
+-   `@param name: description` - Describes a parameter.
+-   `@returns: description` - Describes the return value.
+-   `@panics: description` - Describes conditions that will cause a panic.
+-   `@example:` - Marks a following code block as an example.
+
+```boba
+//! A module for safe file system operations.
+
+/// Reads an entire file into a string.
+///
+/// This function handles opening, reading, and closing the file. It is the
+/// primary, safe way to get the contents of a file.
+///
+/// @param path: The string path to the file to be read.
+/// @returns: A `Result` containing the file's contents as a `string` on success,
+///          or an `error` if the file cannot be found or read.
+/// @example:
+///   var content = fs.read_file("my_file.txt")?
+pub fn read_file(path: string) -> Result<string, error> {
+    // ... implementation ...
+}
+```
+
+## Comments vs. Documentation
+
+- Use BobaDoc (`///`) to explain the *what* and *how* for users of your API. This is for the public interface.
+- Use inline comments (`//`) to explain the *why* for maintainers of your code. Explain complex logic, non-obvious choices, or the reasoning behind a particular algorithm.

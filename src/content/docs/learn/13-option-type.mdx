@@ -1,0 +1,47 @@
+---
+title: "Chapter 13: Handling Absence: The Option Type"
+description: "Learn how Boba's built-in Option<T> type provides a robust and safe way to handle values that might be absent, preventing an entire category of null-related errors."
+---
+
+In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
+
+To prevent this entire category of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
+
+## The `Option<T>` Enum
+
+The `Option<T>` enum is defined as follows:
+
+```boba
+enum Option<T> {
+    Some(T), // Represents the presence of a value of type T
+    None,    // Represents the absence of a value
+}
+```
+
+-   `Some(T)`: A variant that holds a value of type `T`.
+-   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
+
+By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
+
+## Shortcut: Unwrapping with a Default using ??
+
+A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`.
+
+```boba
+// If the left side is Some(t), use t. If it's None, use the right side.
+let value = config_map.get("timeout") ?? 5000
+```
+
+This operator makes your code cleaner by removing the boilerplate of a match statement for the simple "use this or a default" pattern.
+
+## When to Use Option vs. Result
+
+Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline is based on whether a situation is an expected absence or a failure.
+
+*   Use **`Option<T>`** when a value could be absent, and this is a normal, expected outcome. It answers the question: "Is there a value here or not?"
+    *   `find_user_by_id()`: A user might not exist. This isn't an error.
+    *   `map.get(key)`: A key may not be in a map. This is normal.
+
+*   Use **`Result<T, E>`** when a function that is *supposed* to succeed could fail for some external reason. It answers the question: "Did this operation work or not?"
+    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full.
+    *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.

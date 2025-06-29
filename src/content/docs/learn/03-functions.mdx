@@ -1,0 +1,68 @@
+---
+title: "Chapter 3: Reusing Code: Functions"
+description: "Learn how to create reusable blocks of code in Boba with functions."
+---
+
+Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
+
+## Defining and Calling Functions
+
+You define a function using the `fn` keyword. You can also specify the types of the arguments and the return value.
+
+```boba
+// A simple function that takes no arguments and returns nothing.
+fn say_hello() {
+  print("Hello, Boba!")
+}
+
+// Call the function
+say_hello()
+```
+
+### Function Calls: Mandatory Named Arguments
+
+This is one of Boba's key features for writing safe and readable code. It prevents a common and hard-to-spot bug where arguments are passed in the wrong order. For example, in another language, you might accidentally write create_user_profile("Admin", 123) when the function expected (user_id, role). Boba makes this mistake impossible at compile time.
+
+To maximize clarity, Boba requires function arguments to be called with their names by default. This makes function call sites self-documenting. This approach is built into the language to achieve the clarity that developers in other languages like JavaScript or Python often simulate by passing a single 'options' object to a function.
+
+### The Default: Named Arguments
+
+All arguments at a function call site _must_ be called with their name, using a colon (`:`) as a separator.
+
+```boba
+// This function requires named arguments.
+pub fn connect(host: string, port: int, timeout: int) { /* ... */ }
+
+// Correct call:
+connect(host: "boba.dev", port: 9000, timeout: 5000)
+
+// COMPILE ERROR: Positional arguments not allowed for this function.
+// connect("boba.dev", 9000, 5000)
+```
+
+### Opting-In to Positional Arguments
+
+For a parameter to be callable positionally, its name in the function _declaration_ must be prefixed with an underscore (`_`).
+
+```boba
+// This function allows positional arguments.
+pub fn add(_ a: int, _ b: int) -> int { return a + b }
+
+// Correct calls:
+add(5, 3)
+add(a: 5, b: 3) // Named calls are still allowed for clarity.
+```
+
+### Mixing Named and Positional Arguments
+
+If a function has both positional and named arguments, all positional arguments must come first.
+
+```boba
+// This function mixes positional and named arguments.
+pub fn create_user(_ id: int, name: string, is_admin: boolean) { /* ... */ }
+
+// Correct call: Positional arguments first.
+create_user(101, name: "Ada", is_admin: false)
+
+// COMPILE ERROR: Positional argument cannot follow a named argument.
+// create_user(name: "Ada", 101, is_admin: false)

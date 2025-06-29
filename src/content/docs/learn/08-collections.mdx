@@ -1,0 +1,54 @@
+---
+title: "Chapter 8: Grouping Data: list and map"
+description: "Learn about Boba's primary collection types: list and map."
+---
+
+Boba has composite types, which are made up of primitive types.
+
+### `list`
+
+A `list` is an ordered collection of values of the same type. Lists are dynamic, meaning you can add or remove items.
+
+```boba
+// A list of numbers
+var highScores: int[] = [100, 95, 80]
+
+// A list of strings
+var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+```
+
+You can perform many operations on lists, like getting their size or adding new items.
+
+```boba
+print(ingredients.len()) // Outputs: 3
+
+// Add a new item to the end
+ingredients.push("tapioca pearls")
+print(ingredients.len()) // Outputs: 4
+
+// Access items by their index (starting from 0)
+print(ingredients[0]) // Outputs: "flour"
+```
+
+### `map`
+
+A `map` is a collection of key-value pairs. Each key must be unique, and all keys must be of the same type, as must all values.
+
+```boba
+// Create a map with string keys and number values
+var scores: [string:int] = {
+  "ada": 100,
+  "grace": 95
+}
+
+// Check its initial size
+print(scores.len()) // Outputs: 2
+
+// Insert a new key-value pair
+scores["boba"] = 105
+
+// Check the new size
+print(scores.len()) // Outputs: 3
+```
+
+Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a **later chapter**.

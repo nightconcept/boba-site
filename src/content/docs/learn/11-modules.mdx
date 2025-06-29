@@ -1,11 +1,22 @@
 ---
-title: "Chapter 8: Structuring a Project: Modules & Imports"
+title: "Chapter 11: Structuring Your Project: Modules"
 description: "Learn how to organize your Boba code into multiple files and share code between them using the `import` keyword."
 ---
 
 As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using modules and the `import` keyword.
 
 By default, all items you define in a file—functions, structs, etc.—are private, meaning they can only be used within that same file. To make an item part of a file's public API so it can be imported elsewhere, you must mark it with the `pub` keyword.
+
+## Private by Default
+
+By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword.
+
+```boba
+// This function can only be called from this file.
+fn myPrivateFunction() {
+  print("This is a secret!")
+}
+```
 
 ## Importing from Other Files
 
@@ -45,14 +56,3 @@ import * as utils from "./utils.boba"
 
 utils.say_hello()
 utils.say_goodbye()
-```
-
-## A Note on Paths
-
-Import paths are always relative to the current file.
-
-## Chapter Summary
-
-- Use the `pub` keyword to make items in a file (functions, structs, etc.) public and importable.
-- Use `import { item1, item2 as alias } from "./path/to/file.boba"` to import and optionally rename specific items.
-- Use `import * as namespace from "./path/to/file.boba"` to import all public items from a file under a single namespace.
