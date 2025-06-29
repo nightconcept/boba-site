@@ -1,11 +1,40 @@
 ---
-title: "Data Types"
-description: "Explore the fundamental data types in Boba for handling numbers, text, and true/false values."
+title: "Chapter 2: Core Building Blocks: Variables & Data Types"
+description: "Learn Boba's core principle of immutability-by-default and explore its fundamental data types."
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 
-In the last chapter, you learned how to create variables and constants. Now, let's explore the fundamental data types you'll use to store different kinds of information in Boba.
+In Boba, you can store data in variables. A core principle of the language is **immutability by default**, which helps you write safer, more predictable code.
+
+### `let`: Immutable Bindings
+
+The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for everything, as it prevents accidental modification.
+```boba
+// An immutable binding for a regular variable.
+let message = "Hello, Boba!"
+message = "Hello, Dave!" // COMPILE ERROR: This is NOT allowed.
+```
+
+### Convention: Using `let` for Constants
+For universal, program-wide constants, we still use `let`, but we adopt the widely-used `SCREAMING_SNAKE_CASE` naming convention. This signals to other developers that the value has a special, constant role.
+
+```boba
+let MAX_HEALTH = 100
+let PI = 3.14159
+```
+
+### `var`: Mutable Variables
+
+You should only use the `var` keyword when you have a specific and necessary reason to change a value after it's been created.
+
+```boba
+// A mutable variable, used only when mutation is required.
+var counter = 0
+counter = counter + 1 // This is allowed.
+```
+
+By defaulting to `let` for everything, you make your code's intent clearer and safer.
 
 ## Primitive Types
 
@@ -16,8 +45,10 @@ Boba has a set of primitive types that are the building blocks of data in your p
 The `int` type is used to represent a 64-bit signed integer (a whole number). It is the ideal type for counting, indexing into collections, representing IDs, and any situation where fractional values are not needed.
 ```boba
 let score: int = 100
-let quantity: int = 3
 let current_level = 10 // Inferred as int
+
+var quantity: int = 3
+var drinks_bought = 50 // Inferred as int
 ```
 
 ##### Writing Numbers in Different Bases
@@ -34,8 +65,8 @@ let decimal_value: int = 255
 let hex_value: int = 0xFF
 let binary_value: int = 0b11111111
 
-print(decimal_value == hex_value) // true
-print(hex_value == binary_value) // true
+print(decimal_value == hex_value) // Prints "true"
+print(hex_value == binary_value) // Prints "true"
 ```
 
 ##### Improving Readability with `_`
@@ -69,7 +100,7 @@ The `string` type is used to represent text.
 
 ```boba
 var message: string = "Hello, Boba!"
-var playerName = "Ada" // Inferred as a string
+var player_name = "June" // Inferred as a string
 ```
 ##### Formatting Strings with F-Strings
 
@@ -93,8 +124,8 @@ print(template) // Outputs: This is a template: {some_value}
 The `boolean` type represents a value that can be either `true` or `false`. Booleans are essential for controlling the flow of your program.
 
 ```boba
-var isGameOver: boolean = false
-var hasKey = true // Inferred as a boolean
+var is_game_over: boolean = false
+var has_key = true // Inferred as a boolean
 ```
 
 ## Composite Types
@@ -148,5 +179,3 @@ print(scores.len()) // Outputs: 3
 ```
 
 Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter.
-
-In the next chapter, we'll look at how to use these types with operators to perform calculations and make comparisons.

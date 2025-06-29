@@ -1,5 +1,5 @@
 ---
-title: "Safe Absence"
+title: "Chapter 9: Handling Potential Absence: The Option Type"
 description: "Learn how Boba's built-in Option<T> type provides a robust and safe way to handle values that might be absent, preventing an entire category of null-related errors."
 ---
 
@@ -75,5 +75,3 @@ To understand the safety `Option<T>` provides, it's helpful to contrast Boba's m
 -   **In languages with `null` (like Java or JavaScript):** A variable of type `User` could be a `User` object or `null`. You must remember to check for `null` every time. If you forget, your program can crash.
 
 -   **In Boba:** A variable of type `Option<User>` is a container that might hold a `User`. The compiler requires you to handle both the `Some(User)` and `None` cases, guaranteeing that you cannot accidentally use a value that isn't there.
-
-By embracing `Option<T>`, Boba helps you write safer, more predictable code from the start. Now that you've seen how to handle the *absence* of a value, let's look at how to handle operations that can *fail* in the next chapter.

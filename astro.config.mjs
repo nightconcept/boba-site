@@ -40,55 +40,40 @@ export default defineConfig({
           label: 'Learn Boba',
           items: [
             {
-              label: 'Module 1: The Absolute Basics',
+              label: 'Part 1: The Fundamentals',
               items: [
-                { label: '1.1. Your First Program', link: '/learn/01-your-first-program' },
-                { label: '1.2. Immutable Bindings: let and var', link: '/learn/02-variables-and-constants' },
-                { label: '1.3. Data Types', link: '/learn/03-data-types' },
-                { label: '1.4. Operators', link: '/learn/04-operators' },
+                { label: 'Chapter 1: Getting Started', link: '/learn/part-1-the-fundamentals/01-getting-started' },
+                { label: 'Chapter 2: Variables & Data Types', link: '/learn/part-1-the-fundamentals/02-variables-and-data-types' },
+                { label: 'Chapter 3: Operators', link: '/learn/part-1-the-fundamentals/03-operators' },
+                { label: 'Chapter 4: Controlling Program Flow', link: '/learn/part-1-the-fundamentals/04-controlling-program-flow' },
               ],
             },
             {
-              label: 'Module 2: Control Flow',
+              label: 'Part 2: Structuring Your Code',
               items: [
-                { label: '2.1. Conditional Logic: if/else', link: '/learn/05-conditional-logic' },
-                { label: '2.2. Repeating Actions with Loops', link: '/learn/06-loops' },
+                { label: 'Chapter 5: Functions', link: '/learn/part-2-structuring-your-code/05-functions' },
+                { label: 'Chapter 6: Structs', link: '/learn/part-2-structuring-your-code/06-structs' },
+                { label: 'Chapter 7: Methods & Implementations', link: '/learn/part-2-structuring-your-code/07-methods-and-implementations' },
+                { label: 'Chapter 8: Modules & Imports', link: '/learn/part-2-structuring-your-code/08-modules-and-imports' },
               ],
             },
             {
-              label: 'Module 3: Custom Data & Matching',
+              label: 'Part 3: Writing Robust & Safe Code',
               items: [
-                { label: '3.1. Enums', link: '/learn/07-enums' },
-                { label: '3.2. Matching', link: '/learn/08-match' },
+                { label: 'Chapter 9: The Option Type', link: '/learn/part-3-writing-robust-safe-code/09-option-type' },
+                { label: 'Chapter 10: The Result Type', link: '/learn/part-3-writing-robust-safe-code/10-result-type' },
+                { label: 'Chapter 11: The defer Statement', link: '/learn/part-3-writing-robust-safe-code/11-defer' },
+                { label: 'Chapter 12: Panics', link: '/learn/part-3-writing-robust-safe-code/12-panics' },
               ],
             },
             {
-              label: 'Module 4: Building Blocks',
+              label: 'Part 4: The Broader Picture',
               items: [
-                { label: '4.1. Functions', link: '/learn/08-functions' },
-                { label: '4.2. Structs', link: '/learn/09-structs' },
-                { label: '4.3. Adding Behavior with impl', link: '/learn/10-adding-behavior-with-impl' },
+                { label: 'Chapter 13: Concurrency', link: '/learn/part-4-the-broader-picture/13-concurrency' },
+                { label: 'Chapter 14: Style & Philosophy', link: '/learn/part-4-the-broader-picture/14-style-and-philosophy' },
               ],
             },
-            {
-              label: 'Module 5: Writing Robust Boba',
-              items: [
-                { label: '5.1. Handling Optional Data', link: '/learn/11-handling-optional-data' },
-                { label: '5.2. Error Handling', link: '/learn/12-error-handling' },
-                { label: '5.3. Guaranteed Cleanup with defer', link: '/learn/13-guaranteed-cleanup-with-defer' },
-                { label: '5.4. Panics', link: '/learn/14-panics' },
-              ],
-            },
-            {
-              label: 'Module 6: Advanced Topics',
-              items: [
-                { label: '6.1. Pure Functions', link: '/learn/15-pure-functions' },
-                { label: '6.2. Imports', link: '/learn/16-imports' },
-                { label: '6.3. Runtime Reflection', link: '/learn/17-runtime-reflection' },
-                { label: '6.4. Concurrency', link: '/learn/18-concurrency' },
-                { label: '6.5. Style Guide', link: '/learn/19-style-guide' },
-              ],
-            },
+            { label: 'Conclusion', link: '/learn/conclusion' },
           ],
         },
         {

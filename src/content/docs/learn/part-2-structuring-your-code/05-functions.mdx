@@ -1,5 +1,5 @@
 ---
-title: "Functions"
+title: "Chapter 5: Reusing Code: Functions"
 description: "Learn how to create reusable blocks of code in Boba with functions."
 ---
 
@@ -68,7 +68,7 @@ create_user(101, name: "Ada", is_admin: false)
 
 ### Private Functions
 
-By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword. The `pub` keyword makes your functions available to other files, a concept we'll explore in the final chapter on Imports.
+By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword.
 
 ```boba
 // This function can only be called from this file.
@@ -142,6 +142,3 @@ fn square(n: int) -> int {
 var result = 5 |> add_one() |> square()
 
 print(result) // Outputs: 36
-```
-
-Functions are the building blocks of any Boba program. In the next chapter, we'll explore how to group related data together using structs.

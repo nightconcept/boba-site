@@ -1,5 +1,5 @@
 ---
-title: "Operators"
+title: "Chapter 3: Manipulating Data: Operators"
 description: "Learn how to perform arithmetic, make comparisons, and use logical operators in Boba."
 ---
 
@@ -82,17 +82,6 @@ if "stealth" in player_skills {
 }
 ```
 
-In Boba, comparisons must be explicit. You can't use a non-boolean value in a context that expects a boolean.
-
-```boba
-// WRONG
-var score: int = 100
-// if (score) { ... } // This will cause a compile error.
-
-// RIGHT
-if score != 0 { ... } // The result of `!=` is a boolean.
-```
-
 ## Logical Operators
 
 Logical operators are used to combine boolean values.
@@ -112,4 +101,6 @@ if hasKey and not isDoorLocked {
 }
 ```
 
-With these operators, you can start writing more complex and interesting programs. In the next chapter, we'll explore how to control the flow of your program using conditionals.
+## Bitwise Operators (Advanced)
+
+Bitwise operators are used to perform operations on individual bits of a number. This is an advanced topic, but it's good to know they exist.

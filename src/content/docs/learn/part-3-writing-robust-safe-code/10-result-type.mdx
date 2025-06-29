@@ -1,5 +1,5 @@
 ---
-title: "Handling Errors"
+title: "Chapter 10: Handling Recoverable Errors: The Result Type"
 description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
@@ -56,6 +56,3 @@ fn load_config() -> Result<Config, error> {
     // If everything succeeds, we wrap the `Config` in an `Ok` and return it.
     return Ok(config)
 }
-```
-
-This approach to error handling makes your code cleaner and more reliable. But what happens when a function that can fail also needs to clean up resources, like closing a file? In the next chapter, we'll see how `defer` solves this problem perfectly.

@@ -1,5 +1,5 @@
 ---
-title: "Adding Behavior with impl"
+title: "Chapter 7: Adding Behavior: Methods & Implementations"
 description: "Learn how to attach methods to your structs using an `impl` block."
 ---
 
@@ -11,16 +11,16 @@ The `impl` block is where you define all the functions that belong to a `struct`
 
 ```boba
 struct Player {
-  name: string,
-  health: int
+  name: string,
+  health: int
 }
 
 impl Player {
-  /// A method that prints the player's status.
-  /// The `self` parameter gives us read-only access to the instance.
-  pub fn print_status(self) {
-    print("{self.name}'s health is {self.health}.")
-  }
+  /// A method that prints the player's status.
+  /// The `self` parameter gives us read-only access to the instance.
+  pub fn print_status(self) {
+    print("{self.name}'s health is {self.health}.")
+  }
 }
 ```
 
@@ -67,4 +67,4 @@ To call a mutating method, the variable holding the struct instance must also be
 ```boba
 var player2 = Player.new("Boba")
 player2.take_damage(25) // This is allowed because player2 is mutable.
-player2.print_status()  // Outputs: Boba's health is 75.
+player2.print_status()  // Outputs: Boba's health is 75.

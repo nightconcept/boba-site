@@ -1,0 +1,181 @@
+---
+title: "Chapter 4: Controlling Program Flow"
+description: "Learn how to control the flow of your Boba programs with conditionals, loops, and pattern matching."
+---
+
+In programming, you often need to execute different code depending on certain conditions. Boba uses the familiar `if`, `else if`, and `else` keywords to handle conditional logic.
+
+## The `if` Statement
+
+The `if` statement executes a block of code only if a specified condition is `true`.
+
+```boba
+var temperature: float = 30.0
+
+if temperature > 25 {
+  print("It's a hot day!")
+}
+```
+
+## The `else` Statement
+
+You can use the `else` statement to provide a block of code to execute if the `if` condition is `false`.
+
+```boba
+var score: int = 85
+
+if score >= 60 {
+  print("You passed!")
+} else {
+  print("You failed. Better luck next time!")
+}
+```
+
+## The `else if` Statement
+
+To handle multiple conditions, you can chain `if` statements with `else if`.
+
+```boba
+var hunger = "hungry"
+var thirst = "thirsty"
+
+if hunger == "hungry" and thirst == "thirsty" {
+  print("You are hungry and thirsty.")
+} else if hunger == "hungry" {
+  print("You are only hungry.")
+} else if thirst == "thirsty" {
+  print("You are only thirsty.")
+} else {
+  print("You are neither hungry nor thirsty.")
+}
+```
+
+### Concise Conditionals with One-Liner `if/else`
+
+> For simple conditional assignments, you can use `if/else` as a one-line expression without curly braces. This is a clean and readable way to choose between two values.
+
+```boba
+let health: int = 75
+
+// The entire if/else expression evaluates to a single value.
+let status: string = if health > 50 { "Healthy" } else { "Injured" }
+
+print(f"Player status: {status}") // Outputs: Player status: Healthy
+```
+
+## Repeating Actions with Loops
+
+Loops are used to execute a block of code multiple times. Boba provides two primary loops: `for` for iterating over sequences and `while` for looping as long as a condition is true.
+
+#### The `for` Loop: The Main Iteration Tool
+
+The `for` loop is Boba's most powerful and common loop. It can iterate over a collection of items or a range of numbers.
+
+**1. Iterating Over Collections** This is the idiomatic way to work with every item in a `list` or `map`.
+
+```boba
+let ingredients: string[] = ["healing potion", "sword", "shield"]
+
+// The `for...in` loop will go through each item in the list.
+for item in ingredients {
+  print(f"Player inventory contains: {item}")
+}
+```
+
+**2. Iterating Over a Range of Numbers** To repeat an action a specific number of times, you can use a range. A range is created with the `..` (exclusive) or `..=` (inclusive) operator.
+
+```boba
+// A range from 0 up to, but not including, 5 (0, 1, 2, 3, 4).
+// This will run 5 times.
+for i in 0..5 {
+  print(f"Executing task {i}...")
+}
+
+// An inclusive range from 1 up to, and including, 5 (1, 2, 3, 4, 5).
+for i in 1..=5 {
+  player.take_poison_damage(amount: 2)
+  print(f"Poison damage tick {i}. Player health is now {player.health}.")
+}
+```
+
+#### The `while` Loop
+
+The `while` loop continues to execute a block of code as long as a specified condition remains `true`.
+
+```boba
+var player_mana: int = 100
+
+// Regenerate mana until it is full.
+while player_mana < 100 {
+  player_mana += 5 // Using the earmarked compound assignment for example
+  print(f"Regenerating... mana is now {player_mana}.")
+  timer.sleep(ms: 500) // Assuming a standard library timer
+}
+
+print("Mana is full!")
+```
+
+## Exhaustive Pattern Matching with `match`
+
+Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility.
+
+### The Rule of Exhaustiveness
+
+A `match` statement in Boba must be **exhaustive**. This means you must provide a branch for every possible value the type can have. The Boba compiler will give you an error if you forget a case, preventing a whole class of bugs.
+
+Let's see this with an `enum`.
+```boba
+enum TrafficLight {
+    RED,
+    YELLOW,
+    GREEN
+}
+
+var light = TrafficLight.RED
+
+// This match is exhaustive, so it will compile.
+match light {
+    TrafficLight.RED => print("Stop!"),
+    TrafficLight.YELLOW => print("Caution!"),
+    TrafficLight.GREEN => print("Go!")
+}
+
+// If you were to comment out the GREEN case, for example,
+// the compiler would produce an error!
+```
+
+This exhaustiveness is what makes `match` so safe and powerful, especially when working with the `Option` and `Result` types we'll see later. It guarantees at compile time that you have considered both the `Some` and `None` cases.
+
+### The Default Case: `_`
+
+Sometimes, you don't want to handle every single case explicitly. For these situations, you can use the wildcard pattern, a single underscore (`_`), as a default or "catch-all" branch. The `_` will match any value that hasn't been matched by the preceding branches.
+
+This is useful when matching on types with many possibilities, like numbers or strings.
+
+```boba
+var status_code: int = 418
+
+match status_code {
+    200 => print("OK"),
+    404 => print("Not Found"),
+    // The `_` handles every other possible integer value.
+    _ => print("An unexpected error occurred.")
+}
+```
+
+### Advanced Pattern Matching
+
+Boba's `match` statement can do much more than simple value checking. You can bind matched values to new variables and use `where` clauses for complex conditions.
+
+```boba
+// Assume we have a function that returns a Result<int, string>
+var result = my_api.fetch_data()
+
+match result {
+    // Bind the value inside Ok to the variable 'n'
+    Ok(n) where n > 100 => print("Received a big number: {n}"),
+    Ok(n) => print("Received a smaller number: {n}"),
+
+    // Bind the value inside Err to the variable 'msg'
+    Err(msg) => print("An error occurred: {msg}")
+}

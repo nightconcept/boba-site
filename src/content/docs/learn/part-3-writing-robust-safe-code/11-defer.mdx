@@ -1,5 +1,5 @@
 ---
-title: "Guaranteed Cleanup"
+title: "Chapter 11: Ensuring Cleanup: The defer Statement"
 description: "Learn how to ensure cleanup actions, like closing a file, are always executed using the `defer` statement."
 ---
 
@@ -58,5 +58,3 @@ pub fn process_file(path: string) -> Result<string, error> {
 ```
 
 By placing `defer file.close()` right after `fs.open(path)?`, we make our code cleaner, safer, and easier to read. The cleanup code is right next to the resource it's cleaning up.
-
-Now that you've mastered writing robust Boba code, let's look at how to handle situations that are truly unrecoverable.
