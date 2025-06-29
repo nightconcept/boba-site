@@ -20,7 +20,7 @@ for item in ingredients {
 }
 ```
 
-**2. Iterating Over a Range of Numbers** To repeat an action a specific number of times, you can use a range. A range is created with the `..` (exclusive) or `..=` (inclusive) operator.
+**2. Iterating Over a Range of Numbers** To repeat an action a specific number of times, you can use a range. A range is created with the `..` (exclusive) or `..=` (inclusive) operator. A range is a temporary sequence of numbers created on-the-fly, specifically for the purpose of iteration.
 
 ```boba
 // A range from 0 up to, but not including, 5 (0, 1, 2, 3, 4).
@@ -58,6 +58,10 @@ var countdown = 3
     // 1...
     // Liftoff!
 ```
+
+> **A Word of Caution**
+> Since a `while` loop's continuation depends on a condition you manage manually, you are responsible for ensuring the condition will eventually become `false` to prevent an infinite loop.
+
 > #### **Time to Practice!**
 >
 > Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.

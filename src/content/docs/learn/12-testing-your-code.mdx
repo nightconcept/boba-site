@@ -89,7 +89,7 @@ The `#[file: test]` attribute is what enables this pattern. It tells the compile
 
 ## Testing Implementation Details
 
-The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-`pub` functions from its corresponding source file. The `#[file: test]` attribute grants the test file special access to the private, non-pub items of its corresponding implementation file. This allows you to test your internal implementation details without making them public.
+The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-pub items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
 
 Let's add a test for our private `internal_add` function.
 
@@ -112,7 +112,7 @@ fn test_private_internal_add_function() {
 }
 ```
 
-This ability to test private functions is a key feature of Boba's unit testing philosophy, enabling you to write thorough tests for your module's internals while maintaining strict encapsulation for the rest of your library.
+This ability to test private functions is a key feature of Boba's unit testing philosophy. This allows you to write thorough tests for your module's internal logic while still maintaining a strictly controlled public API for consumers of your library.
 
 ## Integration Testing Your Public API
 
@@ -168,7 +168,7 @@ To ensure your documentation is always correct, Boba can run your `@example` blo
 boba test --doc
 ```
 
-This will execute the code inside every `@example` block across your project and report any failures, guaranteeing your examples never lie.
+This will execute the code inside every `@example` block across your project and report any failures. This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
 
 #### Other Assertions
 

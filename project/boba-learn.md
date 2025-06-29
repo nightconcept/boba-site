@@ -275,7 +275,7 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `+`      | Addition         | `5 + 2` results in `7`   |
 | `-`      | Subtraction      | `5 - 2` results in `3`   |
 | `*`      | Multiplication   | `5 * 2` results in `10`  |
-| `/`      | Division         | `5 / 2` results in `2.5` |
+| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `1` |
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
 | `^`      | Power (Note: some languages like Python and JavaScript use `**` for this) | `5 ^ 2` results in `25`  |
 

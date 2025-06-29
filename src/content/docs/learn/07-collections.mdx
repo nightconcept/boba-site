@@ -3,7 +3,7 @@ title: "Chapter 7: Grouping Data: list and map"
 description: "Learn about Boba's primary collection types: list and map."
 ---
 
-Boba has composite types, which are made up of primitive types.
+While primitive types are the basic building blocks for data, most real-world programs need to work with collections of data. Boba provides two primary, built-in collection types for this purpose: `list` and `map`.
 
 ### `list`
 
@@ -35,11 +35,13 @@ print(ingredients.len()) // Outputs: 4
 
 // Access items by their index (starting from 0)
 print(ingredients[0]) // Outputs: "flour"
+
+Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
 ```
 
 ### `map`
 
-A `map` is a collection of key-value pairs. Each key must be unique, and all keys must be of the same type, as must all values.
+A `map` is a collection of key-value pairs. Think of a map like a dictionary, where each 'key' is a unique word and the 'value' is its definition. Each key must be unique, and all keys must be of the same type, as must all values.
 
 ```boba
 // Create a map with string keys and number values
@@ -65,4 +67,4 @@ let adas_score = scores["ada"]
 print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
 ```
 
-But what happens if you try to access a key that doesn't exist? This is a common source of errors in other languages. Boba solves this safely. Accessing a key in a map doesn't return the value directly. Instead, it returns a special Option type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter on error handling.
+But what happens if you try to access a key that doesn't exist? In many languages, this can lead to unexpected crashes (like a `KeyError` in Python) or silent errors (like returning `undefined` in JavaScript). Boba prevents these problems. Accessing a key in a map doesn't return the value directly. Instead, it returns a special `Option` type, which safely handles cases where the key might not exist. We will cover this powerful feature in a later chapter.

@@ -3,30 +3,20 @@ title: "Chapter 11: Structuring Your Project: Modules"
 description: "Learn how to organize your Boba code into multiple files and share code between them using the `import` keyword."
 ---
 
-As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using modules and the `import` keyword.
+As your programs grow larger, it becomes important to organize your code into multiple files. In Boba, the module system is designed to be simple and intuitive. The rules are:
 
-By default, all items you define in a file—functions, structs, etc.—are private, meaning they can only be used within that same file. To make an item part of a file's public API so it can be imported elsewhere, you must mark it with the `pub` keyword.
+1.  **Every file is a module.** Each `.boba` file you create is its own module, a private container for its contents.
+2.  **Items are private by default.** All items you define in a file—functions, structs, enums, etc.—are private to that module. They can only be used within the same file.
+3.  **Use `pub` to create a public API.** To make an item accessible from other modules, you must explicitly mark it with the `pub` keyword. This makes it part of the module's public API.
+4.  **Use `import` to access public items.** The `import` keyword is the mechanism to use public items from one module in another.
 
-## Private by Default
-
-By default, functions are private, meaning they can only be called from within the same file. To make a function accessible from other files, you must use the `pub` keyword.
-
-```boba
-// This function can only be called from this file.
-fn my_private_function() {
-  print("This is a secret!")
-}
-```
-
-Because this function is private, any attempt to import and call it from `main.boba` would result in a compile error.
-
-You can import public functions, structs, enums, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
+This revised structure is more logical. It starts with the container (the file/module), explains the visibility rules within it (private/`pub`), and then explains how to cross the container boundary (`import`). This eliminates repetition and builds the concepts in a more orderly way.
 
 > For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
 ## Importing Specific Items
 
-To import specific items from a file, you list them by name inside curly braces `{}`, and can optionally rename them with `as`.
+To import specific items from a file, you use the `import { item } from "path"` syntax. You can list items by name inside curly braces `{}`, and can optionally rename them with `as`.
 
 ```boba
 // in utils.boba
@@ -47,15 +37,19 @@ farewell() // Prints "Goodbye!"
 
 ## Importing Everything as a Namespace
 
-To import everything from a file as a single namespace, you can use the `* as <name>` syntax.
+To import all public items from a file as a single namespace, you can use the `import * as namespace from "path"` syntax.
 
 ```boba
 // in utils.boba
-pub fn say_hello() { /* ... */ }
-pub fn say_goodbye() { /* ... */ }
+pub fn say_hello() {
+    print("Hello!")
+}
+pub fn say_goodbye() {
+    print("Goodbye!")
+}
 
 // in main.boba
-// The `* as <name>` syntax imports all public items under a single namespace.
+// The `import * as ...` syntax imports all public items under a single namespace.
 import * as utils from "./utils.boba"
 
 utils.say_hello()

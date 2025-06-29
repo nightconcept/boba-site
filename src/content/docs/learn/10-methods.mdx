@@ -44,7 +44,7 @@ let player = Player.new(name: "Ada")
 
 ## Methods and the `self` Parameter
 
-A **method** is a function within an `impl` block that takes `self` as its first parameter. `self` represents the specific instance of the struct the method is being called on.
+A **method** is a function within an `impl` block that takes `self` as its first parameter. `self` represents the specific instance of the struct the method is being called on. By default, the `self` parameter provides immutable, read-only access to the struct's instance.
 
 > For developers coming from languages like JavaScript, Python, or Java, `self` is the equivalent of `this`.
 
@@ -76,7 +76,7 @@ impl Player {
 }
 ```
 
-To call a `mut self` method, the instance of the struct must be mutable. Here is a full example:
+To be able to call a method that mutates its instance, the instance itself must be declared as mutable using `var`. The compiler will prevent you from calling a `mut self` method on an immutable `let` binding. Here is a full example:
 
 ```boba
 // First, create a mutable Player instance named boba_dev using var.

@@ -3,7 +3,7 @@ title: "Chapter 15: Powerful Control Flow: Pattern Matching"
 description: "Learn how to use the powerful `match` statement for exhaustive pattern matching."
 ---
 
-Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. `match` is the most fundamental tool in Boba for working with enum types, especially `Option` and `Result`. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
+Boba's primary tool for control flow is the powerful `match` statement. It allows you to check a value against a series of patterns in a clean and expressive way. Its key strength is that the compiler enforces **exhaustiveness**, which is why it is the perfect tool for safely working with enum types like `Option` and `Result`.
 
 ### The Rule of Exhaustiveness
 
@@ -33,7 +33,10 @@ match read_config_file() {
 }
 ```
 
-This exhaustiveness is what makes `match` so safe and powerful. It guarantees at compile time that you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases.
+While `_` is necessary for matching on types with a near-infinite number of values (like `int` or `string`), it should be used cautiously with enums. Using it can sometimes bypass the compiler's exhaustiveness check. For example, if a new variant is added to an enum later, the wildcard `_` will catch it silently instead of causing a helpful compile error that would force you to handle the new case explicitly.
+```
+
+This exhaustiveness is what makes `match` so safe and powerful. It's important to understand this is not just a convention; it's a guarantee. If you were to write a `match` statement for an `Option` and forget to handle the `None` case, your code would not compile. The compiler guarantees that you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases, before your program can run.
 
 ### The Default Case: `_`
 

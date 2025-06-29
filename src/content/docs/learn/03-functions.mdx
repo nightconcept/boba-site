@@ -21,7 +21,7 @@ say_hello()
 
 ### Function Calls: Mandatory Named Arguments
 
-This is one of Boba's key features for writing safe and readable code. It prevents a common and hard-to-spot bug where arguments are passed in the wrong order. For example, in another language, you might accidentally write create_user_profile("Admin", 123) when the function expected (user_id, role). Boba makes this mistake impossible at compile time.
+A common source of subtle bugs in many languages occurs when arguments are passed to a function in the wrong order. For example, a function call like `create_user("Admin", 123)` might silently succeed when the function actually expected `(id: int, role: string)`. Boba solves this problem by requiring named arguments by default.
 
 To maximize clarity, Boba requires function arguments to be called with their names by default. This makes function call sites self-documenting. This approach is built into the language to achieve the clarity that developers in other languages like JavaScript or Python often simulate by passing a single 'options' object to a function.
 
@@ -42,7 +42,7 @@ connect(host: "boba.dev", port: 9000, timeout: 5000)
 
 ### Opting-In to Positional Arguments
 
-For a parameter to be callable positionally, its name in the function _declaration_ must be prefixed with an underscore (`_`).
+For a parameter to be callable positionally, its name in the function _declaration_ must be prefixed with an underscore (`_`). The function's author uses this to signal that the argument's order is natural and unambiguous, like the operands in an addition function.
 
 ```boba
 // This function allows positional arguments.
@@ -72,7 +72,7 @@ create_user(101, name: "Ada", is_admin: false)
 
 Boba includes a special pipe operator (`|>`) to make chaining function calls more readable. It takes the result of the expression on its left and passes it as the first argument to the function on its right.
 
-This operator is purely for developer ergonomics. It helps turn deeply nested function calls into a clean, linear flow of data.
+This operator is purely for developer ergonomics. It transforms deeply nested calls that must be read "from the inside-out" into a linear sequence of steps that can be read "from left-to-right," which more closely matches how we think about a data transformation pipeline.
 
 Consider a set of functions to process text:
 
@@ -94,7 +94,7 @@ With the pipe operator, you can express the same logic as a clear, left-to-right
 
 ```boba
 let message = "  hello world  "
-let formatted = message |> trim |> to_uppercase |> emphasize
+let formatted = message |> trim() |> to_uppercase() |> emphasize()
 // formatted is "**HELLO WORLD**"
 ```
 

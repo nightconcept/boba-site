@@ -36,7 +36,7 @@ let timeout: int = match timeout_option {
 
 ## Shortcut: Unwrapping with a Default using ??
 
-The `??` operator is a convenient shortcut for exactly the `match` pattern just demonstrated. A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`.
+The `??` operator is a clean shorthand specifically for the common pattern of unwrapping a `Some` value or providing a default value if it's `None`.
 
 ```boba
 // If the left side is Some(t), use t. If it's None, use the right side.
@@ -47,15 +47,17 @@ This operator makes your code cleaner by removing the boilerplate of a match sta
 
 ## When to Use Option vs. Result
 
-Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline is based on whether a situation is an expected absence or a failure.
+Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline can be framed as a question the developer should ask themselves.
 
-*   Use **`Option<T>`** when a value could be absent, and this is a normal, expected outcome. It answers the question: "Is there a value here or not?"
-    *   `find_user_by_id()`: A user might not exist. This isn't an error. "user not found" is an expected, valid outcome of a search.
+*   For **`Option<T>`**, the question is: **"Is it normal and expected for a value to be absent here?"**
+    *   `find_user_by_id()`: A user might not exist. This isn't an error; "user not found" is an expected, valid outcome of a search.
     *   `map.get(key)`: A key may not be in a map. This is normal.
+    *   Getting the first element of a list: This could be `None` if the list is empty, which is a normal state.
 
-*   Use **`Result<T, E>`** when a function that is *supposed* to succeed could fail for some external reason. It answers the question: "Did this operation work or not?"
+*   For **`Result<T, E>`**, the question is: **"Is this an operation that is supposed to succeed, but could plausibly fail due to circumstances beyond my control?"**
     *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full. A disk being full is an external failure, not an expected outcome of reading a file.
     *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
+    *   Parsing a string into a number: This should succeed but could return an `Err` if the string is malformed (an operational failure).
 
 > #### **Time to Practice!**
 >

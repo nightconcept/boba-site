@@ -16,7 +16,7 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `*`      | Multiplication   | `5 * 2` results in `10`  |
 | `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `1` |
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
-| `^`      | Power (Note: some languages like Python and JavaScript use `**` for this) | `5 ^ 2` results in `25`  |
+| `^`      | Power (Note: This differs from Python and JavaScript, which use `**` for exponentiation.) | `5 ^ 2` results in `25`  |
 
 ```boba
 let score = 10
@@ -25,7 +25,8 @@ let total_score = score + bonus
 let final_level = total_score / 10
 
 print(f"Final level is: {final_level}") // Outputs: Final level is: 3
-// Note: 30 / 10 results in an integer. We will discuss float division later.
+// When dividing two integers, Boba performs integer division, which
+// discards any fractional remainder and returns an integer.
 ```
 
 ## Comparison Operators
@@ -50,7 +51,7 @@ print(f"Is the student passing? {is_passing}") // Outputs: Is the student passin
 
 ### Checking for Containment with 'in'
 
-To check if an element exists within a `list`, `map`, or `string`, you can use the highly readable `in` operator.
+To determine if a list contains a specific element, a map contains a certain key, or a string contains a substring, Boba provides the highly readable `in` operator.
 
 ```boba
 let inventory: string[] = ["sword", "shield", "potion"]

@@ -43,6 +43,8 @@ To make a field part of the struct's public API, you must explicitly mark it wit
 
 Think of it like a building: some rooms (private fields) are for internal staff only, while the reception area (`pub` fields) is accessible to the public.
 
+This principle of encapsulation allows the author of a struct to later refactor or change the internal, private fields without breaking the code of users who depend on it, as long as the public API (the `pub` fields) remains consistent.
+
 ```boba
 // in a file named `user.boba`
 
@@ -55,7 +57,7 @@ pub struct User {
 
 If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
 ### Mutating a Struct
-In a new paragraph, explain that you use the `var` keyword to create mutable struct instances.
+To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed.
 ```boba
 // Create a mutable Player instance
 var boba_dev: Player = { name: "Boba Dev", score: 0, is_active: false }

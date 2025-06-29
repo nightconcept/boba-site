@@ -7,7 +7,7 @@ In Boba, you can store data in variables. A core principle of the language is **
 
 ### `let`: Immutable Bindings
 
-The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for everything, as it prevents accidental modification.
+The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for everything, as it prevents accidental modification. This design choice helps prevent a large class of common bugs where data is changed unintentionally. It makes code easier to reason about because you know a value won't change unexpectedly.
 
 ```boba
 let message = "Hello, Boba!"
@@ -30,7 +30,7 @@ Error: Cannot assign twice to immutable binding `message`.
   = help: To make this binding mutable, use `var` instead of `let`.
 ```
 
-This is a key part of the Boba development experience. The compiler is your assistant. It doesn't just point out errors; it often tells you exactly how to fix them. Learning to read these messages is a superpower.
+This is a key part of the Boba development experience. The compiler is your pair programmer. It doesn't just point out errors; it often tells you exactly how to fix them. Learning to read these messages is a superpower.
 
 > **A Note for JavaScript/TypeScript Developers**
 >
@@ -38,7 +38,7 @@ This is a key part of the Boba development experience. The compiler is your assi
 
 ### `var`: Mutable Variables
 
-You should only use the `var` keyword when you have a specific and necessary reason to change a value after it's been created.
+You should only use the `var` keyword when you have a specific and necessary reason to change a value after it's been created. You should use `var` only when you explicitly need to track a state that changes over time, such as a counter in a loop, a user's accumulating score, or a value that is built up incrementally.
 
 ```boba
 // A mutable variable, used only when mutation is required.
@@ -50,7 +50,7 @@ By defaulting to `let` for everything, you make your code's intent clearer and s
 
 ### Core Data Types
 
-Boba has a set of primitive types that are the building blocks of data in your programs.
+Now that you know how to declare variables with `let` and `var`, let's explore the fundamental types of data they can hold. Boba has a set of primitive types that are the building blocks of data in your programs.
 
 ### `int`
 
@@ -80,7 +80,7 @@ var player_name = "June" // Inferred as a string
 
 ##### Formatting Strings with F-Strings
 
-> To embed variables and expressions directly into a string, Boba uses **f-strings**. An f-string is a string literal prefixed with the letter `f`. This explicitly tells the compiler to process any expressions inside curly braces `{}`.
+> To embed variables and expressions directly into a string, Boba uses **f-strings**. An f-string is a string literal prefixed with the letter `f`. This prefix acts as a signal that commands the compiler to actively scan the string for `{}` placeholders and evaluate the expressions inside them.
 
 ```boba
 let player_name = "Ada"
@@ -106,7 +106,7 @@ var has_key = true // Inferred as a boolean
 
 ### Type Inference: Letting Boba Do the Work
 
-In the examples, you may have noticed that sometimes we declare a type (`let score: int = 100`) and sometimes we don't (`let current_level = 10`). When you assign a value as you declare a variable, Boba can usually figure out, or infer, the type for you. `10` is clearly an `int`, `"Ada"` is a `string`, and `true` is a `boolean`. This is a convenience feature to keep your code concise. You should add an explicit type annotation when it helps improve clarity.
+In the examples, you may have noticed that sometimes we declare a type (`let score: int = 100`) and sometimes we don't (`let current_level = 10`). When you assign a value as you declare a variable, Boba can usually figure out, or infer, the type for you. `10` is clearly an `int`, `"Ada"` is a `string`, and `true` is a `boolean`. While this makes code more concise, adding explicit type annotations can serve as powerful documentation, especially on function signatures or for complex data. It's a choice the developer makes to balance conciseness with clarity for other developers (or their future self).
 
 #### **Time to Practice!**
 >

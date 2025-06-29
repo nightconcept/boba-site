@@ -3,7 +3,7 @@ title: "Chapter 13: Handling Failures: The Result Type"
 description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
-In any real-world application, things can go wrong. While other languages often rely on exceptions and `try...catch` blocks, Boba encourages a more explicit approach to error handling using the `Result` enum. A file might not exist, a network request might fail, or user input might be invalid.
+In any real-world application, things can go wrong. A file might not exist, a network request might fail, or user input might be invalid. While other languages often rely on exceptions and `try...catch` blocks to handle these situations, Boba encourages a more explicit approach using the `Result` enum. The benefit of this approach is that using `Result` makes a function's potential for failure an honest part of its type signature, forcing the caller to acknowledge and handle potential errors at compile time.
 
 ## The `Result` Enum
 
@@ -28,7 +28,23 @@ This operator is powerful syntactic sugar for a `match` statement that handles t
 - If the `Result` is `Ok(value)`, the `?` operator unwraps the `Result` and gives you the `value` inside.
 - If the `Result` is `Err(error)`, the `?` operator immediately stops the current function and returns the `Err(error)`.
 
-This new paragraph should describe the match statement that the ? operator represents. Explain that it matches on the Result value: if the value is Ok, it extracts the inner value; if the value is Err, it immediately returns the Err from the entire function.
+Before the `?` operator was introduced, handling nested `Result` values required explicit `match` statements. For example, to get a value from a fallible operation and continue, you would write:
+
+```boba
+fn do_something() -> Result<string, error> {
+    let result = might_fail() // This returns a Result
+
+    let value = match result {
+        Ok(v) => v, // Extract the value and continue
+        Err(e) => return Err(e), // On failure, return immediately
+    }
+
+    // ... continue working with `value`
+    return Ok(f"Success with {value}")
+}
+```
+
+The `?` operator is a concise shorthand for that entire `match` block.
 
 Let's look at an example:
 
@@ -40,7 +56,9 @@ struct Config {
   enable_https: boolean
 }
 
-The following function, `load_config`, is a great example of a function that can fail. It will read a file and parse it as JSON. Both of these operations can fail, making them perfect candidates for using `Result` and the `?` operator.
+The true power of the `?` operator becomes apparent when chaining multiple operations that can each fail, as it allows you to write a clean "happy path" while correctly propagating any error that occurs at any step.
+
+The following function, `load_config`, is a great example of this. It will read a file and parse it as JSON. Both of these operations can fail, making them perfect candidates for using `Result` and the `?` operator.
 
 fn load_config() -> Result<Config, error> {
     var content = read_file("config.json")?

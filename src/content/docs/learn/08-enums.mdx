@@ -3,7 +3,7 @@ title: "Chapter 8: Defining State with enums"
 description: "Learn how to create your own custom types with a fixed set of variants using enums."
 ---
 
-While Boba provides powerful built-in enums like `Option` and `Result`, one of its key features is the ability to define your own. An **enum** (short for enumeration) is a custom type that can only be one of a specific, fixed set of possible values, called "variants."
+While Boba provides powerful built-in enums like `Option` and `Result`, one of its key features is the ability to define your own. An **enum** (short for enumeration) is a custom type that can only be one of a specific, fixed set of possible values, called 'variants'.
 
 This is incredibly useful for modeling state. For example, if you are tracking the status of a job, you can define an enum to ensure the status can *only* be one of the states you've defined, preventing bugs from invalid string values.
 
@@ -36,6 +36,6 @@ match current_status {
 }
 ```
 
-By using an enum, you make your code more robust. The compiler guarantees that a `JobStatus` variable can *never* hold a value other than `Pending`, `Complete`, or `Failed`. This eliminates an entire class of bugs related to invalid state.
+By using an enum, you leverage the Boba compiler as a safety net. It becomes impossible for a `JobStatus` variable to ever hold an invalid value like "in-progress" or "error". This eliminates an entire category of bugs at compile time.
 
 This chapter provides a foundation for creating your own types. In the next chapter, you'll learn about `structs`, which let you group related data together.
