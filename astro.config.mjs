@@ -42,7 +42,14 @@ export default defineConfig({
             {
               label: 'Part 1: The Fundamentals',
               items: [
-                { label: 'Chapter 1: Getting Started: Your First Program', link: '/learn/part-1-the-fundamentals/01-getting-started' },
+                {
+                  label: 'Chapter 1: Getting Started: Your First Program',
+                  link: '/learn/part-1-the-fundamentals/01-getting-started',
+                  // items: [
+                  //   { label: '1.1: Your First Program', link: '/learn/part-1-the-fundamentals/01-getting-started/01-your-first-program' },
+                  //   { label: '1.2: How Boba Works', link: '/learn/part-1-the-fundamentals/01-getting-started/02-how-boba-works' },
+                  // ]
+                },
                 { label: 'Chapter 2: Core Building Blocks: Variables & Data Types', link: '/learn/part-1-the-fundamentals/02-variables-and-data-types' },
                 { label: 'Chapter 3: Manipulating Data: Operators', link: '/learn/part-1-the-fundamentals/03-operators' },
                 { label: 'Chapter 4: Controlling Program Flow', link: '/learn/part-1-the-fundamentals/04-controlling-program-flow' },
