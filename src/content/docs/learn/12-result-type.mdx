@@ -1,5 +1,5 @@
 ---
-title: "Chapter 14: Handling Failures: The Result Type"
+title: "Chapter 12: Handling Failures: The Result Type"
 description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
@@ -28,6 +28,8 @@ This operator is powerful syntactic sugar for a `match` statement that handles t
 - If the `Result` is `Ok(value)`, the `?` operator unwraps the `Result` and gives you the `value` inside.
 - If the `Result` is `Err(error)`, the `?` operator immediately stops the current function and returns the `Err(error)`.
 
+This new paragraph should describe the match statement that the ? operator represents. Explain that it matches on the Result value: if the value is Ok, it extracts the inner value; if the value is Err, it immediately returns the Err from the entire function.
+
 Let's look at an example:
 
 ```boba
@@ -38,20 +40,17 @@ struct Config {
   enable_https: boolean
 }
 
+The following function, `load_config`, is a great example of a function that can fail. It will read a file and parse it as JSON. Both of these operations can fail, making them perfect candidates for using `Result` and the `?` operator.
+
 fn load_config() -> Result<Config, error> {
-    // For this example, we'll assume Boba's standard library provides the `read_file` and `parse_json` functions, both of which can fail and therefore return a `Result`.
-
-    // `read_file` returns a `Result<string, error>`.
-    // If it's an `Err`, `?` returns it from `load_config`.
-    // If it's `Ok`, `?` gives us the string content.
     var content = read_file("config.json")?
-
-    // `parse_json` returns a `Result<Config, error>`.
-    // `?` works the same way here.
     var config = parse_json(content)?
 
     print("Config loaded!")
 
-    // If everything succeeds, we wrap the `Config` in an `Ok` and return it.
     return Ok(config)
 }
+
+### Time to Practice!
+
+Now it's your turn. Look for opportunities in your own code to refactor functions to return a `Result`. Use the `?` operator to clean up your error handling and make your code more robust and readable.

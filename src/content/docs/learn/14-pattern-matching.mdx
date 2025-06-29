@@ -3,7 +3,7 @@ title: "Chapter 14: Powerful Control Flow: Pattern Matching"
 description: "Learn how to use the powerful `match` statement for exhaustive pattern matching."
 ---
 
-Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
+Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. `match` is the most fundamental tool in Boba for working with enum types, especially `Option` and `Result`. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
 
 ### The Rule of Exhaustiveness
 
@@ -16,6 +16,20 @@ The `match` statement is most powerful when used with types that have a fixed nu
 match find_user(1) {
     Some(name) => print("Found user: {name}"),
     None => print("User not found.")
+}
+```
+
+`match` works just as effectively on the `Result` type. Here's how you can handle a function that might return an error:
+
+```boba
+fn read_config_file() -> Result<string, error> {
+    // This function might return Ok("file content") or Err({message: "..."})
+    // ...
+}
+
+match read_config_file() {
+    Ok(content) => print("Config file content: {content}"),
+    Err(err) => print("Failed to read config: {err.message}")
 }
 ```
 
@@ -36,3 +50,7 @@ match status_code {
     // The `_` handles every other possible integer value.
     _ => print("An unexpected error occurred.")
 }
+
+> #### **Time to Practice!**
+>
+> The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.

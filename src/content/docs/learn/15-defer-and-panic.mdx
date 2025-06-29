@@ -5,7 +5,7 @@ description: "Learn how to ensure resource cleanup with `defer` and handle unrec
 
 ## Guaranteed Cleanup with `defer`
 
-The `defer` statement schedules a function call to be executed right before the current function exits. It doesn't matter *how* the function exits—whether by a `return`, by reaching the end, or by propagating an error with `?`.
+The `defer` statement schedules a function call to be executed right before the current function exits, regardless of whether the function returns normally, propagates an error with the `?` operator, or exits due to a `panic`.
 
 ```boba
 pub fn process_file(path: string) -> Result<string, error> {
@@ -30,7 +30,7 @@ pub fn process_file(path: string) -> Result<string, error> {
 
 ## Unrecoverable Errors with `panic`
 
-A panic is an abrupt, unrecoverable error that stops the normal execution of your program. A panic should be used for unrecoverable errors, which is another word for a bug.
+Whereas `Result` is used for expected, recoverable errors, `panic` is reserved for unrecoverable errors that signify a bug in the program's logic. A panic is an abrupt, unrecoverable error that stops the normal execution of your program.
 
 When a panic occurs, the program will stop what it's doing and begin to **unwind the stack**. As it unwinds, it will execute any **`defer`** statements it finds along the way.
 
@@ -50,3 +50,6 @@ fn get_guild_rank(player: Player) -> string {
     }
   }
 }
+### Time to Practice!
+
+It's time to practice what you've learned. The next exercises will challenge you to refactor a function to use `defer` for resource cleanup and write a function that correctly panics when its input violates a critical precondition.

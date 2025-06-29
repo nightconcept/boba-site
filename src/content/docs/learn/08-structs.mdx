@@ -1,5 +1,5 @@
 ---
-title: "Chapter 9: Creating Custom Types: structs"
+title: "Chapter 8: Creating Custom Types: structs"
 description: "Learn how to create your own custom data types in Boba using structs."
 ---
 
@@ -32,7 +32,21 @@ let ada: Player = { name: "Ada", score: 100, is_active: true }
 You can access the fields of a struct instance using dot notation.
 
 ```boba
-print("Player name: {ada.name}") // Prints "Player name: Ada"
+print(f"Player name: {ada.name}") // Prints "Player name: Ada"
 ```
+
+### Mutating a Struct
+In a new paragraph, explain that you use the `var` keyword to create mutable struct instances.
+```boba
+// Create a mutable Player instance
+var boba_dev: Player = { name: "Boba Dev", score: 0, is_active: false }
+print(f"Initial score: {boba_dev.score}") // Outputs: Initial score: 0
+
+// Mutate the score field
+boba_dev.score = 150
+print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
+```
+
+### Time to Practice!
 
 You now know how to bundle related data together. This is the first half of creating powerful custom types. In the next chapter, we will bring this data to life by giving our structs behavior with methods.

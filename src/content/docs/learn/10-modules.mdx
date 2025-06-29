@@ -1,5 +1,5 @@
 ---
-title: "Chapter 11: Structuring Your Project: Modules"
+title: "Chapter 10: Structuring Your Project: Modules"
 description: "Learn how to organize your Boba code into multiple files and share code between them using the `import` keyword."
 ---
 
@@ -18,9 +18,11 @@ fn myPrivateFunction() {
 }
 ```
 
-## Importing from Other Files
+Because this function is private, any attempt to import and call it from `main.boba` would result in a compile error.
 
 You can import public functions, structs, enums, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
+
+> For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
 ## Importing Specific Items
 
@@ -36,7 +38,7 @@ pub fn say_goodbye() {
 }
 
 // in main.boba
-import { say_hello, say_goodbye as farewell } from "./utils.boba"
+import { say_hello, say_goodbye as farewell } from "utils.boba"
 
 say_hello() // Prints "Hello!"
 farewell() // Prints "Goodbye!"

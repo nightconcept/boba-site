@@ -38,19 +38,50 @@ Hello, world!
 ```
 
 **Congratulations!** You have just written and run your very first Boba program. You've already used the Boba toolchain (`boba run`), a built-in function (`print`), and a core data type (`string`).
+## Deconstructing "Hello, World"
 
-## Chapter 2: Storing Values: Variables and Immutability
+The flow is excellent, but we need to formally define the concepts the user just used.
+
+- **`print()` is a Function**: A function is a named block of code that performs a specific task. Boba provides the built-in `print()` function to display output. You "call" a function by writing its name followed by parentheses `()`.
+- **`"Hello, world!"` is a String**: The text you see inside the double quotes is a string—Boba's data type for representing text. The quotes are important; they tell Boba where the string begins and ends.
+- **`(...)` are Arguments**: The data you pass inside the parentheses when calling a function is called an argument. Here, we passed the string `"Hello, world!"` as an argument to the `print()` function so it knew what to print.
+
+Understanding these three ideas—functions, strings, and arguments—is the first major step to mastering Boba.
+
+### Time to Practice!
+
+This is the perfect time to switch to your first set of exercises. They will challenge you to use the `print()` function and manipulate simple strings to solidify what you've just learned.
+
+## Chapter 2: Variables and Simple Data Types
 
 In Boba, you can store data in variables. A core principle of the language is **immutability by default**, which helps you write safer, more predictable code.
 
 ### `let`: Immutable Bindings
 
 The `let` keyword declares an **immutable binding**. Once a value is assigned, it cannot be changed. This should be your default choice for everything, as it prevents accidental modification.
+
 ```boba
-// An immutable binding for a regular variable.
 let message = "Hello, Boba!"
-message = "Hello, Dave!" // COMPILE ERROR: This is NOT allowed.
+message = "Hello, Dave!" // This will cause a compile error!
 ```
+
+### Your First Compiler Error: A Helpful Guide
+
+When you try to run the code above, the Boba compiler will stop and show you an error. It might look something like this:
+
+```boba
+Error: Cannot assign twice to immutable binding `message`.
+  --> hello.boba:2:1
+  |
+1 | let message = "Hello, Boba!"
+  |     ------- help: `message` is declared immutable here.
+2 | message = "Hello, Dave!"
+  | ^^^^^^^ cannot assign to `message`
+  |
+  = help: To make this binding mutable, use `var` instead of `let`.
+```
+
+This is a key part of the Boba development experience. The compiler is your assistant. It doesn't just point out errors; it often tells you exactly how to fix them. Learning to read these messages is a superpower.
 
 > **A Note for JavaScript/TypeScript Developers**
 >
@@ -68,7 +99,7 @@ counter = counter + 1 // This is allowed.
 
 By defaulting to `let` for everything, you make your code's intent clearer and safer.
 
-## Chapter 3: Core Building Blocks: Simple Data Types
+### Core Data Types
 
 Boba has a set of primitive types that are the building blocks of data in your programs.
 
@@ -119,7 +150,11 @@ var has_key = true // Inferred as a boolean
 
 In the examples, you may have noticed that sometimes we declare a type (`let score: int = 100`) and sometimes we don't (`let current_level = 10`). When you assign a value as you declare a variable, Boba can usually figure out, or infer, the type for you. `10` is clearly an `int`, `"Ada"` is a `string`, and `true` is a `boolean`. This is a convenience feature to keep your code concise. You should add an explicit type annotation when it helps improve clarity.
 
-## Chapter 4: Reusing Code: Functions
+#### **Time to Practice!**
+>
+> Head over to your next set of exercises. You'll get hands-on practice creating variables, fixing compiler errors related to immutability, and working with `string`, `int`, and `boolean` types.
+
+## Chapter 3: Reusing Code: Functions
 
 Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
 
@@ -129,19 +164,21 @@ You define a function using the `fn` keyword. You can also specify the types of 
 
 ```boba
 // A simple function that takes no arguments and returns nothing.
-pub fn sayHello() {
+fn say_hello() {
   print("Hello, Boba!")
 }
 
 // Call the function
-sayHello()
+say_hello()
 ```
 
 ### Function Calls: Mandatory Named Arguments
 
+This is one of Boba's key features for writing safe and readable code. It prevents a common and hard-to-spot bug where arguments are passed in the wrong order. For example, in another language, you might accidentally write create_user_profile("Admin", 123) when the function expected (user_id, role). Boba makes this mistake impossible at compile time.
+
 To maximize clarity, Boba requires function arguments to be called with their names by default. This makes function call sites self-documenting. This approach is built into the language to achieve the clarity that developers in other languages like JavaScript or Python often simulate by passing a single 'options' object to a function.
 
-**Rule 1: Named Arguments by Default**
+### The Default: Named Arguments
 
 All arguments at a function call site _must_ be called with their name, using a colon (`:`) as a separator.
 
@@ -156,7 +193,7 @@ connect(host: "boba.dev", port: 9000, timeout: 5000)
 // connect("boba.dev", 9000, 5000)
 ```
 
-**Rule 2: Opting-in to Positional Arguments**
+### Opting-In to Positional Arguments
 
 For a parameter to be callable positionally, its name in the function _declaration_ must be prefixed with an underscore (`_`).
 
@@ -169,7 +206,7 @@ add(5, 3)
 add(a: 5, b: 3) // Named calls are still allowed for clarity.
 ```
 
-**Rule 3: Mixed Calls**
+### Mixing Named and Positional Arguments
 
 If a function has both positional and named arguments, all positional arguments must come first.
 
@@ -183,7 +220,7 @@ create_user(101, name: "Ada", is_admin: false)
 // COMPILE ERROR: Positional argument cannot follow a named argument.
 // create_user(name: "Ada", 101, is_admin: false)
 
-## Chapter 5: Manipulating Data: Operators
+## Chapter 4: Manipulating Data: Operators
 
 Now that you know about variables and data types, let's look at how to manipulate them using operators. Operators are special symbols that perform operations on your data.
 
@@ -200,6 +237,16 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
 | `^`      | Power (Note: some languages like Python and JavaScript use `**` for this) | `5 ^ 2` results in `25`  |
 
+```boba
+let score = 10
+let bonus = score * 2
+let total_score = score + bonus
+let final_level = total_score / 10
+
+print(f"Final level is: {final_level}") // Outputs: Final level is: 3
+// Note: 30 / 10 results in an integer. We will discuss float division later.
+```
+
 ## Comparison Operators
 
 Comparison operators are used to compare two values. They always result in a `boolean` (`true` or `false`) value.
@@ -213,9 +260,16 @@ Comparison operators are used to compare two values. They always result in a `bo
 | `<=`     | Less than or equal   | `5 <= 5` is `true`    |
 | `>=`     | Greater than or equal| `5 >= 8` is `false`   |
 
-##### Checking for Containment with `in`
+```boba
+let score = 85
+let is_passing = score >= 60
 
-> To check if an element exists within a `list`, `map`, or `string`, you can use the highly readable `in` operator.
+print(f"Is the student passing? {is_passing}") // Outputs: Is the student passing? true
+```
+
+### Checking for Containment with 'in'
+
+To check if an element exists within a `list`, `map`, or `string`, you can use the highly readable `in` operator.
 
 ```boba
 let inventory: string[] = ["sword", "shield", "potion"]
@@ -246,16 +300,21 @@ Logical operators are used to combine boolean values.
 | `not`    | Logical NOT | `not true` results in `false`       |
 
 ```boba
-var has_key = true
-var is_door_locked = false
+let has_key = true
+let is_door_locked = false
 
 if has_key and not is_door_locked {
-  print("You can open the door!")
+  print("You can enter the room.") // This will print.
 }
+```
 
-## Chapter 6: Making Decisions: if/else Expressions
+> #### **Time to Practice!**
+>
+> You now have the tools to manipulate data. The next set of exercises in your `boba-learning` course will test your knowledge of all these operators to solve small challenges.
 
-In programming, you often need to execute different code depending on certain conditions. Boba uses the familiar `if`, `else if`, and `else` keywords to handle conditional logic.
+## Chapter 5: Making Decisions: if/else Expressions
+
+In Boba, conditional logic is used not only to control which code runs (as a statement), but also to evaluate to a value (as an expression). This makes if/else a powerful tool for both program flow and variable assignment.
 
 ## The `if` Statement
 
@@ -302,7 +361,7 @@ if hunger == "hungry" and thirst == "thirsty" {
 }
 ```
 
-### Concise Conditionals with One-Liner `if/else`
+### Using if as an Expression
 
 > For simple conditional assignments, you can use `if/else` as a one-line expression without curly braces. This is a clean and readable way to choose between two values.
 
@@ -314,9 +373,25 @@ let status: string = if health > 50 { "Healthy" } else { "Injured" }
 
 print(f"Player status: {status}") // Outputs: Player status: Healthy
 ```
-This is similar to the ternary operator (`condition ? expr_if_true : expr_if_false`) found in languages like C++, Java, and JavaScript, but is designed for greater readability.
+This concept isn't limited to single lines. Full if/else blocks are also expressions, meaning they can evaluate to a value that can be returned or assigned. This allows for very clean and readable logic without temporary mutable variables.
+```boba
+let player_health = 75
 
-## Chapter 7: Repeating Actions: for and while Loops
+    let armor_message: string = if player_health == 100 {
+    print("Player is at full health.")
+    "Wearing pristine, shining armor."
+    } else if player_health > 50 {
+    "Wearing battle-worn, dented armor."
+    } else {
+    "Wearing cracked and broken armor."
+    }
+
+    print(armor_message) // Outputs: Wearing battle-worn, dented armor.
+```
+
+Notice how the last line in each block becomes the value that the if expression returns.
+
+## Chapter 6: Repeating Actions: for and while Loops
 
 Loops are used to execute a block of code multiple times. Boba provides two primary loops: `for` for iterating over sequences and `while` for looping as long as a condition is true.
 
@@ -344,30 +419,40 @@ for i in 0..5 {
   print(f"Executing task {i}...")
 }
 
-// An inclusive range from 1 up to, and including, 5 (1, 2, 3, 4, 5).
-for i in 1..=5 {
-  player.take_poison_damage(amount: 2)
-  print(f"Poison damage tick {i}. Player health is now {player.health}.")
+// An inclusive range from 1 up to, and including, 3.
+for i in 1..=3 {
+  print(f"This is message number {i}.")
 }
+// Output:
+// This is message number 1.
+// This is message number 2.
+// This is message number 3.
 ```
 
 #### The `while` Loop
 
-The `while` loop continues to execute a block of code as long as a specified condition remains `true`.
-
+The while loop continues to execute a block of code as long as a specified condition remains true. You should use a while loop when you don't know ahead of time how many times you need to loop.
 ```boba
-var player_mana: int = 100
+var countdown = 3
 
-// Regenerate mana until it is full.
-while player_mana < 100 {
-  player_mana += 5 // Using the earmarked compound assignment for example
-  print(f"Regenerating... mana is now {player_mana}.")
-  timer.sleep(ms: 500) // Assuming a standard library timer
-}
+    / Loop as long as countdown is greater than 0.
+    while countdown > 0 {
+    print(f"{countdown}...")
+    countdown = countdown - 1 // Decrement the counter.
+    }
 
-print("Mana is full!")
+    print("Liftoff!")
+    // Output:
+    // 3...
+    // 2...
+    // 1...
+    // Liftoff!
+```
+> #### **Time to Practice!**
+>
+> Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.
 
-## Chapter 8: Grouping Data: list and map
+## Chapter 7: Grouping Data: list and map
 
 Boba has composite types, which are made up of primitive types.
 
@@ -381,6 +466,13 @@ var highScores: int[] = [100, 95, 80]
 
 // A list of strings
 var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+```
+
+Lists declared with `let` are immutable, meaning their contents cannot be changed after creation. If you try to modify a list created with `let`, the Boba compiler will report an error.
+
+```boba
+let starting_gear: string[] = ["tunic", "dagger"]
+// starting_gear.push("shield") // This would cause a compile error because the list is immutable.
 ```
 
 You can perform many operations on lists, like getting their size or adding new items.
@@ -417,9 +509,16 @@ scores["boba"] = 105
 print(scores.len()) // Outputs: 3
 ```
 
-Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a **later chapter**.
+To read a value from a map, you use square brackets `[]` with the key.
 
-## Chapter 9: Creating Custom Types: structs
+```boba
+let adas_score = scores["ada"]
+print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
+```
+
+But what happens if you try to access a key that doesn't exist? This is a common source of errors in other languages. Boba solves this safely. Accessing a key in a map doesn't return the value directly. Instead, it returns a special Option type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter on error handling.
+
+## Chapter 8: Creating Custom Types: structs
 
 Structs, short for structures, are custom data types you can create by grouping together related variables. Think of a struct definition as a blueprint: it defines the shape and fields for a concept in your program. From that blueprint, you can then create multiple concrete instances.
 
@@ -450,12 +549,26 @@ let ada: Player = { name: "Ada", score: 100, is_active: true }
 You can access the fields of a struct instance using dot notation.
 
 ```boba
-print("Player name: {ada.name}") // Prints "Player name: Ada"
+print(f"Player name: {ada.name}") // Prints "Player name: Ada"
 ```
+
+### Mutating a Struct
+In a new paragraph, explain that you use the `var` keyword to create mutable struct instances.
+```boba
+// Create a mutable Player instance
+var boba_dev: Player = { name: "Boba Dev", score: 0, is_active: false }
+print(f"Initial score: {boba_dev.score}") // Outputs: Initial score: 0
+
+// Mutate the score field
+boba_dev.score = 150
+print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
+```
+
+### Time to Practice!
 
 You now know how to bundle related data together. This is the first half of creating powerful custom types. In the next chapter, we will bring this data to life by giving our structs behavior with methods.
 
-## Chapter 10: Adding Behavior: Methods and impl
+## Chapter 9: Adding Behavior: Methods and impl
 
 In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
 
@@ -480,7 +593,7 @@ An **associated function** is a function that belongs to a type but is not calle
 
 ```boba
 impl Player {
-    /// Creates a new Player with default health.
+    // Creates a new Player with default health.
     pub fn new(name: string) -> Player {
         return Player{
             name: name,
@@ -488,6 +601,12 @@ impl Player {
         }
     }
 }
+```
+
+You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
+
+```boba
+let player = Player.new(name: "Ada")
 ```
 
 ## Methods and the `self` Parameter
@@ -522,8 +641,25 @@ impl Player {
         print("{self.name} takes {amount} damage!")
     }
 }
+```
 
-## Chapter 11: Structuring Your Project: Modules
+To call a `mut self` method, the instance of the struct must be mutable. Here is a full example:
+
+```boba
+// First, create a mutable Player instance named boba_dev using var.
+var boba_dev = Player.new(name: "Boba Dev")
+
+// Next, print the player's initial health.
+print(f"Initial health: {boba_dev.health}") // Outputs: Initial health: 100
+
+// Then, call the take_damage method on boba_dev.
+boba_dev.take_damage(amount: 25)
+
+// Finally, print the player's health again to show it has been reduced.
+print(f"Updated health: {boba_dev.health}") // Outputs: Updated health: 75
+```
+
+## Chapter 10: Structuring Your Project: Modules
 
 As your programs grow larger, it becomes important to organize your code into multiple files. Boba allows you to do this using modules and the `import` keyword.
 
@@ -540,9 +676,11 @@ fn myPrivateFunction() {
 }
 ```
 
-## Importing from Other Files
+Because this function is private, any attempt to import and call it from `main.boba` would result in a compile error.
 
 You can import public functions, structs, enums, and other declarations from other Boba files. This allows you to break your code into logical modules and reuse code across your project.
+
+> For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
 ## Importing Specific Items
 
@@ -575,7 +713,7 @@ pub fn say_goodbye() { /* ... */ }
 utils.say_hello()
 utils.say_goodbye()
 
-## Chapter 12: Testing Your Code
+## Chapter 11: Testing Your Code
 
 Writing code is only half the battle. To build robust and reliable software, you need to verify that your code works as you expect it to. Boba's integrated tooling makes testing a simple, first-class part of the development workflow, without requiring any external libraries.
 
@@ -620,9 +758,9 @@ Test results: 1 passed; 0 failed.
 
 This is the core testing loop: write a little code, write a test, run `boba test`, and see it pass.
 
-## Organizing Your Unit Tests
+## Unit Testing Your Code
 
-While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests.
+While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) and link it to the implementation file using the `#[file: test]` attribute at the top of the test file.
 
 Here are the rules:
 
@@ -663,7 +801,7 @@ The `#[file: test]` attribute is what enables this pattern. It tells the compile
 
 ## Testing Implementation Details
 
-The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-`pub` functions from its corresponding source file. This allows you to test your internal implementation details without making them public.
+The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-`pub` functions from its corresponding source file. The `#[file: test]` attribute grants the test file special access to the private, non-pub items of its corresponding implementation file. This allows you to test your internal implementation details without making them public.
 
 Let's add a test for our private `internal_add` function.
 
@@ -688,7 +826,7 @@ fn test_private_internal_add_function() {
 
 This ability to test private functions is a key feature of Boba's unit testing philosophy, enabling you to write thorough tests for your module's internals while maintaining strict encapsulation for the rest of your library.
 
-## Testing Your Public API
+## Integration Testing Your Public API
 
 After unit testing is firmly established, we can introduce integration tests. Integration tests are for testing your library's public API as a whole, from an external user's perspective. These tests live in a dedicated, top-level `tests/` directory.
 
@@ -715,11 +853,11 @@ fn test_add_from_an_external_perspective() {
 
 This clear separation—unit tests alongside the code with special access, and integration tests in `tests/` that consume the public API—helps you build a comprehensive and robust test suite.
 
-## Advanced Testing Techniques
-
 Boba's `test` module and attributes provide more tools for specific situations.
 
-### Testing Panics
+### Advanced Testing Techniques
+
+#### Testing Panics
 
 To verify that your code correctly panics under error conditions, add the `#[should_panic]` attribute to your test function. This test will now pass if the code inside panics, and fail if it does not.
 
@@ -732,7 +870,7 @@ fn test_add_overflow_panics() {
 }
 ```
 
-### Testing Documentation Examples
+#### Testing Documentation Examples
 
 To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Run the `test` command with the `--doc` flag:
 
@@ -742,7 +880,7 @@ boba test --doc
 
 This will execute the code inside every `@example` block across your project and report any failures, guaranteeing your examples never lie.
 
-### Other Assertions
+#### Other Assertions
 
 The built-in `test` module provides a few other helpful assertion functions for your tests.
 
@@ -759,167 +897,7 @@ fn test_various_assertions() {
     test.assert_ne(result, 5)
 }
 
-## Chapter 13: Handling Absence: The Option Type
-
-In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
-
-To prevent this entire category of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
-
-## The `Option<T>` Enum
-
-The `Option<T>` enum is defined as follows:
-
-```boba
-enum Option<T> {
-    Some(T), // Represents the presence of a value of type T
-    None,    // Represents the absence of a value
-}
-```
-
--   `Some(T)`: A variant that holds a value of type `T`.
--   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
-
-By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
-
-## Shortcut: Unwrapping with a Default using ??
-
-A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`.
-
-```boba
-// If the left side is Some(t), use t. If it's None, use the right side.
-let value = config_map.get("timeout") ?? 5000
-```
-
-This operator makes your code cleaner by removing the boilerplate of a match statement for the simple "use this or a default" pattern.
-
-## When to Use Option vs. Result
-
-Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline is based on whether a situation is an expected absence or a failure.
-
-*   Use **`Option<T>`** when a value could be absent, and this is a normal, expected outcome. It answers the question: "Is there a value here or not?"
-    *   `find_user_by_id()`: A user might not exist. This isn't an error.
-    *   `map.get(key)`: A key may not be in a map. This is normal.
-
-*   Use **`Result<T, E>`** when a function that is *supposed* to succeed could fail for some external reason. It answers the question: "Did this operation work or not?"
-    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full.
-    *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
-
-## Chapter 14: Powerful Control Flow: Pattern Matching
-
-Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
-
-### The Rule of Exhaustiveness
-
-A `match` statement in Boba must be **exhaustive**. This means you must provide a branch for every possible value the type can have. The Boba compiler will give you an error if you forget a case, preventing a whole class of bugs.
-
-The `match` statement is most powerful when used with types that have a fixed number of variations, like `Option` and `Result`.
-
-```boba
-// Safely unwrapping an Option
-match find_user(1) {
-    Some(name) => print("Found user: {name}"),
-    None => print("User not found.")
-}
-```
-
-This exhaustiveness is what makes `match` so safe and powerful. It guarantees at compile time that you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases.
-
-### The Default Case: `_`
-
-Sometimes, you don't want to handle every single case explicitly. For these situations, you can use the wildcard pattern, a single underscore (`_`), as a default or "catch-all" branch. The `_` will match any value that hasn't been matched by the preceding branches.
-
-This is useful when matching on types with many possibilities, like numbers or strings.
-
-```boba
-var status_code: int = 418
-
-match status_code {
-    200 => print("OK"),
-    404 => print("Not Found"),
-    // The `_` handles every other possible integer value.
-    _ => print("An unexpected error occurred.")
-}
-
-## Chapter 15: Guaranteed Cleanup: defer and panic
-
-## Guaranteed Cleanup with `defer`
-
-The `defer` statement schedules a function call to be executed right before the current function exits. It doesn't matter *how* the function exits—whether by a `return`, by reaching the end, or by propagating an error with `?`.
-
-```boba
-pub fn process_file(path: string) -> Result<string, error> {
-    // 1. Open the file. If this fails, we exit, no cleanup needed.
-    var file = fs.open(path)?
-
-    // 2. Defer the close call *immediately* after opening.
-    // This is now GUARANTEED to run when process_file exits.
-    defer file.close()
-
-    // 3. Now, we can focus on the logic without worrying about cleanup.
-    var data = file.read_all()?
-    if data.is_empty() {
-        // We can just return. `defer file.close()` will run automatically.
-        return Err({ message = "File is empty" })
-    }
-
-    // `defer file.close()` will also run automatically before this return.
-    return Ok("Processed data!")
-}
-```
-
-## Unrecoverable Errors with `panic`
-
-A panic is an abrupt, unrecoverable error that stops the normal execution of your program. A panic should be used for unrecoverable errors, which is another word for a bug.
-
-When a panic occurs, the program will stop what it's doing and begin to **unwind the stack**. As it unwinds, it will execute any **`defer`** statements it finds along the way.
-
-You can trigger a panic manually with the built-in `panic()` function.
-
-```boba
-fn get_guild_rank(player: Player) -> string {
-  // This function assumes the player is in a guild.
-  let rank_option = player.guild_rank() // Returns Option<string>
-
-  match rank_option {
-    Some(rank) => return rank,
-    None => {
-      // If we get here, it means another part of our code called this
-      // function with a player who wasn't in a guild. This is a bug.
-      panic(f"Critical error: get_guild_rank called on non-guild member {player.name}!")
-    }
-  }
-}
-
-## Chapter 16: Asynchronous Programming: async/await
-
-Asynchronous programming is essential for building responsive and efficient applications, especially when dealing with tasks like network requests or file I/O that can take time. Boba makes writing asynchronous, non-blocking code as easy and readable as traditional, synchronous code.
-
-## The `async` and `await` Keywords
-
-Boba's concurrency model is built around two keywords: `async` and `await`.
-
--   **`async`**: A keyword that modifies a function declaration (`async fn ...`). An `async` function does not block when called. Its return type is implicitly wrapped in a `Future<T>`.
--   **`await`**: An operator that can only be used inside an `async` function. It pauses the execution of the async function until the `Future` it is waiting on has completed.
-
-## The Power of Composition: `await` with `?`
-
-Things get really powerful when an `async` function can also fail, returning a `Result`. Boba lets you compose `await` and the `?` operator to handle both asynchrony and errors in a single, clean expression.
-
-```boba
-// This async function can fail, so it returns a Result.
-async fn fetch_user(id: int) -> Result<User, error> { /* ... */ }
-
-// Note the `?` after await!
-let user = await fetch_user(user_id: user_id)?
-```
-This one line does two things:
-
-- It `await`s the `Future` to complete.
-- If the result is an `Err`, the `?` operator propagates it immediately. If it's `Ok`, it unwraps the `User` value and assigns it to the variable.
-
-This elegant composition is key to writing robust, readable asynchronous Boba code.
-
-## Chapter 14: Handling Failures: The Result Type
+## Chapter 12: Handling Failures: The Result Type
 
 In any real-world application, things can go wrong. While other languages often rely on exceptions and `try...catch` blocks, Boba encourages a more explicit approach to error handling using the `Result` enum. A file might not exist, a network request might fail, or user input might be invalid.
 
@@ -946,6 +924,8 @@ This operator is powerful syntactic sugar for a `match` statement that handles t
 - If the `Result` is `Ok(value)`, the `?` operator unwraps the `Result` and gives you the `value` inside.
 - If the `Result` is `Err(error)`, the `?` operator immediately stops the current function and returns the `Err(error)`.
 
+This new paragraph should describe the match statement that the ? operator represents. Explain that it matches on the Result value: if the value is Ok, it extracts the inner value; if the value is Err, it immediately returns the Err from the entire function.
+
 Let's look at an example:
 
 ```boba
@@ -956,23 +936,251 @@ struct Config {
   enable_https: boolean
 }
 
+The following function, `load_config`, is a great example of a function that can fail. It will read a file and parse it as JSON. Both of these operations can fail, making them perfect candidates for using `Result` and the `?` operator.
+
 fn load_config() -> Result<Config, error> {
-    // For this example, we'll assume Boba's standard library provides the `read_file` and `parse_json` functions, both of which can fail and therefore return a `Result`.
-
-    // `read_file` returns a `Result<string, error>`.
-    // If it's an `Err`, `?` returns it from `load_config`.
-    // If it's `Ok`, `?` gives us the string content.
     var content = read_file("config.json")?
-
-    // `parse_json` returns a `Result<Config, error>`.
-    // `?` works the same way here.
     var config = parse_json(content)?
 
     print("Config loaded!")
 
-    // If everything succeeds, we wrap the `Config` in an `Ok` and return it.
     return Ok(config)
 }
+
+### Time to Practice!
+
+Now it's your turn. Look for opportunities in your own code to refactor functions to return a `Result`. Use the `?` operator to clean up your error handling and make your code more robust and readable.
+
+## Chapter 13: Handling Absence: The Option Type
+
+In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
+
+To prevent this entire category of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
+
+## The `Option<T>` Enum
+
+The `Option<T>` enum is defined as follows:
+
+```boba
+enum Option<T> {
+    Some(T), // Represents the presence of a value of type T
+    None,    // Represents the absence of a value
+}
+```
+
+-   `Some(T)`: A variant that holds a value of type `T`.
+-   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
+
+By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
+
+A common way to handle an `Option` is to use a `match` statement to provide a default value in the `None` case.
+
+```boba
+let timeout_option: Option<int> = user_settings.get("timeout")
+
+let timeout: int = match timeout_option {
+    Some(value) => value,
+    None => 5000, // Default to 5000ms
+}
+```
+
+## Shortcut: Unwrapping with a Default using ??
+
+The `??` operator is a convenient shortcut for exactly the `match` pattern just demonstrated. A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`.
+
+```boba
+// If the left side is Some(t), use t. If it's None, use the right side.
+let value = config_map.get("timeout") ?? 5000
+```
+
+This operator makes your code cleaner by removing the boilerplate of a match statement for the simple "use this or a default" pattern.
+
+## When to Use Option vs. Result
+
+Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline is based on whether a situation is an expected absence or a failure.
+
+*   Use **`Option<T>`** when a value could be absent, and this is a normal, expected outcome. It answers the question: "Is there a value here or not?"
+    *   `find_user_by_id()`: A user might not exist. This isn't an error. "user not found" is an expected, valid outcome of a search.
+    *   `map.get(key)`: A key may not be in a map. This is normal.
+
+*   Use **`Result<T, E>`** when a function that is *supposed* to succeed could fail for some external reason. It answers the question: "Did this operation work or not?"
+    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full. A disk being full is an external failure, not an expected outcome of reading a file.
+    *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
+
+> #### **Time to Practice!**
+>
+> Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
+
+## Chapter 14: Powerful Control Flow: Pattern Matching
+
+Boba provides a powerful `match` statement for checking a value against a series of patterns. It is a clean and expressive way to handle multiple distinct cases, and it works hand-in-hand with Boba's type system to guarantee that you've handled every possibility. You can think of `match` as a super-powered `switch` statement. `match` is the most fundamental tool in Boba for working with enum types, especially `Option` and `Result`. However, its key strength is that the Boba compiler guarantees exhaustiveness—you are required to handle every possible case.
+
+### The Rule of Exhaustiveness
+
+A `match` statement in Boba must be **exhaustive**. This means you must provide a branch for every possible value the type can have. The Boba compiler will give you an error if you forget a case, preventing a whole class of bugs.
+
+The `match` statement is most powerful when used with types that have a fixed number of variations, like `Option` and `Result`.
+
+```boba
+// Safely unwrapping an Option
+match find_user(1) {
+    Some(name) => print("Found user: {name}"),
+    None => print("User not found.")
+}
+```
+
+`match` works just as effectively on the `Result` type. Here's how you can handle a function that might return an error:
+
+```boba
+fn read_config_file() -> Result<string, error> {
+    // This function might return Ok("file content") or Err({message: "..."})
+    // ...
+}
+
+match read_config_file() {
+    Ok(content) => print("Config file content: {content}"),
+    Err(err) => print("Failed to read config: {err.message}")
+}
+```
+
+This exhaustiveness is what makes `match` so safe and powerful. It guarantees at compile time that you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases.
+
+### The Default Case: `_`
+
+Sometimes, you don't want to handle every single case explicitly. For these situations, you can use the wildcard pattern, a single underscore (`_`), as a default or "catch-all" branch. The `_` will match any value that hasn't been matched by the preceding branches.
+
+This is useful when matching on types with many possibilities, like numbers or strings.
+
+```boba
+var status_code: int = 418
+
+match status_code {
+    200 => print("OK"),
+    404 => print("Not Found"),
+    // The `_` handles every other possible integer value.
+    _ => print("An unexpected error occurred.")
+}
+
+> #### **Time to Practice!**
+>
+> The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.
+
+## Chapter 15: Guaranteed Cleanup: defer and panic
+
+## Guaranteed Cleanup with `defer`
+
+The `defer` statement schedules a function call to be executed right before the current function exits, regardless of whether the function returns normally, propagates an error with the `?` operator, or exits due to a `panic`.
+
+```boba
+pub fn process_file(path: string) -> Result<string, error> {
+    // 1. Open the file. If this fails, we exit, no cleanup needed.
+    var file = fs.open(path)?
+
+    // 2. Defer the close call *immediately* after opening.
+    // This is now GUARANTEED to run when process_file exits.
+    defer file.close()
+
+    // 3. Now, we can focus on the logic without worrying about cleanup.
+    var data = file.read_all()?
+    if data.is_empty() {
+        // We can just return. `defer file.close()` will run automatically.
+        return Err({ message = "File is empty" })
+    }
+
+    // `defer file.close()` will also run automatically before this return.
+    return Ok("Processed data!")
+}
+```
+
+## Unrecoverable Errors with `panic`
+
+Whereas `Result` is used for expected, recoverable errors, `panic` is reserved for unrecoverable errors that signify a bug in the program's logic. A panic is an abrupt, unrecoverable error that stops the normal execution of your program.
+
+When a panic occurs, the program will stop what it's doing and begin to **unwind the stack**. As it unwinds, it will execute any **`defer`** statements it finds along the way.
+
+You can trigger a panic manually with the built-in `panic()` function.
+
+```boba
+fn get_guild_rank(player: Player) -> string {
+  // This function assumes the player is in a guild.
+  let rank_option = player.guild_rank() // Returns Option<string>
+
+  match rank_option {
+    Some(rank) => return rank,
+    None => {
+      // If we get here, it means another part of our code called this
+      // function with a player who wasn't in a guild. This is a bug.
+      panic(f"Critical error: get_guild_rank called on non-guild member {player.name}!")
+    }
+  }
+}
+### Time to Practice!
+
+It's time to practice what you've learned. The next exercises will challenge you to refactor a function to use `defer` for resource cleanup and write a function that correctly panics when its input violates a critical precondition.
+
+## Chapter 16: Asynchronous Programming: async/await
+
+Asynchronous programming is essential for building responsive and efficient applications, especially when dealing with tasks like network requests or file I/O that can take time. Boba makes writing asynchronous, non-blocking code as easy and readable as traditional, synchronous code.
+
+## The `async` and `await` Keywords
+
+Boba's concurrency model is built around two keywords: `async` and `await`.
+
+-   **`async`**: A keyword that modifies a function declaration (`async fn ...`). An `async` function does not block when called. Its return type is implicitly wrapped in a `Future<T>`.
+-   **`await`**: An operator that can only be used inside an `async` function. It pauses the execution of the async function until the `Future` it is waiting on has completed.
+
+## A Simple Async Example
+
+To understand the core mechanic of `async`/`await`, let's look at a complete example that doesn't involve errors. We'll simulate a network request that takes some time to complete.
+
+```boba
+// This async function simulates fetching data from a server.
+// It returns a Future that will resolve to a string.
+async fn fetch_greeting() -> string {
+  // In a real app, this would be a network call.
+  // Here, we'll just pretend it takes a moment.
+  sleep(1000) // Pauses for 1000 milliseconds
+  return "Hello from the server!"
+}
+
+// The main entry point of our program must also be async
+// so that we can use the `await` keyword inside it.
+async fn main() {
+  print("Requesting greeting...")
+  // We `await` the result of the async function.
+  // Our program pauses here until fetch_greeting() is done.
+  let greeting = await fetch_greeting()
+  print(f"Received: {greeting}")
+}
+```
+
+When you run this, you'll see "Requesting greeting...", a one-second pause, and then "Received: Hello from the server!". This shows the fundamental flow: calling an `async` function gives you a future, and `await`ing it pauses your current function to get the result.
+
+> **What is an Async Runtime?**
+>
+> You might be wondering what is actually scheduling and running these `async` functions. Boba includes a built-in **async runtime**. This is a part of the language's standard library that manages a pool of threads and knows how to efficiently run thousands of `async` tasks, pausing them when they are waiting (like for our `sleep` or a real network call) and resuming them when they are ready to make progress. You don't need to configure or manage it; you can just write `async` code and Boba handles the rest.
+
+## The Power of Composition: `await` with `?`
+
+Now that you understand the basics of `async` and `await`, we can combine this knowledge with what you learned about error handling. Things get really powerful when an `async` function can also fail, returning a `Result`. Boba lets you compose `await` and the `?` operator to handle both asynchrony and errors in a single, clean expression.
+
+```boba
+// This async function can fail, so it returns a Result.
+async fn fetch_user(id: int) -> Result<User, error> { /* ... */ }
+
+// Note the `?` after await!
+let user = await fetch_user(user_id: user_id)?
+```
+This one line does two things:
+
+- It `await`s the `Future` to complete.
+- If the result is an `Err`, the `?` operator propagates it immediately. If it's `Ok`, it unwraps the `User` value and assigns it to the variable.
+
+This elegant composition is key to writing robust, readable asynchronous Boba code.
+
+### Time to Practice!
+
+You're ready to tackle asynchronous tasks. The next exercises will prompt you to convert synchronous functions to be `async` and to use `await` to retrieve their results, preparing you for real-world I/O tasks.
 
 ## Chapter 17: Writing Professional Code: Idiomatic Boba
 
@@ -997,8 +1205,8 @@ The `boba fmt` tool handles formatting automatically, ensuring all code in the e
 
 Good code is well-documented. Boba has a built-in standard for documentation called BobaDoc, which is designed to be easy to write, human-readable, and machine-parsable.
 
--   **`///` (Outer Comment):** Documents the single item immediately following it (function, struct, etc.). This is the primary doc comment type.
--   **`//!` (Inner Comment):** Documents the enclosing item. When used at the top of a file, it describes the entire module.
+-   **`///` (Outer Comment):** Documents the single item immediately following it.
+-   **`//!` (Inner Comment):** Documents the item that contains it, most often used at the very top of a file to document the entire module.
 
 BobaDoc uses simple `@` tags for structured data:
 
@@ -1006,6 +1214,8 @@ BobaDoc uses simple `@` tags for structured data:
 -   `@returns: description` - Describes the return value.
 -   `@panics: description` - Describes conditions that will cause a panic.
 -   `@example:` - Marks a following code block as an example.
+
+Code within `@example` blocks can be automatically tested by running the `boba test --doc` command, ensuring documentation is always accurate.
 
 ```boba
 //! A module for safe file system operations.
@@ -1029,3 +1239,15 @@ pub fn read_file(path: string) -> Result<string, error> {
 
 - Use BobaDoc (`///`) to explain the *what* and *how* for users of your API. This is for the public interface.
 - Use inline comments (`//`) to explain the *why* for maintainers of your code. Explain complex logic, non-obvious choices, or the reasoning behind a particular algorithm.
+
+## What's Next?
+
+Congratulations on completing this foundational tour of the Boba language! You've taken a significant step from writing your first "Hello, world!" to understanding the principles of idiomatic, professional Boba code.
+
+You have mastered the core concepts of the language, including variables, control flow, functions, and custom `struct` types. More importantly, you've learned about the features that make Boba robust and safe, such as the `Option` and `Result` types for explicit error handling and the powerful built-in testing framework for verifying your code's correctness.
+
+Your journey doesn't end here. To continue growing as a Boba developer, we encourage you to explore the following steps:
+
+-   **Explore the official Boba Standard Library documentation.** Familiarize yourself with the rich set of tools and modules available to you.
+-   **Build a small, complete project from scratch.** Apply what you've learned to create something new, like a command-line tool or a simple web server.
+-   **Read through the source code of idiomatic Boba projects.** Learning from experienced developers is one of the fastest ways to deepen your understanding of best practices.

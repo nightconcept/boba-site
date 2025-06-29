@@ -1,9 +1,9 @@
 ---
-title: "Chapter 6: Making Decisions: if/else Expressions"
+title: "Chapter 5: Making Decisions: if/else Expressions"
 description: "Learn how to control the flow of your Boba programs with conditionals."
 ---
 
-In programming, you often need to execute different code depending on certain conditions. Boba uses the familiar `if`, `else if`, and `else` keywords to handle conditional logic.
+In Boba, conditional logic is used not only to control which code runs (as a statement), but also to evaluate to a value (as an expression). This makes if/else a powerful tool for both program flow and variable assignment.
 
 ## The `if` Statement
 
@@ -50,7 +50,7 @@ if hunger == "hungry" and thirst == "thirsty" {
 }
 ```
 
-### Concise Conditionals with One-Liner `if/else`
+### Using if as an Expression
 
 > For simple conditional assignments, you can use `if/else` as a one-line expression without curly braces. This is a clean and readable way to choose between two values.
 
@@ -62,4 +62,20 @@ let status: string = if health > 50 { "Healthy" } else { "Injured" }
 
 print(f"Player status: {status}") // Outputs: Player status: Healthy
 ```
-This is similar to the ternary operator (`condition ? expr_if_true : expr_if_false`) found in languages like C++, Java, and JavaScript, but is designed for greater readability.
+This concept isn't limited to single lines. Full if/else blocks are also expressions, meaning they can evaluate to a value that can be returned or assigned. This allows for very clean and readable logic without temporary mutable variables.
+```boba
+let player_health = 75
+
+    let armor_message: string = if player_health == 100 {
+    print("Player is at full health.")
+    "Wearing pristine, shining armor."
+    } else if player_health > 50 {
+    "Wearing battle-worn, dented armor."
+    } else {
+    "Wearing cracked and broken armor."
+    }
+
+    print(armor_message) // Outputs: Wearing battle-worn, dented armor.
+```
+
+Notice how the last line in each block becomes the value that the if expression returns.

@@ -1,5 +1,5 @@
 ---
-title: "Chapter 10: Adding Behavior: Methods and impl"
+title: "Chapter 9: Adding Behavior: Methods and impl"
 description: "Learn how to attach methods to your structs using an `impl` block."
 ---
 
@@ -26,7 +26,7 @@ An **associated function** is a function that belongs to a type but is not calle
 
 ```boba
 impl Player {
-    /// Creates a new Player with default health.
+    // Creates a new Player with default health.
     pub fn new(name: string) -> Player {
         return Player{
             name: name,
@@ -34,6 +34,12 @@ impl Player {
         }
     }
 }
+```
+
+You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
+
+```boba
+let player = Player.new(name: "Ada")
 ```
 
 ## Methods and the `self` Parameter
@@ -68,3 +74,20 @@ impl Player {
         print("{self.name} takes {amount} damage!")
     }
 }
+```
+
+To call a `mut self` method, the instance of the struct must be mutable. Here is a full example:
+
+```boba
+// First, create a mutable Player instance named boba_dev using var.
+var boba_dev = Player.new(name: "Boba Dev")
+
+// Next, print the player's initial health.
+print(f"Initial health: {boba_dev.health}") // Outputs: Initial health: 100
+
+// Then, call the take_damage method on boba_dev.
+boba_dev.take_damage(amount: 25)
+
+// Finally, print the player's health again to show it has been reduced.
+print(f"Updated health: {boba_dev.health}") // Outputs: Updated health: 75
+```

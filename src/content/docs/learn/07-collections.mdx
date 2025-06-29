@@ -1,5 +1,5 @@
 ---
-title: "Chapter 8: Grouping Data: list and map"
+title: "Chapter 7: Grouping Data: list and map"
 description: "Learn about Boba's primary collection types: list and map."
 ---
 
@@ -15,6 +15,13 @@ var highScores: int[] = [100, 95, 80]
 
 // A list of strings
 var ingredients: string[] = ["flour", "sugar", "boba pearls"]
+```
+
+Lists declared with `let` are immutable, meaning their contents cannot be changed after creation. If you try to modify a list created with `let`, the Boba compiler will report an error.
+
+```boba
+let starting_gear: string[] = ["tunic", "dagger"]
+// starting_gear.push("shield") // This would cause a compile error because the list is immutable.
 ```
 
 You can perform many operations on lists, like getting their size or adding new items.
@@ -51,4 +58,11 @@ scores["boba"] = 105
 print(scores.len()) // Outputs: 3
 ```
 
-Accessing a key in a map returns a special `Option` type to safely handle cases where the key might not exist. We will cover this powerful feature in a **later chapter**.
+To read a value from a map, you use square brackets `[]` with the key.
+
+```boba
+let adas_score = scores["ada"]
+print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
+```
+
+But what happens if you try to access a key that doesn't exist? This is a common source of errors in other languages. Boba solves this safely. Accessing a key in a map doesn't return the value directly. Instead, it returns a special Option type to safely handle cases where the key might not exist. We will cover this powerful feature in a later chapter on error handling.

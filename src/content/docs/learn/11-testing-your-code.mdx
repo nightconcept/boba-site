@@ -1,5 +1,5 @@
 ---
-title: "Chapter 12: Testing Your Code"
+title: "Chapter 11: Testing Your Code"
 description: "Learn how to write effective tests for your Boba code, from simple functions to your private implementation details."
 ---
 
@@ -46,9 +46,9 @@ Test results: 1 passed; 0 failed.
 
 This is the core testing loop: write a little code, write a test, run `boba test`, and see it pass.
 
-## Organizing Your Unit Tests
+## Unit Testing Your Code
 
-While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests.
+While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) and link it to the implementation file using the `#[file: test]` attribute at the top of the test file.
 
 Here are the rules:
 
@@ -89,7 +89,7 @@ The `#[file: test]` attribute is what enables this pattern. It tells the compile
 
 ## Testing Implementation Details
 
-The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-`pub` functions from its corresponding source file. This allows you to test your internal implementation details without making them public.
+The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-`pub` functions from its corresponding source file. The `#[file: test]` attribute grants the test file special access to the private, non-pub items of its corresponding implementation file. This allows you to test your internal implementation details without making them public.
 
 Let's add a test for our private `internal_add` function.
 
@@ -114,7 +114,7 @@ fn test_private_internal_add_function() {
 
 This ability to test private functions is a key feature of Boba's unit testing philosophy, enabling you to write thorough tests for your module's internals while maintaining strict encapsulation for the rest of your library.
 
-## Testing Your Public API
+## Integration Testing Your Public API
 
 After unit testing is firmly established, we can introduce integration tests. Integration tests are for testing your library's public API as a whole, from an external user's perspective. These tests live in a dedicated, top-level `tests/` directory.
 
@@ -143,11 +143,11 @@ fn test_add_from_an_external_perspective() {
 
 This clear separation—unit tests alongside the code with special access, and integration tests in `tests/` that consume the public API—helps you build a comprehensive and robust test suite.
 
-## Advanced Testing Techniques
-
 Boba's `test` module and attributes provide more tools for specific situations.
 
-### Testing Panics
+### Advanced Testing Techniques
+
+#### Testing Panics
 
 To verify that your code correctly panics under error conditions, add the `#[should_panic]` attribute to your test function. This test will now pass if the code inside panics, and fail if it does not.
 
@@ -160,7 +160,7 @@ fn test_add_overflow_panics() {
 }
 ```
 
-### Testing Documentation Examples
+#### Testing Documentation Examples
 
 To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Run the `test` command with the `--doc` flag:
 
@@ -170,7 +170,7 @@ boba test --doc
 
 This will execute the code inside every `@example` block across your project and report any failures, guaranteeing your examples never lie.
 
-### Other Assertions
+#### Other Assertions
 
 The built-in `test` module provides a few other helpful assertion functions for your tests.
 

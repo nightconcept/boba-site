@@ -23,9 +23,20 @@ enum Option<T> {
 
 By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
 
+A common way to handle an `Option` is to use a `match` statement to provide a default value in the `None` case.
+
+```boba
+let timeout_option: Option<int> = user_settings.get("timeout")
+
+let timeout: int = match timeout_option {
+    Some(value) => value,
+    None => 5000, // Default to 5000ms
+}
+```
+
 ## Shortcut: Unwrapping with a Default using ??
 
-A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`.
+The `??` operator is a convenient shortcut for exactly the `match` pattern just demonstrated. A very common task when working with Option is to unwrap the value if it exists, or use a default value if it's None. While you can always do this with a match statement, Boba provides a much cleaner shorthand. For this common case, you can use the null coalescing operator, `??`.
 
 ```boba
 // If the left side is Some(t), use t. If it's None, use the right side.
@@ -39,9 +50,13 @@ This operator makes your code cleaner by removing the boilerplate of a match sta
 Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline is based on whether a situation is an expected absence or a failure.
 
 *   Use **`Option<T>`** when a value could be absent, and this is a normal, expected outcome. It answers the question: "Is there a value here or not?"
-    *   `find_user_by_id()`: A user might not exist. This isn't an error.
+    *   `find_user_by_id()`: A user might not exist. This isn't an error. "user not found" is an expected, valid outcome of a search.
     *   `map.get(key)`: A key may not be in a map. This is normal.
 
 *   Use **`Result<T, E>`** when a function that is *supposed* to succeed could fail for some external reason. It answers the question: "Did this operation work or not?"
-    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full.
+    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full. A disk being full is an external failure, not an expected outcome of reading a file.
     *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
+
+> #### **Time to Practice!**
+>
+> Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
