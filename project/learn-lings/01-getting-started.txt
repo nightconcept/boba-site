@@ -1,7 +1,4 @@
----
-title: "Chapter 1: Getting Started: Your First Program"
-description: "Learn how to write and run your first Boba program."
----
+# Lesson: 01-getting-started
 
 Welcome to Boba! The best way to start learning any new programming language is to write a program. Let's write one that prints the classic message: "Hello, world!".
 
@@ -55,3 +52,50 @@ Understanding these three ideas—functions, strings, and arguments—is the fir
 ### Time to Practice!
 
 This is the perfect time to switch to your first set of exercises. They will challenge you to use the `print()` function and manipulate simple strings to solidify what you've just learned.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 01
+
+--- Exercise: exercises/01_introduction/intro1.boba ---
+
+//! In Boba, the `print` function is used to display output to the console.
+//! It's one of the first functions you'll use.
+//!
+//! The compiler is your guide. It will give you hints if you make a mistake.
+//! Your task is to fix the error in this file.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+/// The main function is the entry point of your Boba program.
+fn main() {
+  // The function call below is misspelled.
+  // The Boba compiler will tell you that it can't find the function `prnt`.
+  // Correct the spelling to `print` to make the program compile and run.
+  prnt("Hello, world!");
+}
+
+--- Exercise: exercises/01_introduction/intro2.boba ---
+
+//! In Boba, code is organized into blocks using curly braces `{}`.
+//! Functions, `if` statements, and loops all use these blocks to define
+//! their scope.
+//!
+//! A missing brace is a common syntax error, especially when you're starting out.
+//! The compiler will usually point you to the line where it got confused.
+//!
+//! Your task is to fix the syntax error in this file.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+/// The main function's body is a code block.
+/// It's missing its closing brace. Add it to fix the error.
+fn main() {
+  print("This is a code block.");
+// Add the closing brace `}` on the line below this comment.
+
+

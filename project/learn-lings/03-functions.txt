@@ -1,7 +1,4 @@
----
-title: "Chapter 3: Reusing Code: Functions"
-description: "Learn how to create reusable blocks of code in Boba with functions."
----
+# Lesson: 03-functions
 
 Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
 
@@ -151,4 +148,144 @@ user_id |> create_user(name: "Ada", is_admin: false)
 // Outputs: Creating user 101: Ada (Admin: false)
 ```
 
-This style is a cornerstone of functional programming and is highly encouraged in Boba for creating readable data processing pipelines. 
+This style is a cornerstone of functional programming and is highly encouraged in Boba for creating readable data processing pipelines.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 03
+
+--- Exercise: exercises/03_functions/functions1.boba ---
+
+//! In Boba, you can define your own functions to reuse code.
+//! A function is defined with the `fn` keyword, followed by its name,
+//! a pair of parentheses `()`, and a code block `{}`.
+//!
+//! The compiler will tell you if you try to call a function that
+//! hasn't been defined.
+//!
+//! Your task is to define the `call_me` function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // The `call_me` function is called here, but it doesn't exist yet.
+  // Define it below the `main` function.
+  call_me();
+}
+
+// Define the `call_me` function here.
+// It should look like this:
+// fn call_me() {
+//   // The body can be empty for this exercise.
+// }
+
+--- Exercise: exercises/03_functions/functions2.boba ---
+
+//! Functions can accept arguments (also called parameters) to work with data.
+//! You must declare the name and type of each parameter in the function's
+//! signature.
+//!
+//! The compiler will check that you pass the correct number and type of
+//! arguments when you call a function.
+//!
+//! Your task is to add a parameter to the `greet` function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // The `greet` function is called with a name, but its definition
+  // doesn't accept any arguments yet.
+  greet(name: "Boba");
+}
+
+// Add a `name` parameter of type `string` to this function's signature.
+// It should look like this: `fn greet(name: string)`
+fn greet() {
+  print(f"Hello, {name}!");
+}
+
+--- Exercise: exercises/03_functions/functions3.boba ---
+
+//! Functions can return values to the code that calls them.
+//! To do this, you must specify the return type in the function's signature
+//! using the `->` syntax, and use the `return` keyword to send a value back.
+//!
+//! The compiler will tell you if a function's return value is used but
+//! the function doesn't actually return anything.
+//!
+//! Your task is to make the `square` function return a value.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let number = 5;
+  // The result of `square(number)` is used here, but the function
+  // doesn't return anything yet.
+  let squared_number = square(number);
+  print(f"The square of {number} is {squared_number}");
+}
+
+// This function needs to return an `int`.
+// 1. Add `-> int` to the function signature.
+// 2. Add `return n * n;` to the function body.
+fn square(n: int) {
+  // calculate and return the square of n
+}
+
+--- Exercise: exercises/03_functions/functions4.boba ---
+
+//! To improve clarity, Boba requires that you use named arguments when
+//! calling a function with multiple parameters. This makes your code
+//! self-documenting.
+//!
+//! Instead of `my_func(value1, value2)`, you must write
+//! `my_func(param1: value1, param2: value2)`.
+//!
+//! Your task is to fix the function call to use named arguments.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // This function call uses positional arguments, which is not allowed.
+  // Change the call to use named arguments: `create_user("Ada", 101)`
+  // should become `create_user(name: "Ada", id: 101)`.
+  create_user("Ada", 101);
+}
+
+fn create_user(name: string, id: int) {
+  print(f"Created user {name} with ID {id}");
+}
+
+--- Exercise: exercises/03_functions/functions5.boba ---
+
+//! Functions can have default parameters, which makes them more flexible.
+//! If a parameter has a default value, you can omit it from the function call.
+//!
+//! You define a default parameter with the syntax `param_name: type = default_value`.
+//!
+//! Your task is to add a default parameter to the `connect` function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // This function call is missing the `port` argument.
+  // The compiler will complain about a missing argument.
+  connect(host: "my-boba-server.com");
+}
+
+// Add a default value to the `port` parameter to make it optional.
+// Change `port: int` to `port: int = 8080`.
+fn connect(host: string, port: int) {
+  print(f"Connecting to {host} on port {port}...");
+}
+

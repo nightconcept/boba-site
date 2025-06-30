@@ -20,15 +20,20 @@ enum JobStatus {
 }
 ```
 
+> **Pro-Tip: Enums with Data**
+>
+> In Boba, enum variants can also hold data. For example, you could define `Failed(string)` to store an error message right inside the variant. This powerful feature for modeling complex state will be covered in a later chapter.
+
 ### Using an Enum
 
 Once defined, you can use the enum as a type for variables and function parameters. You access a specific variant using `EnumName.VariantName`.
+
+To act on the value of an enum, you can use a `match` statement. This is a powerful control flow tool that allows you to compare a value against a series of patterns and execute code based on which pattern matches. Its key feature is that it must be exhaustive—the compiler guarantees that you have a branch for every possible variant, preventing bugs from unhandled cases.
 
 ```boba
 // Create a variable of type JobStatus.
 let current_status: JobStatus = JobStatus.Pending
 
-// You can use enums with `match` for exhaustive state handling.
 match current_status {
   JobStatus.Pending => print("The job is waiting to be processed."),
   JobStatus.Complete => print("The job finished successfully."),

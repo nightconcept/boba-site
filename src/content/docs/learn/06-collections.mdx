@@ -21,10 +21,11 @@ Lists declared with `let` are immutable, meaning their contents cannot be change
 
 ```boba
 let starting_gear: string[] = ["tunic", "dagger"]
-// starting_gear.push("shield") // This would cause a compile error because the list is immutable.
+// starting_gear.push("shield")
+// This would cause a compile error because the list is immutable.
 ```
 
-You can perform many operations on lists, like getting their size or adding new items.
+You can perform many operations on lists, like getting their size or adding new items. Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
 
 ```boba
 print(ingredients.len()) // Outputs: 3
@@ -35,8 +36,6 @@ print(ingredients.len()) // Outputs: 4
 
 // Access items by their index (starting from 0)
 print(ingredients[0]) // Outputs: "flour"
-
-Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
 ```
 
 ### `map`

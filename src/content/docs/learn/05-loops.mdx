@@ -39,13 +39,25 @@ for i in 1..=3 {
 // This is message number 3.
 ```
 
+**3. Iterating Over a Map's Key-Value Pairs**
+
+To iterate over a map, you can use the `.items()` method to get both the key and the value for each entry.
+
+```boba
+let player_skills = {"archery": 5, "magic": 3}
+
+for key, value in player_skills.items() {
+  print(f"Skill: {key}, Level: {value}")
+}
+```
+
 #### The `while` Loop
 
 The while loop continues to execute a block of code as long as a specified condition remains true. You should use a while loop when you don't know ahead of time how many times you need to loop.
 ```boba
 var countdown = 3
 
-    / Loop as long as countdown is greater than 0.
+    // Loop as long as countdown is greater than 0.
     while countdown > 0 {
     print(f"{countdown}...")
     countdown = countdown - 1 // Decrement the counter.

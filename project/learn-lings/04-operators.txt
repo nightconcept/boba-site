@@ -1,0 +1,185 @@
+# Lesson: 04-operators
+
+Now that you know about variables and data types, let's look at how to manipulate them using operators. Operators are special symbols that perform operations on your data.
+
+## Arithmetic Operators
+
+Boba provides a standard set of arithmetic operators for performing mathematical calculations.
+
+| Operator | Description      | Example                |
+| :------- | :--------------- | :--------------------- |
+| `+`      | Addition         | `5 + 2` results in `7`   |
+| `-`      | Subtraction      | `5 - 2` results in `3`   |
+| `*`      | Multiplication   | `5 * 2` results in `10`  |
+| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `1` |
+| `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
+| `^`      | Power (Note: This differs from Python and JavaScript, which use `**` for exponentiation.) | `5 ^ 2` results in `25`  |
+
+```boba
+let score = 10
+let bonus = score * 2
+let total_score = score + bonus
+let final_level = total_score / 10
+
+print(f"Final level is: {final_level}") // Outputs: Final level is: 3
+// When dividing two integers, Boba performs integer division, which
+// discards any fractional remainder and returns an integer.
+```
+
+## Comparison Operators
+
+Comparison operators are used to compare two values. They always result in a `boolean` (`true` or `false`) value.
+
+| Operator | Description          | Example               |
+| :------- | :------------------- | :-------------------- |
+| `==`     | Equal to             | `5 == 5` is `true`    |
+| `!=`     | Not equal to         | `5 != 5` is `false`   |
+| `<`      | Less than            | `5 < 8` is `true`     |
+| `>`      | Greater than         | `5 > 8` is `false`    |
+| `<=`     | Less than or equal   | `5 <= 5` is `true`    |
+| `>=`     | Greater than or equal| `5 >= 8` is `false`   |
+
+```boba
+let score = 85
+let is_passing = score >= 60
+
+print(f"Is the student passing? {is_passing}") // Outputs: Is the student passing? true
+```
+
+### Checking for Containment with 'in'
+
+To determine if a list contains a specific element, a map contains a certain key, or a string contains a substring, Boba provides the highly readable `in` operator.
+
+```boba
+let inventory: string[] = ["sword", "shield", "potion"]
+
+// Check if "shield" is in our inventory list.
+if "shield" in inventory {
+  print("You are well-defended!")
+}
+
+let player_skills = {"archery": 5, "magic": 3}
+
+// For maps, `in` checks if the key exists.
+if "stealth" in player_skills {
+  print("You can sneak.")
+} else {
+  print("You are not a sneaky person.") // This will print.
+}
+```
+
+## Logical Operators
+
+Logical operators are used to combine boolean values.
+
+| Operator | Description | Example                               |
+| :------- | :---------- | :------------------------------------ |
+| `and`    | Logical AND | `true and false` results in `false` |
+| `or`     | Logical OR  | `true or false` results in `true`   |
+| `not`    | Logical NOT | `not true` results in `false`       |
+
+```boba
+let has_key = true
+let is_door_locked = false
+
+if has_key and not is_door_locked {
+  print("You can enter the room.") // This will print.
+}
+```
+
+> #### **Time to Practice!**
+>
+> You now have the tools to manipulate data. The next set of exercises in your `boba-learning` course will test your knowledge of all these operators to solve small challenges.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 04
+
+--- Exercise: exercises/04_operators/operators1.boba ---
+
+//! A very common mistake in many programming languages is to use the
+//! assignment operator `=` when you mean to use the equality operator `==`.
+//!
+//! - `=` is for assigning a value to a variable.
+//! - `==` is for comparing two values to see if they are equal.
+//!
+//! Boba's type system helps catch this error. An `if` statement requires a
+//! boolean (`true` or `false`) condition, but an assignment expression
+//! doesn't produce a boolean.
+//!
+//! Your task is to fix the `if` statement to use the correct operator.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let number = 10;
+
+  // This `if` statement uses the assignment operator `=` instead of the
+  // equality operator `==`.
+  // Change `=` to `==` to correctly compare `number` with 10.
+  if number = 10 {
+    print("The number is ten!");
+  } else {
+    print("The number is not ten!");
+  }
+}
+
+--- Exercise: exercises/04_operators/operators2.boba ---
+
+//! Boba's arithmetic operators follow a standard order of operations,
+//! often remembered by the acronym PEMDAS/BODMAS (Parentheses/Brackets,
+//! Exponents, Multiplication/Division, Addition/Subtraction).
+//!
+//! This means that `*` and `/` are performed before `+` and `-`.
+//! When in doubt, or to make your code clearer, you should use parentheses `()`
+//! to group operations and ensure they are evaluated in the order you intend.
+//!
+//! Your task is to add parentheses to the calculation to get the correct result.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let result = 2 + 3 * 4;
+
+  // Because of operator precedence, the multiplication `3 * 4` is done first,
+  // making the result 14 (2 + 12).
+  // We want to perform the addition first.
+  // Add parentheses around `2 + 3` to make the result 20.
+  if result == 20 {
+    print("Calculation is correct!");
+  } else {
+    print(f"Incorrect result: {result}. Expected 20.");
+  }
+}
+
+--- Exercise: exercises/04_operators/operators3.boba ---
+
+//! Boba provides the `in` operator as a readable way to check if an
+//! element exists within a collection (like a `list`, `map`, or `string`).
+//!
+//! The expression `element in collection` evaluates to `true` if the
+//! element is found, and `false` otherwise.
+//!
+//! Your task is to use the `in` operator to check for an item in a list.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let inventory: string[] = ["sword", "shield", "potion"];
+  let item_to_check = "shield";
+
+  // Complete the `if` condition below to check if `item_to_check`
+  // is `in` the `inventory` list.
+  if /* your code here */ {
+    print(f"Found {item_to_check} in inventory!");
+  } else {
+    print(f"Could not find {item_to_check} in inventory.");
+  }
+}
+

@@ -35,6 +35,30 @@ You can access the fields of a struct instance using dot notation.
 print(f"Player name: {ada.name}") // Prints "Player name: Ada"
 ```
 
+### Composing Structs
+
+The real power of structs becomes apparent when you use them to build more complex data structures. A struct's fields can be of any type, including other structs you have defined. This is called composition.
+
+```boba
+struct Point {
+  x: int,
+  y: int,
+}
+
+struct Line {
+  start: Point, // This field is another struct
+  end: Point,   // This one too
+}
+
+let my_line = Line {
+  start: Point { x: 10, y: 20 },
+  end: Point { x: 50, y: 30 },
+}
+
+// You can chain dot notation to access nested fields
+print(f"The line starts at x = {my_line.start.x}")
+```
+
 ### Field Visibility and the `pub` Keyword
 
 By default, all fields in a struct are **private**. This means they can only be accessed by code in the same file where the struct is defined. This is a core principle of encapsulation, preventing external code from relying on the internal structure of your data.
@@ -56,6 +80,7 @@ pub struct User {
 ```
 
 If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
+
 ### Mutating a Struct
 To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed.
 ```boba
@@ -66,6 +91,20 @@ print(f"Initial score: {boba_dev.score}") // Outputs: Initial score: 0
 // Mutate the score field
 boba_dev.score = 150
 print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
+```
+
+### Creating a New Struct from an Old One
+
+Often, instead of mutating a struct, you'll want to create a new instance based on an old one but with some fields changed. Boba provides a convenient struct update syntax for this. The .. operator specifies that the remaining unmentioned fields should be copied directly from another instance.
+
+```boba
+let player1 = Player { name: "Ada", score: 100, is_active: true }
+
+// Create player2 based on player1, but with a different score.
+// The `name` and `is_active` fields are copied from player1.
+let player2 = Player { score: 150, ..player1 }
+
+print(f"{player2.name} has a new score of {player2.score}")
 ```
 
 ### Time to Practice!

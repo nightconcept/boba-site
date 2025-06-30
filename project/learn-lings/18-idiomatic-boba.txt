@@ -1,7 +1,4 @@
----
-title: "Chapter 18: Writing Professional Code: Idiomatic Boba"
-description: "Learn the official Boba code style, documentation standards, and the philosophy behind them."
----
+# Lesson: 18-idiomatic-boba
 
 Welcome to the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths in the way its designers intended.
 
@@ -18,7 +15,7 @@ Consistent naming makes code predictable.
 
 ## Formatting (`boba fmt`)
 
-The `boba fmt` tool handles formatting automatically, ensuring all code in the ecosystem is instantly familiar.
+The `boba fmt` tool handles formatting automatically, ensuring all code in the ecosystem is instantly familiar. Having one official formatting tool eliminates all arguments over code style. It ensures that any Boba code a developer encounters will be instantly familiar, reducing the cognitive load of reading and contributing to new projects.
 
 ## BobaDoc: The Standardized Documentation Engine
 
@@ -70,3 +67,100 @@ Your journey doesn't end here. To continue growing as a Boba developer, we encou
 -   **Explore the official Boba Standard Library documentation.** Familiarize yourself with the rich set of tools and modules available to you.
 -   **Build a small, complete project from scratch.** Apply what you've learned to create something new, like a command-line tool or a simple web server.
 -   **Read through the source code of idiomatic Boba projects.** Learning from experienced developers is one of the fastest ways to deepen your understanding of best practices.
+-   **Join the community.** A programming language is its ecosystem and its community. Join our Discord server or forums to ask questions, share what you've learned, and connect with other Boba developers.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 18
+
+--- Exercise: exercises/18_idiomatic_boba/docs1.boba ---
+
+//! Good code is well-documented. Boba has a built-in standard for
+//! documentation called BobaDoc.
+//!
+//! Every public item (`pub fn`, `pub struct`, etc.) should have a
+//! documentation comment (`///`) that explains its purpose.
+//!
+//! Your task is to add BobaDoc to the `greet` function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+// This public function is missing its documentation.
+// Add a BobaDoc comment above it.
+//
+// /// A function that creates a greeting message.
+// /// @param name: The name of the person to greet.
+// /// @returns: A greeting string.
+//
+pub fn greet(name: string) -> string {
+  return f"Hello, {name}!";
+}
+
+fn main() {
+  print(greet("World"));
+}
+
+--- Exercise: exercises/18_idiomatic_boba/formatting1.boba ---
+
+//! The Boba ecosystem includes a standard formatting tool called `boba fmt`.
+//! It automatically formats your code to follow the official style guide.
+//!
+//! This ensures that all Boba code looks and feels familiar, no matter who
+//! wrote it.
+//!
+//! Your task is to run `boba fmt` on this file.
+//! In a real-world scenario, you would run this command in your terminal:
+//! `boba fmt exercises/18_idiomatic_boba/formatting1.boba`
+//!
+//! For this exercise, the testing harness will do it for you. You just
+//! need to remove the `I AM NOT DONE` line.
+
+// I AM NOT DONE
+
+// This code is badly formatted.
+// It uses tabs, inconsistent spacing, and incorrect brace placement.
+// `boba fmt` will fix all of this automatically.
+struct   Player  {
+    name:   string,
+      level:int,
+}
+fn main()
+{
+  let player=Player{name:"Boba",level:1};
+    print(f"Player: {player.name}");
+}
+
+--- Exercise: exercises/18_idiomatic_boba/naming1.boba ---
+
+//! Boba has standard naming conventions that make code consistent and
+//! easy to read across the ecosystem.
+//!
+//! - `PascalCase` for types (`struct`, `enum`).
+//! - `snake_case` for values (functions, variables).
+//! - `SCREAMING_SNAKE_CASE` for constants.
+//!
+//! Your task is to fix the naming of the struct and the constant.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+// This constant should be in `SCREAMING_SNAKE_CASE`.
+// Change `MaxPlayers` to `MAX_PLAYERS`.
+let MaxPlayers = 4;
+
+// This struct should be in `PascalCase`.
+// Change `player_profile` to `PlayerProfile`.
+struct player_profile {
+  name: string,
+  level: int,
+}
+
+fn main() {
+  // The code below uses the corrected names.
+  let profile = PlayerProfile { name: "Boba", level: 99 };
+  print(f"Max players is: {MAX_PLAYERS}");
+}
+

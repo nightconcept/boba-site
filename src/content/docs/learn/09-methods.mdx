@@ -28,13 +28,25 @@ An **associated function** is a function that belongs to a type but is not calle
 impl Player {
     // Creates a new Player with default health.
     pub fn new(name: string) -> Player {
-        return Player{
+        return Player {
             name: name,
             health: 100
         }
     }
 }
-```
+
+> **Pro-Tip: Field Init Shorthand**
+>
+> In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
+>
+> ```boba
+> fn new(name: string) -> Player {
+>   return Player {
+>     name, // No need to write `name: name`
+>     health: 100
+>   }
+> }
+> ```
 
 You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
 
@@ -55,7 +67,7 @@ impl Player {
     /// A method that prints the player's status.
     /// The `self` parameter gives us read-only access to the instance.
     pub fn print_status(self) {
-        print("{self.name}'s health is {self.health}.")
+        print(f"{self.name}'s health is {self.health}.")
     }
 }
 ```
@@ -71,7 +83,7 @@ impl Player {
     /// Reduces the player's health by a given amount.
     pub fn take_damage(mut self, amount: int) {
         self.health -= amount
-        print("{self.name} takes {amount} damage!")
+        print(f"{self.name} takes {amount} damage!")
     }
 }
 ```

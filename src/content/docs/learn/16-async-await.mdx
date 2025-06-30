@@ -9,7 +9,7 @@ Asynchronous programming is essential for building responsive and efficient appl
 
 Boba's concurrency model is built around two keywords: `async` and `await`.
 
--   **`async`**: A keyword that modifies a function declaration (`async fn ...`). An `async` function does not block when called. Its return type is implicitly wrapped in a `Future<T>`.
+-   **`async`**: A keyword that modifies a function declaration (`async fn ...`). An `async` function does not block when called. Its return type is implicitly wrapped in a `Future<T>`. A **`Future`** is a placeholder object that represents a computation that hasn't finished yet. It's a promise that a value of type `T` will be available at some point in the future.
 -   **`await`**: An operator that can only be used inside an `async` function. It pauses the execution of the async function until the `Future` it is waiting on has completed.
 
 ## A Simple Async Example
@@ -18,7 +18,7 @@ To understand the core mechanic of `async`/`await`, let's look at a complete exa
 
 ```boba
 // This async function simulates fetching data from a server.
-// It returns a Future that will resolve to a string.
+// Assume `sleep` is a built-in function from a `time` module.
 async fn fetch_greeting() -> string {
   // In a real app, this would be a network call.
   // Here, we'll just pretend it takes a moment.
@@ -49,18 +49,48 @@ Now that you understand the basics of `async` and `await`, we can combine this k
 
 ```boba
 // This async function can fail, so it returns a Result.
+// Assume `User` and `error` are structs you have defined elsewhere.
 async fn fetch_user(id: int) -> Result<User, error> { /* ... */ }
 
 // Note the `?` after await!
 let user = await fetch_user(user_id: user_id)?
 ```
-This one line does two things:
+This one line does two things in a specific order. First, the `await` keyword acts, pausing the function until the `Future<Result<...>>` is resolved into a plain `Result<...>` value. Only then does the `?` operator inspect that `Result`:
 
-- It `await`s the `Future` to complete.
-- If the result is an `Err`, the `?` operator propagates it immediately. If it's `Ok`, it unwraps the `User` value and assigns it to the variable.
+- If the result is an `Err`, the `?` operator propagates it immediately.
+- If it's `Ok`, it unwraps the `User` value and assigns it to the variable.
 
 This elegant composition is key to writing robust, readable asynchronous Boba code.
 
 ### Time to Practice!
 
 You're ready to tackle asynchronous tasks. The next exercises will prompt you to convert synchronous functions to be `async` and to use `await` to retrieve their results, preparing you for real-world I/O tasks.
+
+### Running Futures Concurrently
+
+While `await` is great for waiting on a single result, the true power of async is unlocked when you run multiple operations at the same time. Boba provides a way to await multiple futures concurrently. For example, a `Future.all()` function would take a list of futures and return a single new future that completes when all of the input futures have completed.
+
+```boba
+async fn get_user_data() -> string {
+    // Simulate a slow DB call
+    timer.sleep(ms: 100)
+    return "User Data"
+}
+
+async fn get_app_settings() -> string {
+    // Simulate another slow network call
+    timer.sleep(ms: 150)
+    return "App Settings"
+}
+
+async fn main() {
+    print("Fetching data concurrently...")
+    let results = await Future.all([
+        get_user_data(),
+        get_app_settings(),
+    ])
+    // This block only runs after BOTH functions are complete.
+    // The total time elapsed will be ~150ms, not 250ms.
+    print(f"Results: {results}") // e.g., Results: ["User Data", "App Settings"]
+}
+```

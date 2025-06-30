@@ -1,7 +1,4 @@
----
-title: "Chapter 2: Variables and Simple Data Types"
-description: "Learn how to store data in variables, why Boba defaults to immutability, and explore core data types."
----
+# Lesson: 02-variables-and-immutability
 
 In Boba, you can store data in variables. A core principle of the language is **immutability by default**, which helps you write safer, more predictable code.
 
@@ -127,3 +124,178 @@ In the examples, you may have noticed that sometimes we declare a type (`let sco
 #### **Time to Practice!**
 >
 > Head over to your next set of exercises. You'll get hands-on practice creating variables, fixing compiler errors related to immutability, and working with `string`, `int`, and `boolean` types.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 02
+
+--- Exercise: exercises/02_variables/primitives1.boba ---
+
+//! Boba is a statically-typed language, which means the type of every
+//! variable is known at compile time. This helps prevent a whole class of bugs.
+//!
+//! If you declare a variable with a specific type, you can only assign
+//! values of that type to it.
+//!
+//! Your task is to fix the type mismatch in the code below.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // The variable `score` is explicitly typed as an `int`.
+  // However, it is being assigned a `string` value.
+  // Change the value to an integer (e.g., 100) to fix the error.
+  let score: int = "a string value";
+
+  print(f"The score is: {score}");
+}
+
+--- Exercise: exercises/02_variables/primitives2.boba ---
+
+//! Boba uses f-strings to embed expressions inside string literals.
+//! A regular string will print the literal characters, including braces.
+//! An f-string, which starts with `f"..."`, will evaluate the expressions
+//! inside the `{}`.
+//!
+//! Your task is to turn a regular string into an f-string.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let player_name = "Ada";
+
+  // The string below is a regular string, so it will print the literal
+  // text "{player_name}".
+  // Add the `f` prefix to the string to make it an f-string and correctly
+  // print the player's name.
+  let welcome_message = "Welcome, {player_name}!";
+
+  print(welcome_message);
+}
+
+--- Exercise: exercises/02_variables/primitives3.boba ---
+
+//! Long numbers can be hard to read. Boba allows you to use an underscore `_`
+//! as a visual separator inside number literals. The compiler completely
+//! ignores it, but it can make your code much more readable.
+//!
+//! This works for both `int` and `float` types.
+//!
+//! Your task is to make the number below easier to read.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // The number below is one billion. It's hard to read at a glance.
+  // Add underscores as thousands separators to improve readability.
+  // For example: `1_000_000_000`
+  let population = 1000000000;
+
+  print(f"The population is: {population}");
+}
+
+--- Exercise: exercises/02_variables/variables1.boba ---
+
+//! In Boba, you must declare a variable before you can use it.
+//! The `let` keyword creates an immutable binding.
+//!
+//! The compiler will tell you when it can't find a variable in the
+//! current scope.
+//!
+//! Your task is to declare a variable to fix the error.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // The variable `x` is used here, but it has not been declared.
+  // Declare it using `let` on the line above the print statement.
+  // For example: `let x = 5`
+  print(f"The value of x is {x}");
+}
+
+--- Exercise: exercises/02_variables/variables2.boba ---
+
+//! Boba's variables are immutable by default.
+//! This means that once a value is bound to a variable with `let`,
+//! it cannot be changed. This is a safety feature to prevent bugs.
+//!
+//! The compiler will prevent you from reassigning an immutable variable.
+//!
+//! Your task is to fix the error by preventing the reassignment.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let x = 5;
+  print(f"The number is {x}");
+
+  // The line below tries to reassign the immutable variable `x`.
+  // This is not allowed!
+  // Comment out the line to fix the error.
+  x = 10;
+
+  print(f"The number is now {x}");
+}
+
+--- Exercise: exercises/02_variables/variables3.boba ---
+
+//! While Boba defaults to immutable variables, sometimes you need a
+//! variable that can be changed. For this, you use the `var` keyword.
+//!
+//! Use `var` when you have a clear reason to mutate a variable's value.
+//!
+//! Your task is to make the variable `x` mutable to allow reassignment.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  // The variable `x` is declared with `let`, making it immutable.
+  // Change `let` to `var` to make it mutable and allow the reassignment below.
+  let x = 5;
+  print(f"The number is {x}");
+
+  x = 10; // This reassignment will now be allowed.
+
+  print(f"The number is now {x}");
+}
+
+--- Exercise: exercises/02_variables/variables4.boba ---
+
+//! Boba allows you to "shadow" a variable by declaring a new variable
+//! with the same name. This is different from mutation. Shadowing creates
+//! a brand new variable, and the old one is no longer accessible in this scope.
+//!
+//! This is useful for transformations. You can have a variable `x`,
+//! perform an operation on it, and then bind the result to a new `x`.
+//!
+//! Your task is to use shadowing to make the code compile.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn main() {
+  let x = 5;
+  print(f"The number is {x}");
+
+  // The line below is trying to assign a new value to `x`.
+  // Instead of mutating, we can shadow the original `x`.
+  // Add the `let` keyword to the beginning of the line to create a new
+  // variable `x` that shadows the old one.
+  x = x + 5;
+
+  print(f"The number is now {x}");
+}
+

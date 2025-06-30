@@ -46,6 +46,26 @@ Test results: 1 passed; 0 failed.
 
 This is the core testing loop: write a little code, write a test, run `boba test`, and see it pass.
 
+### Assertion Functions
+
+The primary way to check for correctness inside a test is with an assertion. The code above uses `test.assert_eq(left, right)`, which panics if the two arguments are not equal, causing the test to fail. The `test` module, which contains `assert_eq` and other helpful functions, is built-in and automatically available in any function marked with the `#[test]` attribute.
+
+The built-in `test` module provides a few helpful assertion functions for your tests:
+
+- `test.assert_eq(left, right)`: Panics if the two values are not equal. This is the most common assertion.
+- `test.assert(condition, "message")`: Panics if `condition` is false.
+- `test.assert_ne(left, right)`: Panics if the two values are equal.
+
+```boba
+#[test]
+fn test_various_assertions() {
+    let result = 2 + 2
+    test.assert_eq(result, 4)
+    test.assert(result > 3, "Result should be greater than 3")
+    test.assert_ne(result, 5)
+}
+```
+
 ## Unit Testing Your Code
 
 While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) and link it to the implementation file using the `#[file: test]` attribute at the top of the test file.
@@ -162,27 +182,26 @@ fn test_add_overflow_panics() {
 
 #### Testing Documentation Examples
 
-To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Run the `test` command with the `--doc` flag:
+To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Here is how you would write a function with a documentation example:
+
+```boba
+/// Adds two numbers together.
+///
+/// @example
+/// let result = add(2, 3)
+/// test.assert_eq(result, 5)
+///
+pub fn add(a: int, b: int) -> int {
+    return a + b
+}
+```
+
+When you run `boba test --doc`, the code in the `@example` block will be executed as a test.
+
+Run the `test` command with the `--doc` flag:
 
 ```sh
 boba test --doc
 ```
 
-This will execute the code inside every `@example` block across your project and report any failures. This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
-
-#### Other Assertions
-
-The built-in `test` module provides a few other helpful assertion functions for your tests.
-
-- `test.assert_eq(left, right)`: Panics if the two values are not equal. This is the most common assertion.
-- `test.assert(condition, "message")`: Panics if `condition` is false.
-- `test.assert_ne(left, right)`: Panics if the two values are equal.
-
-```boba
-#[test]
-fn test_various_assertions() {
-    let result = 2 + 2
-    test.assert_eq(result, 4)
-    test.assert(result > 3, "Result should be greater than 3")
-    test.assert_ne(result, 5)
-}
+This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.

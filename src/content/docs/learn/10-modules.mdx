@@ -10,9 +10,7 @@ As your programs grow larger, it becomes important to organize your code into mu
 3.  **Use `pub` to create a public API.** To make an item accessible from other modules, you must explicitly mark it with the `pub` keyword. This makes it part of the module's public API.
 4.  **Use `import` to access public items.** The `import` keyword is the mechanism to use public items from one module in another.
 
-This revised structure is more logical. It starts with the container (the file/module), explains the visibility rules within it (private/`pub`), and then explains how to cross the container boundary (`import`). This eliminates repetition and builds the concepts in a more orderly way.
-
-> For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
+For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
 ## Importing Specific Items
 
@@ -34,6 +32,8 @@ import { say_hello, say_goodbye as farewell } from "./utils.boba"
 say_hello() // Prints "Hello!"
 farewell() // Prints "Goodbye!"
 ```
+
+File paths can also point to files in subdirectories, such as "./helpers/strings.boba".
 
 ## Importing Everything as a Namespace
 

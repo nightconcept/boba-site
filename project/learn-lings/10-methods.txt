@@ -1,0 +1,245 @@
+# Lesson: 10-methods
+
+In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
+
+## The `impl` Block
+
+The `impl` block is where you define all the functions that belong to a `struct`.
+
+```boba
+struct Player {
+  name: string,
+  health: int
+}
+
+impl Player {
+  // All functions related to Player will go in here.
+}
+```
+
+## Associated Functions and Constructors
+
+An **associated function** is a function that belongs to a type but is not called on a specific instance (like a `static` method in other languages). The most common associated function is `new()`, which is the idiomatic Boba convention for a constructor.
+
+```boba
+impl Player {
+    // Creates a new Player with default health.
+    pub fn new(name: string) -> Player {
+        return Player {
+            name: name,
+            health: 100
+        }
+    }
+}
+
+> **Pro-Tip: Field Init Shorthand**
+>
+> In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
+>
+> ```boba
+> fn new(name: string) -> Player {
+>   return Player {
+>     name, // No need to write `name: name`
+>     health: 100
+>   }
+> }
+> ```
+
+You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
+
+```boba
+let player = Player.new(name: "Ada")
+```
+
+## Methods and the `self` Parameter
+
+A **method** is a function within an `impl` block that takes `self` as its first parameter. `self` represents the specific instance of the struct the method is being called on. By default, the `self` parameter provides immutable, read-only access to the struct's instance.
+
+> For developers coming from languages like JavaScript, Python, or Java, `self` is the equivalent of `this`.
+
+```boba
+impl Player {
+    // ... new() function from before ...
+
+    /// A method that prints the player's status.
+    /// The `self` parameter gives us read-only access to the instance.
+    pub fn print_status(self) {
+        print(f"{self.name}'s health is {self.health}.")
+    }
+}
+```
+
+## Mutating State with `mut self`
+
+By default, `self` is immutable. If a method needs to _change_ the struct's data, you must mark the parameter as `mut self`. This is an explicit signal that the method has side effects on the instance.
+
+```boba
+impl Player {
+    // ... new() and print_status() from before ...
+
+    /// Reduces the player's health by a given amount.
+    pub fn take_damage(mut self, amount: int) {
+        self.health -= amount
+        print(f"{self.name} takes {amount} damage!")
+    }
+}
+```
+
+To be able to call a method that mutates its instance, the instance itself must be declared as mutable using `var`. The compiler will prevent you from calling a `mut self` method on an immutable `let` binding. Here is a full example:
+
+```boba
+// First, create a mutable Player instance named boba_dev using var.
+var boba_dev = Player.new(name: "Boba Dev")
+
+// Next, print the player's initial health.
+print(f"Initial health: {boba_dev.health}") // Outputs: Initial health: 100
+
+// Then, call the take_damage method on boba_dev.
+boba_dev.take_damage(amount: 25)
+
+// Finally, print the player's health again to show it has been reduced.
+print(f"Updated health: {boba_dev.health}") // Outputs: Updated health: 75
+```
+
+================================================================================
+
+# Bobalings Exercises for Chapter 10
+
+--- Exercise: exercises/10_methods/methods1.boba ---
+
+//! An `impl` (implementation) block is where you define functions that
+//! are associated with a struct.
+//!
+//! An **associated function** is a function that belongs to a type but is
+//! not called on a specific instance (like a `static` method in other
+//! languages). The most common one is `new()`, the idiomatic Boba
+//! constructor.
+//!
+//! Your task is to define the `new` associated function for the `Player` struct.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+struct Player {
+  name: string,
+  health: int,
+}
+
+// The `impl` block for `Player` is empty.
+// The `main` function calls `Player.new()`, so you need to define it.
+impl Player {
+  // Define the `new` function here.
+  // It should take a `name: string` argument and return a `Player`.
+  // It should return a new `Player` instance with the given name
+  // and a default health of 100.
+}
+
+fn main() {
+  let player = Player.new(name: "Boba");
+  print(f"Created player {player.name} with {player.health} health.");
+}
+
+--- Exercise: exercises/10_methods/methods2.boba ---
+
+//! A **method** is a function within an `impl` block that is called on a
+//! specific instance of a struct. It always takes `self` as its first
+//! parameter, which represents the instance the method is being called on.
+//!
+//! Your task is to call the `describe` method on the `player` instance.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+struct Player {
+  name: string,
+  level: int,
+}
+
+impl Player {
+  /// A method that prints the player's details.
+  /// `self` gives us read-only access to the instance's data.
+  pub fn describe(self) {
+    print(f"{self.name} is at level {self.level}.");
+  }
+}
+
+fn main() {
+  let player = Player { name: "Ada", level: 10 };
+
+  // The `describe` method is defined, but it's not being called.
+  // Call the method on the `player` instance.
+  // The call should look like: `player.describe();`
+  /* your code here */
+}
+
+--- Exercise: exercises/10_methods/methods3.boba ---
+
+//! To call a method that changes an instance's data (a "mutating" method),
+//! the instance itself must be mutable.
+//!
+//! This means the variable holding the struct instance must be declared
+//! with `var`, not `let`. This is a key part of Boba's safety model:
+//! you have to opt-in to mutation.
+//!
+//! Your task is to make the `player` instance mutable.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+struct Player {
+  health: int,
+}
+
+impl Player {
+  /// Reduces the player's health.
+  /// This method takes `mut self` because it changes the instance's data.
+  pub fn take_damage(mut self, amount: int) {
+    self.health -= amount;
+    print(f"Player takes {amount} damage. Health is now {self.health}.");
+  }
+}
+
+fn main() {
+  // The `player` is immutable, but `take_damage` is a mutating method.
+  // Change `let` to `var` to make the `player` instance mutable.
+  let player = Player { health: 100 };
+  player.take_damage(amount: 25);
+}
+
+--- Exercise: exercises/10_methods/methods4.boba ---
+
+//! If a method needs to change the data of the struct instance it's
+//! called on, you must explicitly mark its `self` parameter as mutable.
+//!
+//! You do this by writing `mut self` instead of `self` as the first
+//! parameter. This is an explicit signal that the method has side effects
+//! on the instance.
+//!
+//! Your task is to make the `heal` method mutable.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+struct Player {
+  health: int,
+}
+
+impl Player {
+  // This method tries to change `self.health`, but `self` is immutable.
+  // Change the signature from `(self, ...)` to `(mut self, ...)` to allow
+  // the mutation.
+  pub fn heal(self, amount: int) {
+    self.health += amount;
+    print(f"Player heals for {amount}. Health is now {self.health}.");
+  }
+}
+
+fn main() {
+  var player = Player { health: 50 };
+  player.heal(amount: 10);
+}
+

@@ -3,6 +3,8 @@ title: "Chapter 14: Handling Absence: The Option Type"
 description: "Learn how Boba's built-in Option<T> type provides a robust and safe way to handle values that might be absent, preventing an entire category of null-related errors."
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
 
 To prevent this entire category of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
@@ -59,6 +61,12 @@ Both `Option` and `Result` deal with the possibility of a value not being what y
     *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
     *   Parsing a string into a number: This should succeed but could return an `Err` if the string is malformed (an operational failure).
 
-> #### **Time to Practice!**
->
-> Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
+<Aside>
+A Note on Fallible Operations: String Indexing
+
+In Boba, you can access individual characters of a string using index notation, like `my_string[0]`. However, this operation is fallible: if you try to access an index that is out of bounds (for example, indexing into an empty string), your program will panic. This is a perfect example of a situation where a function should return an `Option` to handle the "empty" case safely instead of panicking.
+</Aside>
+
+#### Time to Practice!
+
+Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.

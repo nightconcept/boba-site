@@ -1,0 +1,538 @@
+# Lesson: 12-testing-your-code
+
+Writing code is only half the battle. To build robust and reliable software, you need to verify that your code works as you expect it to. Boba's integrated tooling makes testing a simple, first-class part of the development workflow, without requiring any external libraries.
+
+This chapter covers how to write effective tests for your Boba code, from simple functions to your private implementation details.
+
+## What is a Test?
+
+In Boba, a test is simply a function that verifies the correctness of your code. The test function is marked with the `#[test]` attribute, which tells the `boba test` command to discover and execute it.
+
+The rules are simple:
+
+- A test **passes** if the function runs to completion without panicking.
+- A test **fails** if the function panics at any point.
+
+To run all the tests in your project, simply execute `boba test`. The test runner will automatically discover and run all test functions, then print a summary of the results.
+
+Let's look at a complete, minimal example. Here we have a function `add()` and a test for it in the same file. We use the built-in `test.assert_eq()` function to check if the output is what we expect.
+
+```boba
+//! A module for performing simple math.
+
+/// Adds two numbers.
+pub fn add(a: int, b: int) -> int {
+    return a + b
+}
+
+#[test]
+fn test_addition_works() {
+    // This test will fail (and panic) if the result is not equal to 4.
+    test.assert_eq(add(2, 2), 4)
+}
+```
+
+When you run `boba test`, you'll see output like this:
+
+```sh
+Running 1 test...
+test test_addition_works ... ok
+
+Test results: 1 passed; 0 failed.
+```
+
+This is the core testing loop: write a little code, write a test, run `boba test`, and see it pass.
+
+### Assertion Functions
+
+The primary way to check for correctness inside a test is with an assertion. The code above uses `test.assert_eq(left, right)`, which panics if the two arguments are not equal, causing the test to fail. The `test` module, which contains `assert_eq` and other helpful functions, is built-in and automatically available in any function marked with the `#[test]` attribute.
+
+The built-in `test` module provides a few helpful assertion functions for your tests:
+
+- `test.assert_eq(left, right)`: Panics if the two values are not equal. This is the most common assertion.
+- `test.assert(condition, "message")`: Panics if `condition` is false.
+- `test.assert_ne(left, right)`: Panics if the two values are equal.
+
+```boba
+#[test]
+fn test_various_assertions() {
+    let result = 2 + 2
+    test.assert_eq(result, 4)
+    test.assert(result > 3, "Result should be greater than 3")
+    test.assert_ne(result, 5)
+}
+```
+
+## Unit Testing Your Code
+
+While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) and link it to the implementation file using the `#[file: test]` attribute at the top of the test file.
+
+Here are the rules:
+
+- Your implementation code lives in a file, for example, `my_math.boba`.
+- Your unit tests for that file live in a corresponding file named `my_math_test.boba`.
+- This test file must be "designated" by placing the `#[file: test]` attribute at the very top.
+
+Let's refactor our previous example into this structure.
+
+**File: `src/my_math.boba`**
+```boba
+//! A module for performing simple math.
+
+/// Adds two numbers. This is part of the public API.
+pub fn add(a: int, b: int) -> int {
+    return internal_add(a, b)
+}
+
+// This helper function is PRIVATE to this module.
+fn internal_add(a: int, b: int) -> int {
+    return a + b
+}
+```
+
+**File: `src/my_math_test.boba`**
+```boba
+#[file: test] // Designates this file as the tester for my_math.boba
+
+//! Unit tests for the my_math module.
+
+#[test]
+fn test_public_add_function() {
+    test.assert_eq(add(5, 10), 15)
+}
+```
+
+The `#[file: test]` attribute is what enables this pattern. It tells the compiler that `my_math_test.boba` is the official unit test file for `my_math.boba`.
+
+## Testing Implementation Details
+
+The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-pub items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
+
+Let's add a test for our private `internal_add` function.
+
+**File: `src/my_math_test.boba`**
+```boba
+#[file: test] // Designates this file as the tester for my_math.boba
+
+//! Unit tests for the my_math module.
+
+#[test]
+fn test_public_add_function() {
+    test.assert_eq(add(5, 10), 15)
+}
+
+#[test]
+fn test_private_internal_add_function() {
+    // This is allowed ONLY because of the #[file: test] attribute.
+    // We can directly test our internal implementation details.
+    test.assert_eq(internal_add(3, 4), 7)
+}
+```
+
+This ability to test private functions is a key feature of Boba's unit testing philosophy. This allows you to write thorough tests for your module's internal logic while still maintaining a strictly controlled public API for consumers of your library.
+
+## Integration Testing Your Public API
+
+After unit testing is firmly established, we can introduce integration tests. Integration tests are for testing your library's public API as a whole, from an external user's perspective. These tests live in a dedicated, top-level `tests/` directory.
+
+- Each file in the `tests/` directory is treated as a separate test program.
+- These tests can only call `pub` functions from your library, just like a real user would. They cannot access private functions.
+
+```
+my_project/
+├── src/
+│   └── my_math.boba
+└── tests/
+    └── public_api_test.boba
+```
+
+**File: `tests/public_api_test.boba`**
+```boba
+// We need to import the public functions from our library.
+import { add } from "../src/my_math.boba"
+
+#[test]
+fn test_add_from_an_external_perspective() {
+    // This tests the public API.
+    test.assert_eq(add(100, 200), 300)
+}
+```
+
+This clear separation—unit tests alongside the code with special access, and integration tests in `tests/` that consume the public API—helps you build a comprehensive and robust test suite.
+
+Boba's `test` module and attributes provide more tools for specific situations.
+
+### Advanced Testing Techniques
+
+#### Testing Panics
+
+To verify that your code correctly panics under error conditions, add the `#[should_panic]` attribute to your test function. This test will now pass if the code inside panics, and fail if it does not.
+
+```boba
+#[test]
+#[should_panic]
+fn test_add_overflow_panics() {
+    let max_int = 9223372036854775807 // int.MAX
+    add(max_int, 1)
+}
+```
+
+#### Testing Documentation Examples
+
+To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Here is how you would write a function with a documentation example:
+
+```boba
+/// Adds two numbers together.
+///
+/// @example
+/// let result = add(2, 3)
+/// test.assert_eq(result, 5)
+///
+pub fn add(a: int, b: int) -> int {
+    return a + b
+}
+```
+
+When you run `boba test --doc`, the code in the `@example` block will be executed as a test.
+
+Run the `test` command with the `--doc` flag:
+
+```sh
+boba test --doc
+```
+
+This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 12
+
+--- Exercise: exercises/12_testing/doctest1.boba ---
+
+//! Boba's documentation is testable. The test runner will automatically
+//! execute any code inside a `@example` block in your BobaDoc comments.
+//!
+//! This ensures that your examples are always correct and up-to-date.
+//!
+//! Your task is to fix the failing assertion within the documentation example.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+/// A simple function that adds two numbers.
+///
+/// @example:
+///   // This example is a test!
+///   // The assertion below is incorrect and will cause `boba test` to fail.
+///   // Fix the assertion to make the doc test pass.
+///   test.assert_eq(add(1, 2), 4);
+pub fn add(_ a: int, _ b: int) -> int {
+  return a + b;
+}
+
+--- Exercise: exercises/12_testing/logic.boba ---
+
+//! Some business logic.
+
+pub fn is_even(_ n: int) -> boolean {
+  return n % 2 == 0;
+}
+
+--- Exercise: exercises/12_testing/math.boba ---
+
+//! A simple math library.
+
+pub fn add(_ a: int, _ b: int) -> int {
+  return a + b;
+}
+
+--- Exercise: exercises/12_testing/math_utils.boba ---
+
+//! A math utility library with a private helper function.
+
+/// A private helper function.
+fn double(n: int) -> int {
+  return n * 2;
+}
+
+/// A public function that uses the private helper.
+pub fn add_and_double(_ a: int, _ b: int) -> int {
+  let sum = a + b;
+  return double(sum);
+}
+
+--- Exercise: exercises/12_testing/my_library.boba ---
+
+//! A small library with a public API.
+
+pub fn public_function() -> string {
+  return "This is the public API!";
+}
+
+--- Exercise: exercises/12_testing/my_library2.boba ---
+
+//! A library with a public and a private function.
+
+fn private_function() -> string {
+  return "This is a private implementation detail.";
+}
+
+pub fn public_api_function() -> string {
+  return "This is public!" + private_function();
+}
+
+--- Exercise: exercises/12_testing/panic1.boba ---
+
+//! Sometimes, the correct behavior for a function is to `panic!`.
+//! For example, if it receives input that represents a logical impossibility.
+//!
+//! You can test that a function panics as expected by adding the
+//! `#[should_panic]` attribute to your test function.
+//!
+//! Your task is to add this attribute to the test.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn divide_by_zero() {
+  // This function will always panic.
+  let x = 1 / 0;
+}
+
+// This test calls a function that panics. The test runner will report this
+// as a failure unless you tell it that a panic is the expected outcome.
+// Add the `#[should_panic]` attribute to this test function.
+#[test]
+fn test_division_by_zero() {
+  divide_by_zero();
+}
+
+--- Exercise: exercises/12_testing/panic2.boba ---
+
+//! If a test is marked with `#[should_panic]` but the code inside it
+//! does *not* panic, the test will fail.
+//!
+//! This ensures that your tests accurately reflect your code's behavior.
+//! If you fix a bug that was causing a panic, you should also update the
+//! corresponding test.
+//!
+//! Your task is to remove the `#[should_panic]` attribute from a test that
+//! no longer panics.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn does_not_panic() {
+  // This function used to panic, but the bug was fixed!
+}
+
+// This test expects a panic, but `does_not_panic` no longer panics.
+// This will cause the test to fail.
+// Remove the `#[should_panic]` attribute to fix the test.
+#[test]
+#[should_panic]
+fn test_will_fail() {
+  does_not_panic();
+}
+
+--- Exercise: exercises/12_testing/private1.boba ---
+
+//! Unit tests are special because they can access private items from their
+//! corresponding source file. This allows you to test implementation details
+//! that are not part of the public API.
+//!
+//! Your task is to write a test for a private function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+#[file: test]
+// This links this test file to `math_utils.boba`.
+
+#[test]
+fn test_public_function() {
+  // This test for the public function already exists.
+  test.assert_eq(add_and_double(2, 3), 10);
+}
+
+// Add a new test function here called `test_private_function`.
+// It should test the private `double` function from `math_utils.boba`.
+// Assert that `double(5)` is equal to `10`.
+
+--- Exercise: exercises/12_testing/testing1.boba ---
+
+//! Boba has a built-in test runner to help you verify your code's correctness.
+//! To create a test, you write a function that performs some checks and then
+//! mark it with the `#[test]` attribute.
+//!
+//! The test runner will only execute functions that have this attribute.
+//!
+//! Your task is to make the `this_is_a_test` function discoverable by the
+//! test runner.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+// This function looks like a test, but the test runner will ignore it
+// without the `#[test]` attribute.
+// Add `#[test]` on the line above the function definition.
+fn this_is_a_test() {
+  // This test has no assertions, so it will pass as long as it runs.
+}
+
+--- Exercise: exercises/12_testing/testing2.boba ---
+
+//! Tests are all about making assertions: checking if a value is what
+//! you expect it to be.
+//!
+//! The most common assertion is `test.assert_eq(a, b)`, which checks if
+//! `a` is equal to `b`. If they are not equal, the test will fail.
+//!
+//! Your task is to fix the failing assertion in the test below.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+#[test]
+fn test_addition() {
+  // This assertion is incorrect. `2 + 2` is 4, not 5.
+  // Change the `5` to a `4` to make the test pass.
+  test.assert_eq(2 + 2, 5);
+}
+
+--- Exercise: exercises/12_testing/testing3.boba ---
+
+//! Tests are used to verify that your implementation code is correct.
+//! If a test fails, it often means there is a bug in the code being tested,
+//! not in the test itself.
+//!
+//! Your task is to fix the `add` function to make the test pass.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+/// This function is supposed to add two numbers, but it has a bug.
+fn add(_ a: int, _ b: int) -> int {
+  // Fix this line to correctly add `a` and `b`.
+  return a - b; // This should be `a + b`.
+}
+
+#[test]
+fn test_add_function() {
+  // This test is correct. It calls the `add` function and checks the result.
+  // The bug is in the `add` function itself.
+  test.assert_eq(add(2, 2), 4);
+}
+
+--- Exercise: exercises/12_testing/tests/integration1.boba ---
+
+//! Integration tests live in a separate `tests` directory and test your
+//! library's public API as if they were an external user.
+//!
+//! Because they are external, they must import the functions they want to
+//! test using a relative path.
+//!
+//! Your task is to import the public function from the library.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+// This test needs to call `public_function` from `my_library.boba`.
+// The library file is located one directory up from this `tests` directory.
+// Add an import statement to bring `public_function` into scope.
+// The import should be: `import { public_function } from "../my_library.boba";`
+
+#[test]
+fn test_public_api() {
+  let result = public_function();
+  test.assert_eq(result, "This is the public API!");
+}
+
+--- Exercise: exercises/12_testing/tests/integration2.boba ---
+
+//! Integration tests can only access the public API of a library.
+//! They cannot call private functions. This is a key difference from
+//! unit tests, which can access private implementation details.
+//!
+//! Your task is to remove the test that tries to call a private function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+import { public_api_function, private_function } from "../my_library2.boba";
+
+#[test]
+fn test_the_public_api() {
+  // This test is valid because it calls a public function.
+  test.assert(public_api_function().len() > 0);
+}
+
+// This test is invalid because it tries to call a private function.
+// The compiler will give you an error.
+// Delete this entire test function to make the file compile.
+#[test]
+fn test_the_private_api() {
+  private_function();
+}
+
+--- Exercise: exercises/12_testing/unit1.boba ---
+
+//! To keep your project organized, you can place unit tests in a separate
+//! file. By convention, a test file for `source.boba` is named
+//! `source_test.boba`.
+//!
+//! To link the test file to the source file, you must add the
+//! `#[file: test]` attribute to the top of the test file. This tells the
+//! compiler that this file contains tests for the corresponding source file.
+//!
+//! Your task is to add the `#[file: test]` attribute to this file.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+// This file contains tests for `math.boba`.
+// Add the `#[file: test]` attribute at the very top of this file to link them.
+
+#[test]
+fn test_add_from_other_file() {
+  // This test calls the `add` function from `math.boba`.
+  test.assert_eq(add(5, 10), 15);
+}
+
+--- Exercise: exercises/12_testing/unit2.boba ---
+
+//! A test file is linked to exactly one source file.
+//! `logic_test.boba` tests `logic.boba`. `math_test.boba` tests `math.boba`.
+//!
+//! You cannot call functions from a different source file that is not the
+//! one the test file is linked to.
+//!
+//! Your task is to fix the test to call the correct function.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+#[file: test]
+// This attribute links this file to `logic.boba`.
+
+#[test]
+fn test_logic() {
+  // This test is in a file linked to `logic.boba`, but it's trying to
+  // call the `add` function from `math.boba`. This is not allowed.
+  //
+  // Change the test to call the `is_even` function from `logic.boba`
+  // and assert that `is_even(4)` is `true`.
+  test.assert_eq(add(2, 2), 4);
+}
+

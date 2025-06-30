@@ -1,0 +1,168 @@
+# Lesson: 14-option-type
+
+In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
+
+To prevent this entire category of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
+
+## The `Option<T>` Enum
+
+The `Option<T>` enum is defined as follows:
+
+```boba
+enum Option<T> {
+    Some(T), // Represents the presence of a value of type T
+    None,    // Represents the absence of a value
+}
+```
+
+-   `Some(T)`: A variant that holds a value of type `T`.
+-   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
+
+By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
+
+A common way to handle an `Option` is to use a `match` statement to provide a default value in the `None` case.
+
+```boba
+let timeout_option: Option<int> = user_settings.get("timeout")
+
+let timeout: int = match timeout_option {
+    Some(value) => value,
+    None => 5000, // Default to 5000ms
+}
+```
+
+## Shortcut: Unwrapping with a Default using ??
+
+The `??` operator is a clean shorthand specifically for the common pattern of unwrapping a `Some` value or providing a default value if it's `None`.
+
+```boba
+// If the left side is Some(t), use t. If it's None, use the right side.
+let value = config_map.get("timeout") ?? 5000
+```
+
+This operator makes your code cleaner by removing the boilerplate of a match statement for the simple "use this or a default" pattern.
+
+## When to Use Option vs. Result
+
+Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline can be framed as a question the developer should ask themselves.
+
+*   For **`Option<T>`**, the question is: **"Is it normal and expected for a value to be absent here?"**
+    *   `find_user_by_id()`: A user might not exist. This isn't an error; "user not found" is an expected, valid outcome of a search.
+    *   `map.get(key)`: A key may not be in a map. This is normal.
+    *   Getting the first element of a list: This could be `None` if the list is empty, which is a normal state.
+
+*   For **`Result<T, E>`**, the question is: **"Is this an operation that is supposed to succeed, but could plausibly fail due to circumstances beyond my control?"**
+    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full. A disk being full is an external failure, not an expected outcome of reading a file.
+    *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
+    *   Parsing a string into a number: This should succeed but could return an `Err` if the string is malformed (an operational failure).
+
+> #### **Time to Practice!**
+>
+> Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
+
+================================================================================
+
+# Bobalings Exercises for Chapter 14
+
+--- Exercise: exercises/14_error_handling_option/option1.boba ---
+
+//! Boba uses the `Option<T>` enum to handle values that might be absent.
+//! It has two variants: `Some(T)` for a present value, and `None` for an
+//! absent value.
+//!
+//! The primary way to work with an `Option` is a `match` statement, which
+//! forces you to handle both cases. This prevents null reference errors.
+//!
+//! Your task is to use a `match` statement to safely get the value from
+//! the `Option`.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn find_user(id: int) -> Option<string> {
+  if id == 1 {
+    return Some("Alice");
+  }
+  return None;
+}
+
+fn main() {
+  let user_option = find_user(1);
+
+  // The `user_option` is an `Option<string>`. You can't use it directly.
+  // Use a `match` statement to handle both the `Some` and `None` cases.
+  //
+  // match user_option {
+  //   Some(name) => print(f"Found user: {name}"),
+  //   None => print("User not found."),
+  // }
+  /* your code here */
+}
+
+--- Exercise: exercises/14_error_handling_option/option2.boba ---
+
+//! A common pattern with `Option` is to use the value if it's `Some`,
+//! or a default value if it's `None`. While a `match` statement works,
+//! Boba provides a cleaner shortcut: the `??` operator.
+//!
+//! The expression `option ?? default_value` will evaluate to the inner
+//! value if the option is `Some`, or to `default_value` if it's `None`.
+//!
+//! Your task is to use the `??` operator to provide a default value.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+fn find_user(id: int) -> Option<string> {
+  if id == 1 {
+    return Some("Alice");
+  }
+  return None;
+}
+
+fn main() {
+  let user_option = find_user(2); // This will be None
+
+  // Use the `??` operator to get the user's name or provide a default.
+  // The expression should be `user_option ?? "Guest"`.
+  let user_name = /* your code here */;
+
+  print(f"Welcome, {user_name}!");
+}
+
+--- Exercise: exercises/14_error_handling_option/option3.boba ---
+
+//! If a function might not be able to return a valid value, it should
+//! return an `Option<T>` instead of a plain value. This makes the
+//! possibility of an absent value explicit in the type system.
+//!
+//! Your task is to refactor the `get_first_initial` function to return
+//! an `Option<string>`.
+//!
+//! When you are done, remove the `I AM NOT DONE` line below to move on.
+
+// I AM NOT DONE
+
+// This function tries to get the first initial of a name.
+// But what if the name is an empty string? The current code would panic.
+//
+// 1. Change the function's return type to `Option<string>`.
+// 2. If the name is empty, return `None`.
+// 3. If the name is not empty, return the first character wrapped in `Some()`.
+fn get_first_initial(name: string) -> string {
+  return name[0];
+}
+
+fn main() {
+  let initial1 = get_first_initial("Alice"); // Should be Some("A")
+  let initial2 = get_first_initial("");      // Should be None
+
+  // We'll use `match` to check your work.
+  match initial2 {
+    Some(i) => print(f"Got an initial: {i}"),
+    None => print("Correctly handled the empty string."),
+  }
+}
+

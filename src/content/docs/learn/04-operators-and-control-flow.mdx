@@ -1,0 +1,171 @@
+---
+title: "Lesson 04: Operators and Control Flow"
+description: "Learn how to manipulate data using operators and control the flow of your program with if/else statements."
+---
+
+Now that you know about variables and data types, let's look at how to manipulate them using operators and control the flow of your program. Operators are special symbols that perform operations on your data. We'll then see how to use the results of those operations to make decisions with if/else statements.
+
+## Arithmetic Operators
+
+Boba provides a standard set of arithmetic operators for performing mathematical calculations.
+
+| Operator | Description      | Example                |
+| :------- | :--------------- | :--------------------- |
+| `+`      | Addition         | `5 + 2` results in `7`   |
+| `-`      | Subtraction      | `5 - 2` results in `3`   |
+| `*`      | Multiplication   | `5 * 2` results in `10`  |
+| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `1` |
+| `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
+| `^`      | Power (Note: This differs from Python and JavaScript, which use `**` for exponentiation.) | `5 ^ 2` results in `25`  |
+
+```boba
+let score = 10
+let bonus = score * 2
+let total_score = score + bonus
+let final_level = total_score / 10
+
+print(f"Final level is: {final_level}") // Outputs: Final level is: 3
+// When dividing two integers, Boba performs integer division, which
+// discards any fractional remainder and returns an integer.
+```
+
+## Comparison Operators
+
+Comparison operators are used to compare two values. They always result in a `boolean` (`true` or `false`) value.
+
+| Operator | Description          | Example               |
+| :------- | :------------------- | :-------------------- |
+| `==`     | Equal to             | `5 == 5` is `true`    |
+| `!=`     | Not equal to         | `5 != 5` is `false`   |
+| `<`      | Less than            | `5 < 8` is `true`     |
+| `>`      | Greater than         | `5 > 8` is `false`    |
+| `<=`     | Less than or equal   | `5 <= 5` is `true`    |
+| `>=`     | Greater than or equal| `5 >= 8` is `false`   |
+
+```boba
+let score = 85
+let is_passing = score >= 60
+
+print(f"Is the student passing? {is_passing}") // Outputs: Is the student passing? true
+```
+
+## The `if` Statement
+
+The `if` statement executes a block of code only if a specified condition is `true`.
+
+```boba
+var temperature: float = 30.0
+
+if temperature > 25 {
+  print("It's a hot day!")
+}
+```
+
+## The `else` Statement
+
+You can use the `else` statement to provide a block of code to execute if the `if` condition is `false`.
+
+```boba
+var score: int = 85
+
+if score >= 60 {
+  print("You passed!")
+} else {
+  print("You failed. Better luck next time!")
+}
+```
+
+## The `else if` Statement
+
+To handle multiple conditions, you can chain `if` statements with `else if`.
+
+```boba
+var hunger = "hungry"
+var thirst = "thirsty"
+
+if hunger == "hungry" and thirst == "thirsty" {
+  print("You are hungry and thirsty.")
+} else if hunger == "hungry" {
+  print("You are only hungry.")
+} else if thirst == "thirsty" {
+  print("You are only thirsty.")
+} else {
+  print("You are neither hungry nor thirsty.")
+}
+```
+
+## Logical Operators
+
+Logical operators are used to combine boolean values.
+
+| Operator | Description | Example                               |
+| :------- | :---------- | :------------------------------------ |
+| `and`    | Logical AND | `true and false` results in `false` |
+| `or`     | Logical OR  | `true or false` results in `true`   |
+| `not`    | Logical NOT | `not true` results in `false`       |
+
+```boba
+let has_key = true
+let is_door_locked = false
+
+if has_key and not is_door_locked {
+  print("You can enter the room.") // This will print.
+}
+```
+
+### Checking for Containment with 'in'
+
+Boba also has collection types for grouping data, like lists of items or maps of key-value pairs. The in operator provides a highly readable way to check if a value exists within a collection. We will cover collections in detail in a later chapter.
+
+```boba
+let inventory: string[] = ["sword", "shield", "potion"]
+
+// Check if "shield" is in our inventory list.
+if "shield" in inventory {
+  print("You are well-defended!")
+}
+
+let player_skills = {"archery": 5, "magic": 3}
+
+// For maps, `in` checks if the key exists.
+if "stealth" in player_skills {
+  print("You can sneak.")
+} else {
+  print("You are not a sneaky person.") // This will print.
+}
+```
+
+### Using if/else as an Expression
+
+In Boba, `if/else` blocks are expressions. The final expression in the chosen branch is the value that the entire block evaluates to. This value can then be assigned to a variable or returned from a function.
+
+```boba
+let health: int = 75
+
+// The entire if/else expression evaluates to a single value.
+let status: string = if health > 50 { "Healthy" } else { "Injured" }
+
+print(f"Player status: {status}") // Outputs: Player status: Healthy
+```
+
+This concept isn't limited to single lines. Full `if/else` blocks are also expressions. This allows for very clean and readable logic without temporary mutable variables.
+
+```boba
+let player_health = 75
+
+let armor_message: string = if player_health == 100 {
+    print("Player is at full health.")
+    "Wearing pristine, shining armor."
+} else if player_health > 50 {
+    "Wearing battle-worn, dented armor."
+} else {
+    "Wearing cracked and broken armor."
+}
+
+print(armor_message) // Outputs: Wearing battle-worn, dented armor.
+```
+
+This example showcases a fundamental feature of Boba: code blocks are expressions. The last line inside a block, if it doesn't have a semicolon, becomes the value that the block evaluates to.
+
+> #### **Time to Practice!**
+> You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges. 
