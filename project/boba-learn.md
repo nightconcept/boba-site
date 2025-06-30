@@ -334,9 +334,9 @@ user_id |> create_user(name: "Ada", is_admin: false)
 
 This style is a cornerstone of functional programming and is highly encouraged in Boba for creating readable data processing pipelines.
 
-## Chapter 4: Manipulating Data: Operators
+## Lesson 04: Operators and Control Flow
 
-Now that you know about variables and data types, let's look at how to manipulate them using operators. Operators are special symbols that perform operations on your data.
+Now that you know about variables and data types, let's look at how to manipulate them using operators and control the flow of your program. Operators are special symbols that perform operations on your data. We'll then see how to use the results of those operations to make decisions with if/else statements.
 
 ## Arithmetic Operators
 
@@ -381,55 +381,6 @@ let is_passing = score >= 60
 
 print(f"Is the student passing? {is_passing}") // Outputs: Is the student passing? true
 ```
-
-### Checking for Containment with 'in'
-
-To determine if a list contains a specific element, a map contains a certain key, or a string contains a substring, Boba provides the highly readable `in` operator.
-
-```boba
-let inventory: string[] = ["sword", "shield", "potion"]
-
-// Check if "shield" is in our inventory list.
-if "shield" in inventory {
-  print("You are well-defended!")
-}
-
-let player_skills = {"archery": 5, "magic": 3}
-
-// For maps, `in` checks if the key exists.
-if "stealth" in player_skills {
-  print("You can sneak.")
-} else {
-  print("You are not a sneaky person.") // This will print.
-}
-```
-
-## Logical Operators
-
-Logical operators are used to combine boolean values.
-
-| Operator | Description | Example                               |
-| :------- | :---------- | :------------------------------------ |
-| `and`    | Logical AND | `true and false` results in `false` |
-| `or`     | Logical OR  | `true or false` results in `true`   |
-| `not`    | Logical NOT | `not true` results in `false`       |
-
-```boba
-let has_key = true
-let is_door_locked = false
-
-if has_key and not is_door_locked {
-  print("You can enter the room.") // This will print.
-}
-```
-
-> #### **Time to Practice!**
->
-> You now have the tools to manipulate data. The next set of exercises in your `boba-learning` course will test your knowledge of all these operators to solve small challenges.
-
-## Chapter 5: Making Decisions: if/else Expressions
-
-In Boba, conditional logic is used not only to control which code runs (as a statement), but also to evaluate to a value (as an expression). This makes `if/else` a powerful tool for both program flow and variable assignment. This allows developers to write more declarative code, often eliminating the need for temporary mutable variables, leading to safer and more concise logic.
 
 ## The `if` Statement
 
@@ -476,7 +427,48 @@ if hunger == "hungry" and thirst == "thirsty" {
 }
 ```
 
-### Using if as an Expression
+## Logical Operators
+
+Logical operators are used to combine boolean values.
+
+| Operator | Description | Example                               |
+| :------- | :---------- | :------------------------------------ |
+| `and`    | Logical AND | `true and false` results in `false` |
+| `or`     | Logical OR  | `true or false` results in `true`   |
+| `not`    | Logical NOT | `not true` results in `false`       |
+
+```boba
+let has_key = true
+let is_door_locked = false
+
+if has_key and not is_door_locked {
+  print("You can enter the room.") // This will print.
+}
+```
+
+### Checking for Containment with 'in'
+
+Boba also has collection types for grouping data, like lists of items or maps of key-value pairs. The in operator provides a highly readable way to check if a value exists within a collection. We will cover collections in detail in a later chapter.
+
+```boba
+let inventory: string[] = ["sword", "shield", "potion"]
+
+// Check if "shield" is in our inventory list.
+if "shield" in inventory {
+  print("You are well-defended!")
+}
+
+let player_skills = {"archery": 5, "magic": 3}
+
+// For maps, `in` checks if the key exists.
+if "stealth" in player_skills {
+  print("You can sneak.")
+} else {
+  print("You are not a sneaky person.") // This will print.
+}
+```
+
+### Using if/else as an Expression
 
 In Boba, `if/else` blocks are expressions. The final expression in the chosen branch is the value that the entire block evaluates to. This value can then be assigned to a variable or returned from a function.
 
@@ -489,9 +481,8 @@ let status: string = if health > 50 { "Healthy" } else { "Injured" }
 print(f"Player status: {status}") // Outputs: Player status: Healthy
 ```
 
-This concept isn't limited to single lines. Full `if/else` blocks are also expressions, meaning they can evaluate to a value that can be returned or assigned. This allows for very clean and readable logic without temporary mutable variables.
+This concept isn't limited to single lines. Full `if/else` blocks are also expressions. This allows for very clean and readable logic without temporary mutable variables.
 
-In Boba, `if/else` blocks are expressions. The final expression in the chosen branch is the value that the entire block evaluates to. This value can then be assigned to a variable or returned from a function.
 ```boba
 let player_health = 75
 
@@ -507,7 +498,10 @@ let armor_message: string = if player_health == 100 {
 print(armor_message) // Outputs: Wearing battle-worn, dented armor.
 ```
 
-Any statements before the final expression are executed for their side effects, but they do not affect the return value of the block. In that example, `print(...)` runs, and then the string literal that follows it becomes the value of that branch.
+This example showcases a fundamental feature of Boba: code blocks are expressions. The last line inside a block, if it doesn't have a semicolon, becomes the value that the block evaluates to.
+
+> #### **Time to Practice!**
+> You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges.
 
 ## Chapter 6: Repeating Actions: for and while Loops
 
@@ -547,13 +541,25 @@ for i in 1..=3 {
 // This is message number 3.
 ```
 
+**3. Iterating Over a Map's Key-Value Pairs**
+
+To iterate over a map, you can use the `.items()` method to get both the key and the value for each entry.
+
+```boba
+let player_skills = {"archery": 5, "magic": 3}
+
+for key, value in player_skills.items() {
+  print(f"Skill: {key}, Level: {value}")
+}
+```
+
 #### The `while` Loop
 
 The while loop continues to execute a block of code as long as a specified condition remains true. You should use a while loop when you don't know ahead of time how many times you need to loop.
 ```boba
 var countdown = 3
 
-    / Loop as long as countdown is greater than 0.
+    // Loop as long as countdown is greater than 0.
     while countdown > 0 {
     print(f"{countdown}...")
     countdown = countdown - 1 // Decrement the counter.
@@ -594,10 +600,11 @@ Lists declared with `let` are immutable, meaning their contents cannot be change
 
 ```boba
 let starting_gear: string[] = ["tunic", "dagger"]
-// starting_gear.push("shield") // This would cause a compile error because the list is immutable.
+// starting_gear.push("shield")
+// This would cause a compile error because the list is immutable.
 ```
 
-You can perform many operations on lists, like getting their size or adding new items.
+You can perform many operations on lists, like getting their size or adding new items. Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
 
 ```boba
 print(ingredients.len()) // Outputs: 3
@@ -608,8 +615,6 @@ print(ingredients.len()) // Outputs: 4
 
 // Access items by their index (starting from 0)
 print(ingredients[0]) // Outputs: "flour"
-
-Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
 ```
 
 ### `map`
@@ -661,15 +666,20 @@ enum JobStatus {
 }
 ```
 
+> **Pro-Tip: Enums with Data**
+>
+> In Boba, enum variants can also hold data. For example, you could define `Failed(string)` to store an error message right inside the variant. This powerful feature for modeling complex state will be covered in a later chapter.
+
 ### Using an Enum
 
 Once defined, you can use the enum as a type for variables and function parameters. You access a specific variant using `EnumName.VariantName`.
+
+To act on the value of an enum, you can use a `match` statement. This is a powerful control flow tool that allows you to compare a value against a series of patterns and execute code based on which pattern matches. Its key feature is that it must be exhaustive—the compiler guarantees that you have a branch for every possible variant, preventing bugs from unhandled cases.
 
 ```boba
 // Create a variable of type JobStatus.
 let current_status: JobStatus = JobStatus.Pending
 
-// You can use enums with `match` for exhaustive state handling.
 match current_status {
   JobStatus.Pending => print("The job is waiting to be processed."),
   JobStatus.Complete => print("The job finished successfully."),
@@ -715,6 +725,30 @@ You can access the fields of a struct instance using dot notation.
 print(f"Player name: {ada.name}") // Prints "Player name: Ada"
 ```
 
+### Composing Structs
+
+The real power of structs becomes apparent when you use them to build more complex data structures. A struct's fields can be of any type, including other structs you have defined. This is called composition.
+
+```boba
+struct Point {
+  x: int,
+  y: int,
+}
+
+struct Line {
+  start: Point, // This field is another struct
+  end: Point,   // This one too
+}
+
+let my_line = Line {
+  start: Point { x: 10, y: 20 },
+  end: Point { x: 50, y: 30 },
+}
+
+// You can chain dot notation to access nested fields
+print(f"The line starts at x = {my_line.start.x}")
+```
+
 ### Field Visibility and the `pub` Keyword
 
 By default, all fields in a struct are **private**. This means they can only be accessed by code in the same file where the struct is defined. This is a core principle of encapsulation, preventing external code from relying on the internal structure of your data.
@@ -736,6 +770,7 @@ pub struct User {
 ```
 
 If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
+
 ### Mutating a Struct
 To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed.
 ```boba
@@ -746,6 +781,20 @@ print(f"Initial score: {boba_dev.score}") // Outputs: Initial score: 0
 // Mutate the score field
 boba_dev.score = 150
 print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
+```
+
+### Creating a New Struct from an Old One
+
+Often, instead of mutating a struct, you'll want to create a new instance based on an old one but with some fields changed. Boba provides a convenient struct update syntax for this. The .. operator specifies that the remaining unmentioned fields should be copied directly from another instance.
+
+```boba
+let player1 = Player { name: "Ada", score: 100, is_active: true }
+
+// Create player2 based on player1, but with a different score.
+// The `name` and `is_active` fields are copied from player1.
+let player2 = Player { score: 150, ..player1 }
+
+print(f"{player2.name} has a new score of {player2.score}")
 ```
 
 ### Time to Practice!
@@ -779,13 +828,25 @@ An **associated function** is a function that belongs to a type but is not calle
 impl Player {
     // Creates a new Player with default health.
     pub fn new(name: string) -> Player {
-        return Player{
+        return Player {
             name: name,
             health: 100
         }
     }
 }
-```
+
+> **Pro-Tip: Field Init Shorthand**
+>
+> In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
+>
+> ```boba
+> fn new(name: string) -> Player {
+>   return Player {
+>     name, // No need to write `name: name`
+>     health: 100
+>   }
+> }
+> ```
 
 You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
 
@@ -806,7 +867,7 @@ impl Player {
     /// A method that prints the player's status.
     /// The `self` parameter gives us read-only access to the instance.
     pub fn print_status(self) {
-        print("{self.name}'s health is {self.health}.")
+        print(f"{self.name}'s health is {self.health}.")
     }
 }
 ```
@@ -822,7 +883,7 @@ impl Player {
     /// Reduces the player's health by a given amount.
     pub fn take_damage(mut self, amount: int) {
         self.health -= amount
-        print("{self.name} takes {amount} damage!")
+        print(f"{self.name} takes {amount} damage!")
     }
 }
 ```
@@ -852,9 +913,7 @@ As your programs grow larger, it becomes important to organize your code into mu
 3.  **Use `pub` to create a public API.** To make an item accessible from other modules, you must explicitly mark it with the `pub` keyword. This makes it part of the module's public API.
 4.  **Use `import` to access public items.** The `import` keyword is the mechanism to use public items from one module in another.
 
-This revised structure is more logical. It starts with the container (the file/module), explains the visibility rules within it (private/`pub`), and then explains how to cross the container boundary (`import`). This eliminates repetition and builds the concepts in a more orderly way.
-
-> For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
+For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
 ## Importing Specific Items
 
@@ -874,6 +933,8 @@ pub fn say_goodbye() {
 say_hello() // Prints "Hello!"
 farewell() // Prints "Goodbye!"
 ```
+
+File paths can also point to files in subdirectories, such as "./helpers/strings.boba".
 
 ## Importing Everything as a Namespace
 
@@ -937,6 +998,26 @@ Test results: 1 passed; 0 failed.
 ```
 
 This is the core testing loop: write a little code, write a test, run `boba test`, and see it pass.
+
+### Assertion Functions
+
+The primary way to check for correctness inside a test is with an assertion. The code above uses `test.assert_eq(left, right)`, which panics if the two arguments are not equal, causing the test to fail. The `test` module, which contains `assert_eq` and other helpful functions, is built-in and automatically available in any function marked with the `#[test]` attribute.
+
+The built-in `test` module provides a few helpful assertion functions for your tests:
+
+- `test.assert_eq(left, right)`: Panics if the two values are not equal. This is the most common assertion.
+- `test.assert(condition, "message")`: Panics if `condition` is false.
+- `test.assert_ne(left, right)`: Panics if the two values are equal.
+
+```boba
+#[test]
+fn test_various_assertions() {
+    let result = 2 + 2
+    test.assert_eq(result, 4)
+    test.assert(result > 3, "Result should be greater than 3")
+    test.assert_ne(result, 5)
+}
+```
 
 ## Unit Testing Your Code
 
@@ -1052,30 +1133,29 @@ fn test_add_overflow_panics() {
 
 #### Testing Documentation Examples
 
-To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Run the `test` command with the `--doc` flag:
+To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Here is how you would write a function with a documentation example:
+
+```boba
+/// Adds two numbers together.
+///
+/// @example
+/// let result = add(2, 3)
+/// test.assert_eq(result, 5)
+///
+pub fn add(a: int, b: int) -> int {
+    return a + b
+}
+```
+
+When you run `boba test --doc`, the code in the `@example` block will be executed as a test.
+
+Run the `test` command with the `--doc` flag:
 
 ```sh
 boba test --doc
 ```
 
-This will execute the code inside every `@example` block across your project and report any failures. This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
-
-#### Other Assertions
-
-The built-in `test` module provides a few other helpful assertion functions for your tests.
-
-- `test.assert_eq(left, right)`: Panics if the two values are not equal. This is the most common assertion.
-- `test.assert(condition, "message")`: Panics if `condition` is false.
-- `test.assert_ne(left, right)`: Panics if the two values are equal.
-
-```boba
-#[test]
-fn test_various_assertions() {
-    let result = 2 + 2
-    test.assert_eq(result, 4)
-    test.assert(result > 3, "Result should be greater than 3")
-    test.assert_ne(result, 5)
-}
+This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
 
 ## Chapter 13: Handling Failures: The Result Type
 
@@ -1122,21 +1202,31 @@ fn do_something() -> Result<string, error> {
 
 The `?` operator is a concise shorthand for that entire `match` block.
 
-Let's look at an example:
-
+// A simple struct to hold our error information.
 ```boba
+struct Error {
+  message: string,
+}
+```
+
 // A struct to hold our configuration data
+```boba
 struct Config {
   hostname: string,
   port: int,
   enable_https: boolean
 }
+```
 
 The true power of the `?` operator becomes apparent when chaining multiple operations that can each fail, as it allows you to write a clean "happy path" while correctly propagating any error that occurs at any step.
 
 The following function, `load_config`, is a great example of this. It will read a file and parse it as JSON. Both of these operations can fail, making them perfect candidates for using `Result` and the `?` operator.
 
-fn load_config() -> Result<Config, error> {
+```boba
+fn load_config() -> Result<Config, Error> {
+    // Assume `read_file` and `parse_json` are fallible functions
+    // provided by Boba's standard library, imported from modules
+    // like `boba::fs` and `boba::json`.
     var content = read_file("config.json")?
     var config = parse_json(content)?
 
@@ -1144,6 +1234,7 @@ fn load_config() -> Result<Config, error> {
 
     return Ok(config)
 }
+```
 
 ### Time to Practice!
 
@@ -1207,9 +1298,15 @@ Both `Option` and `Result` deal with the possibility of a value not being what y
     *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
     *   Parsing a string into a number: This should succeed but could return an `Err` if the string is malformed (an operational failure).
 
-> #### **Time to Practice!**
->
-> Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
+<Aside>
+A Note on Fallible Operations: String Indexing
+
+In Boba, you can access individual characters of a string using index notation, like `my_string[0]`. However, this operation is fallible: if you try to access an index that is out of bounds (for example, indexing into an empty string), your program will panic. This is a perfect example of a situation where a function should return an `Option` to handle the "empty" case safely instead of panicking.
+</Aside>
+
+#### Time to Practice!
+
+Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
 
 ## Chapter 15: Powerful Control Flow: Pattern Matching
 
@@ -1224,7 +1321,7 @@ The `match` statement is most powerful when used with types that have a fixed nu
 ```boba
 // Safely unwrapping an Option
 match find_user(1) {
-    Some(name) => print("Found user: {name}"),
+    Some(name) => print(f"Found user: {name}"),
     None => print("User not found.")
 }
 ```
@@ -1238,14 +1335,42 @@ fn read_config_file() -> Result<string, error> {
 }
 
 match read_config_file() {
-    Ok(content) => print("Config file content: {content}"),
-    Err(err) => print("Failed to read config: {err.message}")
+    Ok(content) => print(f"Config file content: {content}"),
+    Err(err) => print(f"Failed to read config: {err.message}")
 }
 ```
 
-While `_` is necessary for matching on types with a near-infinite number of values (like `int` or `string`), it should be used cautiously with enums. Using it can sometimes bypass the compiler's exhaustiveness check. For example, if a new variant is added to an enum later, the wildcard `_` will catch it silently instead of causing a helpful compile error that would force you to handle the new case explicitly.
+### Binding Values from Patterns
 
-This exhaustiveness is what makes `match` so safe and powerful. It's important to understand this is not just a convention; it's a guarantee. If you were to write a `match` statement for an `Option` and forget to handle the `None` case, your code would not compile. The compiler guarantees that you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases, before your program can run.
+The real power of match is its ability to deconstruct a type and bind the values inside its variants to new variables. In a branch like Some(name) => ..., a new variable name is created and is only available within that specific branch. This allows you to check for a variant and use its inner value in a single, clean operation.
+
+```boba
+match find_user(1) {
+    // The `user_name` variable is created here and holds the string from inside `Some`.
+    Some(user_name) => print(f"The user's name is {user_name}."),
+    None => print("No user was found.")
+}
+```
+
+### Conditional Guards with where
+
+Sometimes, a pattern alone isn't specific enough. You can add a conditional guard to a match arm using the where keyword. The branch will only be taken if both the pattern matches and the where condition evaluates to true. This allows for more complex logic within your match statements.
+
+```boba
+let maybe_num: Option<int> = Some(50)
+
+match maybe_num {
+    Some(n) where n > 100 => print("Got a big number!"),
+    Some(n) where n > 10 => print("Got a medium number."),
+    Some(n) => print("Got a small number."),
+    None => print("There was no number."),
+}
+// This will print "Got a medium number."
+```
+
+While `_` is necessary for matching on types with a near-infinite number of values (like `int` or `string`), it should be used cautiously with enums. Using it can sometimes bypass the compiler's exhaustiveness check. For example, if a new variant is added to an enum later, the wildcard `_` will catch it silently instead of causing a helpful compile error that would force you to handle the new case explicitly. This is why, for enums like `Option` and `Result`, it's best to match each variant explicitly whenever possible.
+
+This exhaustiveness is not just a convention—it's a guarantee. If you write a `match` statement for an `Option` and forget to handle the `None` case, your code will not compile. The compiler ensures you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases, before your program can run.
 
 ### The Default Case: `_`
 
@@ -1264,9 +1389,9 @@ match status_code {
 }
 ```
 
-> #### **Time to Practice!**
->
-> The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.
+#### **Time to Practice!**
+
+The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.
 
 ## Chapter 16: Guaranteed Cleanup: defer and panic
 
@@ -1274,8 +1399,12 @@ match status_code {
 
 The `defer` statement schedules a function call to be executed right before the current function exits, regardless of whether the function returns normally, propagates an error with the `?` operator, or exits due to a `panic`.
 
+// Assume `fs` is Boba's file system module, providing functions
+// that return a Result, like `fs.open(path)`.
+// We also assume a defined `Error` struct (from the Result chapter).
+
 ```boba
-pub fn process_file(path: string) -> Result<string, error> {
+pub fn process_file(path: string) -> Result<string, Error> {
     // 1. Open the file. If this fails, we exit, no cleanup needed.
     var file = fs.open(path)?
 
@@ -1318,6 +1447,7 @@ fn get_guild_rank(player: Player) -> string {
     }
   }
 }
+
 ### Time to Practice!
 
 It's time to practice what you've learned. The next exercises will challenge you to refactor a function to use `defer` for resource cleanup and write a function that correctly panics when its input violates a critical precondition.
@@ -1339,7 +1469,7 @@ To understand the core mechanic of `async`/`await`, let's look at a complete exa
 
 ```boba
 // This async function simulates fetching data from a server.
-// It returns a Future that will resolve to a string.
+// Assume `sleep` is a built-in function from a `time` module.
 async fn fetch_greeting() -> string {
   // In a real app, this would be a network call.
   // Here, we'll just pretend it takes a moment.
@@ -1370,6 +1500,7 @@ Now that you understand the basics of `async` and `await`, we can combine this k
 
 ```boba
 // This async function can fail, so it returns a Result.
+// Assume `User` and `error` are structs you have defined elsewhere.
 async fn fetch_user(id: int) -> Result<User, error> { /* ... */ }
 
 // Note the `?` after await!
@@ -1385,6 +1516,35 @@ This elegant composition is key to writing robust, readable asynchronous Boba co
 ### Time to Practice!
 
 You're ready to tackle asynchronous tasks. The next exercises will prompt you to convert synchronous functions to be `async` and to use `await` to retrieve their results, preparing you for real-world I/O tasks.
+
+### Running Futures Concurrently
+
+While `await` is great for waiting on a single result, the true power of async is unlocked when you run multiple operations at the same time. Boba provides a way to await multiple futures concurrently. For example, a `Future.all()` function would take a list of futures and return a single new future that completes when all of the input futures have completed.
+
+```boba
+async fn get_user_data() -> string {
+    // Simulate a slow DB call
+    timer.sleep(ms: 100)
+    return "User Data"
+}
+
+async fn get_app_settings() -> string {
+    // Simulate another slow network call
+    timer.sleep(ms: 150)
+    return "App Settings"
+}
+
+async fn main() {
+    print("Fetching data concurrently...")
+    let results = await Future.all([
+        get_user_data(),
+        get_app_settings(),
+    ])
+    // This block only runs after BOTH functions are complete.
+    // The total time elapsed will be ~150ms, not 250ms.
+    print(f"Results: {results}") // e.g., Results: ["User Data", "App Settings"]
+}
+```
 
 ## Chapter 18: Writing Professional Code: Idiomatic Boba
 
@@ -1431,10 +1591,10 @@ Code within `@example` blocks can be automatically tested by running the `boba t
 ///
 /// @param path: The string path to the file to be read.
 /// @returns: A `Result` containing the file's contents as a `string` on success,
-///          or an `error` if the file cannot be found or read.
+///          or an `Error` if the file cannot be found or read.
 /// @example:
-///   var content = fs.read_file("my_file.txt")?
-pub fn read_file(path: string) -> Result<string, error> {
+///   var content = read_file("my_file.txt")?
+pub fn read_file(path: string) -> Result<string, Error> {
     // ... implementation ...
 }
 ```

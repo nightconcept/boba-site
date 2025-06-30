@@ -113,6 +113,46 @@ if has_key and not is_door_locked {
 }
 ```
 
+## Writing Readable Conditions
+
+As you combine conditions with and and or, your if statements can get very long. Boba is designed to handle this gracefully without forcing you to clutter your code.
+
+If a line of code ends with a binary operator (like and, or, +, ==, etc.), the parser automatically knows the expression is incomplete and will continue reading onto the next line. This allows you to break up long conditions naturally and logically.
+
+```boba
+let has_key = true
+let is_leader = false
+let has_permission = true
+let world_level = 10
+
+// This is the idiomatic way to break a long line in Boba.
+// Notice the and operators are at the end of the lines.
+if has_key and
+  (is_leader or has_permission) and
+   world_level > 5 {
+    print("Access granted!")
+  }
+```
+
+In this example, parentheses are still used, but only for their primary purpose: to ensure `(is_leader or has_permission)` is evaluated as a single logical unit before the `and` operators are considered. You are in complete control of logical grouping, and the language handles the formatting.
+
+### Best Practice: Break Lines After an Operator
+    For this feature to work reliably, you must end the line with the operator. This makes it unambiguous to the parser that the expression is not yet finished.
+
+```boba
+// GOOD: Unambiguous and idiomatic
+let total_score = score +
+                  bonus_points
+
+// BAD: This will cause an error!
+// The parser will see let total_score = score as a complete
+// statement and then fail when it sees + on the next line.
+let total_score = score
++ bonus_points
+```
+
+This technique of using delimiters (`()`, `[]`, `{}`) to group multi-line statements is a core principle in Boba for writing clean, readable code. You will see it used for long function calls and data structures as well.
+
 ### Checking for Containment with 'in'
 
 Boba also has collection types for grouping data, like lists of items or maps of key-value pairs. The in operator provides a highly readable way to check if a value exists within a collection. We will cover collections in detail in a later chapter.
