@@ -15,7 +15,7 @@ export default defineConfig({
   site: 'https://boba-lang.vercel.app/',
   integrations: [
     starlight({
-      title: 'Boba Lang',
+      title: 'Boba Lang ',
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
       plugins: [
         starlightSidebarTopics([

@@ -3,3 +3,158 @@ title: Grammar
 ---
 
 This page will host the formal EBNF (Extended Backus-Naur Form) grammar for Boba Lang.
+
+```ebnf
+(* --- Lexical Grammar --- *)
+
+identifier ::= letter { letter | digit | "_" } (* `snake_case` for values, `PascalCase` for types by convention *)
+
+letter ::= "a"..."z" | "A"..."Z" | "_"
+digit  ::= "0"..."9"
+
+(* Literals represent concrete values *)
+literal ::= integer_literal
+          | float_literal
+          | string_literal
+          | f_string_literal
+          | boolean_literal
+          | "None"
+
+integer_literal ::= decimal_literal | hex_literal | binary_literal
+decimal_literal ::= digit { [ "_" ] digit }
+hex_literal     ::= "0x" hex_digit { [ "_" ] hex_digit }
+binary_literal  ::= "0b" binary_digit { [ "_" ] binary_digit }
+hex_digit       ::= digit | "a"..."f" | "A"..."F"
+binary_digit    ::= "0" | "1"
+
+float_literal ::= digit { [ "_" ] digit } "." digit { [ "_" ] digit }
+
+string_literal ::= '"' { character } '"'
+f_string_literal ::= 'f' '"' { character | "{" expression "}" } '"'
+character ::= (* any character except ", \, or newline, plus escape sequences like \n, \", \\ *)
+
+boolean_literal ::= "true" | "false"
+
+(* Comments are processed by the lexer and ignored by the parser *)
+comment ::= line_comment | doc_comment
+line_comment ::= "//" (* rest of line *)
+doc_comment ::= ( "///" | "//!") (* rest of line *)
+
+(* --- Type Expressions --- *)
+
+type ::= identifier [ type_arguments ] (* e.g., Player, Option<string> *)
+       | list_type
+       | map_type
+
+type_arguments ::= "<" type { "," type } ">"
+list_type      ::= type "[]"
+map_type       ::= "[" type ":" type "]"
+
+(* --- Statements --- *)
+
+statement ::= let_declaration
+            | var_declaration
+            | expression_statement
+            | return_statement
+            | defer_statement
+            | panic_statement
+            | block_statement
+
+(* Declarations introduce new bindings *)
+let_declaration ::= "let" identifier [ ":" type ] "=" expression
+var_declaration ::= "var" identifier [ ":" type ] "=" expression
+
+(* Other statements *)
+expression_statement ::= expression
+return_statement ::= "return" [ expression ]
+defer_statement  ::= "defer" expression
+panic_statement  ::= "panic" [ "(" expression ")" ]
+block_statement  ::= "{" { statement } "}"
+
+(* --- Expressions (by precedence) --- *)
+
+expression ::= assignment_expression
+
+assignment_expression ::= logical_or_expression [ assignment_operator expression ]
+assignment_operator   ::= "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "^=" | "|=" | "&=" | "<<=" | ">>="
+
+logical_or_expression ::= logical_and_expression { "or" logical_and_expression }
+
+logical_and_expression ::= coalescing_expression { "and" coalescing_expression }
+
+coalescing_expression ::= equality_expression [ "??" equality_expression ]
+
+equality_expression ::= comparison_expression { ( "==" | "!=" ) comparison_expression }
+
+comparison_expression ::= pipe_expression { ( "<" | ">" | "<=" | ">=" | "in" | "not" "in" ) pipe_expression }
+
+pipe_expression ::= additive_expression { "|>" call_expression } (* `|>` has low precedence *)
+
+additive_expression ::= multiplicative_expression { ( "+" | "-" ) multiplicative_expression }
+
+multiplicative_expression ::= power_expression { ( "*" | "/" | "%" ) power_expression }
+
+power_expression ::= unary_expression { "^" unary_expression } (* `^` is right-associative *)
+
+unary_expression ::= ( "not" | "-" | "await" ) unary_expression
+                   | postfix_expression
+
+postfix_expression ::= primary_expression { call_suffix | index_suffix | property_access }
+call_suffix          ::= "(" [ argument_list ] ")"
+index_suffix         ::= "[" expression "]"
+property_access      ::= "." identifier
+
+primary_expression ::= literal
+                   | identifier
+                   | "(" expression ")"
+                   | if_expression
+                   | match_expression
+                   | list_literal
+                   | map_literal
+
+(* --- Expression-like Constructs --- *)
+
+if_expression ::= "if" expression block_statement [ "else" ( if_expression | block_statement ) ]
+
+match_expression ::= "match" expression "{" { match_arm } "}"
+match_arm        ::= pattern [ "where" expression ] "=>" ( expression | block_statement ) ","
+pattern          ::= literal | identifier | "_" | identifier "(" [ pattern_list ] ")" | "{" [ field_pattern_list ] "}"
+pattern_list     ::= pattern { "," pattern }
+field_pattern_list ::= identifier ":" pattern { "," identifier ":" pattern }
+(* NOTE: EBNF describes syntax. The compiler enforces that `match` is exhaustive. *)
+
+
+list_literal ::= "[" [ expression { "," expression } [","] ] "]"
+
+map_literal ::= "{" [ map_entry { "," map_entry } [","] ] "}"
+map_entry   ::= expression ":" expression
+
+argument_list ::= argument { "," argument }
+argument      ::= [ identifier ":" ] expression (* e.g., `x` or `label: x` *)
+
+(* --- Top-Level Declarations --- *)
+
+program ::= { top_level_declaration }
+
+top_level_declaration ::= import_statement
+                        | function_declaration
+                        | struct_declaration
+                        | enum_declaration
+                        | impl_block
+
+import_statement ::= "import" ( "{" identifier [ "as" identifier ] { "," identifier [ "as" identifier ] } "}" | "* as" identifier ) "from" string_literal
+
+struct_declaration ::= [ "pub" ] "struct" identifier "{" [ field_declaration { "," field_declaration } [","] ] "}"
+field_declaration  ::= [ "///" (* doc... *) ] [ "pub" ] identifier ":" type
+
+enum_declaration ::= [ "pub" ] "enum" identifier "{" [ enum_variant { "," enum_variant } [","] ] "}"
+enum_variant   ::= identifier [ "(" type { "," type } ")" ]
+
+function_declaration ::= [ "///" (* doc... *) ] [ "pub" ] [ "async" ] "fn" identifier "(" [ parameter_list ] ")" [ "->" type ] block_statement
+parameter_list       ::= parameter { "," parameter }
+parameter            ::= ( "mut" "self" | "self" )
+                       | [ "_" ] identifier ":" type [ "=" expression ] (* for default values *)
+
+impl_block ::= "impl" identifier "{" { function_declaration } "}"
+
+```

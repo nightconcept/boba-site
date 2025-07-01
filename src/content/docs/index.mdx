@@ -1,20 +1,45 @@
 ---
-title: Welcome to Boba Lang
-description: A programming language for beginners.
+title: Boba 🧋
+description: A scripting language for high productivity human and AI collaboration.
 template: splash
+pagefind: false
 hero:
-  tagline: A scripting and compiled programming language with an easy "batteries-included" toolchain. (In Development)
+  tagline: A scripting language for high productivity human and AI collaboration.
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Get Started
+    - text: Learn
       link: /guides/get-started/
       icon: right-arrow
       variant: primary
+    - text: Install
+      link: /guides/get-started/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/nightconcept/boba
+      icon: external
+      variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
+import Footer from '../../components/Footer.astro';
 
 ## What is Boba Lang?
 
-Boba Lang is a statically typed programming language that can be run with an interpreter or compiled for Windows, macOS, and Linux platforms. It’s designed with a C/Python-like syntax and is aimed at professional developers who are often frustrated by the challenging virtual environments and fragmented tooling ecosystems of other popular languages. To solve this, Boba is engineered to provide a superior developer experience through a cohesive, "batteries-included" toolchain.
+<CardGrid>
+  <Card title="A Fresh Take on Productivity ⚡">
+    Boba is a modern interpreted language designed for developers who value both speed and safety. Get the rapid feedback loop of an interpreter without sacrificing the security of a strong, static type system.
+  </Card>
+  <Card title="Built for Tomorrow's Workflow 🚀">
+    Boba is engineered for the future of development. Its clean grammar, static types, and familiar C-style syntax create a predictable structure that's ideal for Large Language Models to generate and analyze. This clarity makes it easy for humans to verify and improve upon.
+  </Card>
+  <Card title="Portable by Design 📦">
+    The Boba toolchain is a single, high-performance native executable. Write your Boba scripts and run them consistently across Windows, macOS, and Linux. There are no other runtimes or dependencies to install—just one portable tool to power your development.
+  </Card>
+  <Card title="Under Construction 🚧">
+    Boba is a work in progress and is not generally available *yet*!
+  </Card>
+</CardGrid>
+
+<Footer />
