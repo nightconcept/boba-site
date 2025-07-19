@@ -1,5 +1,9 @@
 ---
+<<<<<<< Updated upstream
 title: "Lesson 04: Operators and Control Flow"
+=======
+title: "Operators and Control Flow"
+>>>>>>> Stashed changes
 description: "Learn how to manipulate data using operators and control the flow of your program with if/else statements."
 ---
 
@@ -14,9 +18,14 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `+`      | Addition         | `5 + 2` results in `7`   |
 | `-`      | Subtraction      | `5 - 2` results in `3`   |
 | `*`      | Multiplication   | `5 * 2` results in `10`  |
+<<<<<<< Updated upstream
 | `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `1` |
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
 | `^`      | Power (Note: This differs from Python and JavaScript, which use `**` for exponentiation.) | `5 ^ 2` results in `25`  |
+=======
+| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `2` |
+| `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
+>>>>>>> Stashed changes
 
 ```boba
 let score = 10
@@ -113,11 +122,19 @@ if has_key and not is_door_locked {
 }
 ```
 
+<<<<<<< Updated upstream
 ## Writing Readable Conditions
 
 As you combine conditions with and and or, your if statements can get very long. Boba is designed to handle this gracefully without forcing you to clutter your code.
 
 If a line of code ends with a binary operator (like and, or, +, ==, etc.), the parser automatically knows the expression is incomplete and will continue reading onto the next line. This allows you to break up long conditions naturally and logically.
+=======
+### Writing Readable Multi-Line Conditions
+
+As you combine logical operators like and and or, your if statements can become long and hard to read on a single line. Boba has a simple, robust rule for formatting these complex conditions: wrap the entire expression in parentheses ().
+
+This approach eliminates ambiguity for the human reader, the Boba parser, and any analysis tools. It allows you to break lines freely within the parentheses, and the boba fmt tool can automatically format it for maximum readability. This same principle applies to any long expression, not just if statements.
+>>>>>>> Stashed changes
 
 ```boba
 let has_key = true
@@ -125,6 +142,7 @@ let is_leader = false
 let has_permission = true
 let world_level = 10
 
+<<<<<<< Updated upstream
 // This is the idiomatic way to break a long line in Boba.
 // Notice the and operators are at the end of the lines.
 if has_key and
@@ -152,13 +170,30 @@ let total_score = score
 ```
 
 This technique of using delimiters (`()`, `[]`, `{}`) to group multi-line statements is a core principle in Boba for writing clean, readable code. You will see it used for long function calls and data structures as well.
+=======
+// This is the idiomatic way to format a long condition in Boba.
+// The entire expression is wrapped in parentheses.
+if (has_key and
+   (is_leader or has_permission) and
+    world_level > 5
+   ) {
+     print("Access granted!")
+}
+```
+
+This technique of using delimiters—(), [], and {}—to group multi-line statements is a core principle in Boba for writing clean, predictable, and verifiable code. Note the vertical alignment of the operators. This style will be enforced by the formatter, but it is suggested you follow it for readability.
+>>>>>>> Stashed changes
 
 ### Checking for Containment with 'in'
 
 Boba also has collection types for grouping data, like lists of items or maps of key-value pairs. The in operator provides a highly readable way to check if a value exists within a collection. We will cover collections in detail in a later chapter.
 
 ```boba
+<<<<<<< Updated upstream
 let inventory: string[] = ["sword", "shield", "potion"]
+=======
+let inventory: List<string> = ["sword", "shield", "potion"]
+>>>>>>> Stashed changes
 
 // Check if "shield" is in our inventory list.
 if "shield" in inventory {
@@ -193,9 +228,15 @@ This concept isn't limited to single lines. Full `if/else` blocks are also expre
 ```boba
 let player_health = 75
 
+<<<<<<< Updated upstream
 let armor_message: string = if player_health == 100 {
     print("Player is at full health.")
     "Wearing pristine, shining armor."
+=======
+// Note: the \n is used to print the string on a new line.
+let armor_message: string = if player_health == 100 {
+    "Player is at full health.\nWearing pristine, shining armor."
+>>>>>>> Stashed changes
 } else if player_health > 50 {
     "Wearing battle-worn, dented armor."
 } else {
@@ -207,5 +248,11 @@ print(armor_message) // Outputs: Wearing battle-worn, dented armor.
 
 This example showcases a fundamental feature of Boba: code blocks are expressions. The last line inside a block, if it doesn't have a semicolon, becomes the value that the block evaluates to.
 
+<<<<<<< Updated upstream
 > #### **Time to Practice!**
 > You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges. 
+=======
+#### **Time to Practice!**
+
+You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges. 
+>>>>>>> Stashed changes

@@ -62,7 +62,11 @@ def generate_learn_lings_files():
             print(f"  Warning: No exercise directories found for chapter {chapter_number} in '{BOBALINGS_EXERCISES_DIR}'")
         else:
             for exercise_dir in sorted(exercise_dirs):
+<<<<<<< Updated upstream
                 exercise_files = sorted(exercise_dir.glob("**/*.boba"))
+=======
+                exercise_files = sorted(exercise_dir.glob("*.boba"))
+>>>>>>> Stashed changes
                 if not exercise_files:
                     continue
 

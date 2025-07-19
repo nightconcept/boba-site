@@ -50,6 +50,7 @@ match find_user(1) {
 Sometimes, a pattern alone isn't specific enough. You can add a conditional guard to a match arm using the where keyword. The branch will only be taken if both the pattern matches and the where condition evaluates to true. This allows for more complex logic within your match statements.
 
 ```boba
+<<<<<<< Updated upstream
 let maybe_num: Option<int> = Some(50)
 
 match maybe_num {
@@ -59,6 +60,40 @@ match maybe_num {
     None => print("There was no number."),
 }
 // This will print "Got a medium number."
+=======
+// Multi-line match statement example
+fn get_player_status(health: Option<int>) -> string {
+  // The match statement itself is an expression, so its result
+  // can be directly returned or assigned.
+  match health {
+    Some(h) if h == 100 => {
+      return "Player is at full health."
+    },
+
+    Some(h) if h > 50 => {
+      let message = f"Player is doing okay with {h} health."
+      return message
+    },
+    Some(h) => {
+      return f"Player is in critical condition with only {h} health!"
+    },
+    None => {
+      return "Player status is unknown or offline."
+    },
+  }
+}
+
+// Single-line match statement example
+struct Error {
+  code: int,
+}
+
+match response {
+  Ok(data) => print(f"Success! Received data: {data}"),
+  Err(e) if e.code == 404 => print("Error: Not Found."),
+  Err(_) => print("An unknown error occurred."), // Using '_' as a catch-all
+}
+>>>>>>> Stashed changes
 ```
 
 While `_` is necessary for matching on types with a near-infinite number of values (like `int` or `string`), it should be used cautiously with enums. Using it can sometimes bypass the compiler's exhaustiveness check. For example, if a new variant is added to an enum later, the wildcard `_` will catch it silently instead of causing a helpful compile error that would force you to handle the new case explicitly. This is why, for enums like `Option` and `Result`, it's best to match each variant explicitly whenever possible.

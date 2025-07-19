@@ -1,0 +1,103 @@
+---
+title: Examples
+description: Examples of Boba Lang.
+---
+
+# Overview
+
+This is meant to be a quick reference for Boba's syntax and features. 
+
+## Assignment
+```boba
+let a = 1 // Inferred as type int
+var b = 2.0 // Inferred as type float
+
+let c: float = 3 // Explicitly assigned as a float
+
+let name: string = "Boba"
+var greeting = "Hello, " + name // Inferred as string
+```
+
+## If-else statement
+
+```boba
+fn if_example(a: int) {
+  if (condition) {
+    // do something
+  } else if (condition2) {
+    // do something else
+  } else {
+    // do something really different
+  }
+}
+```
+
+## For loop
+
+```boba
+fn for_example() {
+  for i in 0..5 {
+    print(f"This is loop number {i}")
+  }
+}
+```
+
+## For in loop
+```boba
+fn for_in_example() {
+  let ingredients: List<string> = ["healing potion", "sword", "shield"]
+
+  // The `for...in` loop will go through each item in the list.
+  for item in ingredients {
+    print(f"Player inventory contains: {item}")
+  }
+}
+```
+
+## While loop
+```boba
+fn while_example() {
+  var countdown = 3
+
+  while countdown > 0 {
+    print(f"{countdown}...")
+    countdown = countdown - 1
+  }
+}
+```
+
+## Enum and Match
+```boba
+fn enum_example() {
+  enum Color {
+    Red,
+    Green,
+    Blue,
+  }
+
+  match color {
+    Color.Red => print("Red"),
+    Color.Green => print("Green"), 
+    Color.Blue => print("Blue"),
+  }
+}
+```
+## Defer
+
+WIP
+
+## Structs
+
+```boba
+struct Player {
+  name: string,
+  health: int,
+}
+
+var player = Player {
+  pub name: "Boba",
+  health: 100,
+}
+
+player.name = "Best Player"
+```

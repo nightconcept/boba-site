@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2: Variables and Simple Data Types"
+title: "Variables and Simple Data Types"
 description: "Learn how to store data in variables, why Boba defaults to immutability, and explore core data types."
 ---
 
@@ -18,7 +18,7 @@ message = "Hello, Dave!" // This will cause a compile error!
 
 When you try to run the code above, the Boba compiler will stop and show you an error. It might look something like this:
 
-```boba
+```
 Error: Cannot assign twice to immutable binding `message`.
   --> hello.boba:2:1
   |
@@ -32,6 +32,7 @@ Error: Cannot assign twice to immutable binding `message`.
 
 This is a key part of the Boba development experience. The compiler is your pair programmer. It doesn't just point out errors; it often tells you exactly how to fix them. Learning to read these messages is a superpower.
 
+<<<<<<< Updated upstream
 ### Shadowing: A Safer Way to Transform
 
 As the compiler's help message suggests, you could change let to var to make the variable mutable. But what if you don't really need the variable to change its value over time? What if you just want to perform a transformation and then continue using that name? For this, Boba provides a safer feature called shadowing.
@@ -52,6 +53,8 @@ Shadowing is extremely useful because it allows you to reuse a simple name for a
 >
 > In Boba, `let` creates a binding that cannot be reassigned, similar to `const` in JavaScript. This is different from JavaScript's `let`, which creates a mutable variable. For mutable variables in Boba, you must use `var`.
 
+=======
+>>>>>>> Stashed changes
 ### `var`: Mutable Variables
 
 You should only use the `var` keyword when you have a specific and necessary reason to change a value after it's been created. You should use `var` only when you explicitly need to track a state that changes over time, such as a counter in a loop, a user's accumulating score, or a value that is built up incrementally.
@@ -76,6 +79,49 @@ let score: int = 100
 let current_level = 10 // Inferred as int
 ```
 
+#### Numeric Bases
+
+Boba supports writing numbers in different bases using standard prefixes:
+
+```boba
+// Hexadecimal (base-16) with prefix 0x
+let red_color = 0xFF0000        // 16711680 in decimal
+let alpha = 0xFF                // 255 in decimal
+
+// Octal (base-8) with prefix 0o
+let file_perms = 0o755          // 493 in decimal (read/write/execute)
+let umask = 0o022              // 18 in decimal
+
+// Binary (base-2) with prefix 0b
+let flags = 0b1010_0101        // 165 in decimal
+let enabled = 0b1              // 1 in decimal
+
+// You can use numeric separators with any base
+let binary_mask = 0b1111_0000  // Using _ for readability
+let hex_color = 0xFF_FF_FF     // Same as 0xFFFFFF
+```
+
+These different bases are particularly useful when working with:
+- Hexadecimal: Colors, byte values, memory addresses
+- Octal: File permissions in Unix-like systems
+- Binary: Bit flags, low-level operations
+
+#### Numeric Separators
+
+For better readability of large numbers, Boba allows you to use underscores (`_`) as numeric separators. You can place these separators anywhere between digits. This is particularly useful for representing large numbers in a more readable format:
+
+```boba
+let million = 1_000_000       // Same as 1000000
+let billion = 1_000_000_000   // Clearer than 1000000000
+let binary = 0b1010_0101      // Grouping binary digits
+let salary = 75_000           // More readable than 75000
+
+// Multiple underscores are also valid
+let also_valid = 9__000       // Same as 9000
+```
+
+The underscores are ignored by the compiler and are purely for human readability. You can use them in both integer and floating-point numbers.
+
 ### `float`
 
 The `float` type is used for 64-bit floating-point numbers (numbers with a decimal point). It's essential for any calculations involving fractional values, such as financial data, measurements, or scientific computations.
@@ -83,6 +129,16 @@ The `float` type is used for 64-bit floating-point numbers (numbers with a decim
 ```boba
 let price: float = 4.99
 let temperature = -15.5 // Inferred as float
+```
+
+#### Scientific Notation
+
+For very large or very small numbers, Boba supports scientific notation using the `e` or `E` notation. The number after `e` represents the power of 10 to multiply by.
+
+```boba
+let plancks_constant: float = 6.626e-34  // 6.626 × 10⁻³⁴
+let avogadros_number = 6.022E23         // 6.022 × 10²³
+let electron_mass = 9.109e-31           // 9.109 × 10⁻³¹
 ```
 
 ### `string`
@@ -103,7 +159,7 @@ let player_name = "Ada"
 let level: int = 10
 
 // Use an f-string to create a formatted message.
-let welcome_message = f"Welcome, {player_name} (Level {level})!" 
+let welcome_message = f"Welcome, {player_name} (Level {level})!"
 print(welcome_message) // Outputs: Welcome, Ada (Level 10)!
 
 // Regular strings do not process the braces.
@@ -125,5 +181,5 @@ var has_key = true // Inferred as a boolean
 In the examples, you may have noticed that sometimes we declare a type (`let score: int = 100`) and sometimes we don't (`let current_level = 10`). When you assign a value as you declare a variable, Boba can usually figure out, or infer, the type for you. `10` is clearly an `int`, `"Ada"` is a `string`, and `true` is a `boolean`. While this makes code more concise, adding explicit type annotations can serve as powerful documentation, especially on function signatures or for complex data. It's a choice the developer makes to balance conciseness with clarity for other developers (or their future self).
 
 #### **Time to Practice!**
->
-> Head over to your next set of exercises. You'll get hands-on practice creating variables, fixing compiler errors related to immutability, and working with `string`, `int`, and `boolean` types.
+
+Head over to your next set of exercises. You'll get hands-on practice creating variables, fixing compiler errors related to immutability, and working with `string`, `int`, and `boolean` types.

@@ -1,5 +1,9 @@
 ---
+<<<<<<< Updated upstream
 title: "Chapter 16: Guaranteed Cleanup: defer and panic"
+=======
+title: "Guaranteed Cleanup: defer and panic"
+>>>>>>> Stashed changes
 description: "Learn how to ensure resource cleanup with `defer` and handle unrecoverable errors with `panic`."
 ---
 
@@ -30,6 +34,10 @@ pub fn process_file(path: string) -> Result<string, Error> {
     // `defer file.close()` will also run automatically before this return.
     return Ok("Processed data!")
 }
+<<<<<<< Updated upstream
+=======
+```
+>>>>>>> Stashed changes
 
 If a function has multiple `defer` statements, they are executed in **Last-In, First-Out (LIFO)** order. The last `defer` scheduled is the first one to run when the function exits. This is a crucial rule for correct resource management when multiple resources are acquired.
 

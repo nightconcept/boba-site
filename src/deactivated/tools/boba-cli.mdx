@@ -1,0 +1,64 @@
+---
+title: "Boba CLI"
+description: "Learn how to use the Boba CLI to manage your projects."
+---
+
+## Project Mode
+
+This mode is active when you run `boba` commands like `build`, `run`, or `test` without a file path.
+
+-   **Invocation:** `boba build`, `boba run`, `boba test`
+
+-   **Behavior:** The `boba` tool will look in the current directory (and parent directories) for a `boba.toml` file.
+    -   If it finds one, it considers that directory the project root.
+    -   All operations are now relative to this root. For example, `boba run` will know to look for a `src/main.boba` file and execute its `main()` function. `boba build` will place artifacts in a `build/` or `target/` directory within the project root.
+
+## Designing `boba init`
+
+The `boba init` command is your user's entry point into Project Mode. It's your chance to establish a clean, standard project structure that solves the "ecosystem tax" from day one.
+
+When a user runs `boba init my_awesome_project`, the tool should create the following structure:
+
+```text
+my_awesome_project/
+├── .gitignore
+├── boba.toml
+└── src/
+    └── main.boba
+```
+
+### `boba.toml`: A pre-populated project manifest
+
+```toml
+[project]
+name = "my_awesome_project"
+version = "0.1.0"
+license = "MIT"
+
+[dependencies]
+
+# To specify a git repository, you use an inline table.
+# At a minimum, you must provide the git URL.
+# By default, Boba will use the latest commit on the default branch.
+http = { git = "https://github.com/boba-lang/http" }
+
+# To pin to a specific version tag (BEST PRACTICE for releases)
+json = { git = "https://github.com/boba-lang/json", tag = "v1.2.0" }
+
+# To pin to a specific commit hash for absolute reproducibility
+data_structures = { git = "https://github.com/user/boba-dstruct", rev = "f4aa7b123c..." }
+
+# To pin to a specific branch (for development or bleeding-edge versions)
+# WARNING: This is not recommended for stable applications.
+logging = { git = "https://github.com/boba-lang/log", branch = "feature/new-format" }
+
+```
+
+### `src/main.boba`: A default entry point file
+
+```boba
+// The main entry point for the project.
+// This function is executed when you run `boba run` in the project directory.
+pub fn main() -> void {
+  print("Hello, world!")
+}

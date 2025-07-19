@@ -1,5 +1,9 @@
 ---
+<<<<<<< Updated upstream
 title: "Chapter 9: Creating Custom Types: structs"
+=======
+title: "Creating Custom Types: structs"
+>>>>>>> Stashed changes
 description: "Learn how to create your own custom data types in Boba using structs."
 ---
 
@@ -18,13 +22,30 @@ struct Player {
 }
 ```
 
+<<<<<<< Updated upstream
+=======
+Structs can also have default values for their fields.
+
+```boba
+struct Player {
+  name: string = "Boba Dev",
+  score: int = 0,
+  is_active: boolean = false
+}
+```
+
+>>>>>>> Stashed changes
 ## Creating an Instance of a Struct
 
 Once you have defined a struct, you can create instances of it using a struct literal.
 
 ```boba
 // Create a new variable `ada` of type `Player`
+<<<<<<< Updated upstream
 let ada: Player = { name: "Ada", score: 100, is_active: true }
+=======
+let ada: Player = Player{ name: "Ada", score: 100, is_active: true }
+>>>>>>> Stashed changes
 ```
 
 ## Accessing Struct Fields
@@ -50,7 +71,11 @@ struct Line {
   end: Point,   // This one too
 }
 
+<<<<<<< Updated upstream
 let my_line = Line {
+=======
+let my_line = Line{
+>>>>>>> Stashed changes
   start: Point { x: 10, y: 20 },
   end: Point { x: 50, y: 30 },
 }
@@ -82,10 +107,25 @@ pub struct User {
 If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
 
 ### Mutating a Struct
+<<<<<<< Updated upstream
 To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed.
 ```boba
 // Create a mutable Player instance
 var boba_dev: Player = { name: "Boba Dev", score: 0, is_active: false }
+=======
+To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed. The fields of a struct that you want to be mutable must be marked with the `pub` keyword.
+
+```boba
+pub struct Player {
+  pub name: string,
+  pub score: int,
+  pub is_active: boolean
+
+}
+
+// Create a mutable Player instance
+var boba_dev: Player = Player{ name: "Boba Dev", score: 0, is_active: false }
+>>>>>>> Stashed changes
 print(f"Initial score: {boba_dev.score}") // Outputs: Initial score: 0
 
 // Mutate the score field
@@ -93,6 +133,7 @@ boba_dev.score = 150
 print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
 ```
 
+<<<<<<< Updated upstream
 ### Creating a New Struct from an Old One
 
 Often, instead of mutating a struct, you'll want to create a new instance based on an old one but with some fields changed. Boba provides a convenient struct update syntax for this. The .. operator specifies that the remaining unmentioned fields should be copied directly from another instance.
@@ -105,6 +146,59 @@ let player1 = Player { name: "Ada", score: 100, is_active: true }
 let player2 = Player { score: 150, ..player1 }
 
 print(f"{player2.name} has a new score of {player2.score}")
+=======
+#### Unpacking Values: Destructuring with let
+
+After creating an instance of a struct, you'll often want to extract its field values into local variables. While you can access them one by one using dot notation, Boba provides a more powerful and ergonomic feature called destructuring.
+
+Destructuring lets you bind a struct's fields to new variables in a single, declarative statement.
+
+```boba
+// Given our Player struct from before
+let ada: Player = Player{ name: "Ada", score: 100, is_active: true }
+
+// ada could also be declared like this:
+// let ada = Player{ name: "Ada", score: 100, is_active: true }
+
+// The old way requires one line per variable.
+let ada_name = ada.name
+let ada_score = ada.score
+
+// The idiomatic Boba way uses destructuring.
+let { name, score } = ada
+print(f"Player: {name}, Score: {score}") // Prints "Player: Ada, Score: 100"
+```
+
+This pattern should feel familiar—it's the same concept you use when looping over maps with for key, value in my_map.items(). By allowing it in let bindings, Boba makes the language more consistent and expressive.
+
+#### Picking and Choosing Fields
+
+You don't have to destructure every field. If you only need a few values, you can use .. to signal that you are intentionally ignoring the rest of the fields.
+
+```boba
+// We only need the name for a greeting.
+let { name, .. } = ada
+print(f"Welcome, {name}!")
+```
+
+This is safer and clearer than leaving fields out, as it explicitly states your intent to ignore the others.
+
+### Creating a New Struct from an Old One with Spread
+
+A common pattern in writing safe, predictable code is to favor creating new, updated instances rather than mutating existing ones. Boba makes this pattern ergonomic and consistent with a feature you've already seen: the spread operator (`...`).
+
+Just as you can use `...` to spread the elements of one list or map into another, you can use it to copy the fields from an existing struct instance into a new one. This allows you to concisely create a new struct that is a copy of an old one, with only a few fields changed.
+
+```boba
+let player1: Player = Player{ name: "Ada", score: 100, is_active: true }
+
+// Create player2 based on player1, but with a different score.
+// The ...player1 syntax copies the `name` and `is_active` fields.
+let player2 = Player{ score: 150, ...player1 }
+
+print(f"{player2.name} has a new score of {player2.score}")
+// Outputs: Ada has a new score of 150
+>>>>>>> Stashed changes
 ```
 
 ### Time to Practice!

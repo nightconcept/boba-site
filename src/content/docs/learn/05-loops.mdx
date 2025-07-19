@@ -1,5 +1,5 @@
 ---
-title: "Chapter 6: Repeating Actions: for and while Loops"
+title: "Repeating Actions: for and while Loops"
 description: "Learn how to repeat actions in your code using for and while loops."
 ---
 
@@ -12,7 +12,7 @@ The `for` loop is Boba's most powerful and common loop. It can iterate over a co
 **1. Iterating Over Collections** This is the idiomatic way to work with every item in a `list` or `map`.
 
 ```boba
-let ingredients: string[] = ["healing potion", "sword", "shield"]
+let ingredients: List<string> = ["healing potion", "sword", "shield"]
 
 // The `for...in` loop will go through each item in the list.
 for item in ingredients {
@@ -59,8 +59,8 @@ var countdown = 3
 
     // Loop as long as countdown is greater than 0.
     while countdown > 0 {
-    print(f"{countdown}...")
-    countdown = countdown - 1 // Decrement the counter.
+      print(f"{countdown}...")
+      countdown = countdown - 1 // Decrement the counter.
     }
 
     print("Liftoff!")
@@ -74,6 +74,6 @@ var countdown = 3
 > **A Word of Caution**
 > Since a `while` loop's continuation depends on a condition you manage manually, you are responsible for ensuring the condition will eventually become `false` to prevent an infinite loop.
 
-> #### **Time to Practice!**
->
-> Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.
+#### **Time to Practice!**
+
+Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.

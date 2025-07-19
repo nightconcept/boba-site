@@ -1,0 +1,240 @@
+---
+title: "Grouping Data: lists and maps"
+description: "Learn about Boba's primary collection types: lists and maps."
+---
+
+While primitive types are the basic building blocks for data, most real-world programs need to work with collections of data. Boba provides two primary, built-in collection types for this purpose: `list` and `map`.
+
+## `list`
+
+A `list` is an ordered collection of values of the same type. Lists are dynamic, meaning you can add or remove items.
+
+```boba
+// A list of numbers
+var highScores: List<int> = [100, 95, 80]
+
+// A list of strings
+var ingredients: List<string> = ["flour", "sugar", "boba pearls"]
+```
+
+Lists declared with `let` are immutable, meaning their contents cannot be changed after creation. If you try to modify a list created with `let`, the Boba compiler will report an error.
+
+```boba
+let starting_gear: List<string> = ["tunic", "dagger"]
+// starting_gear.push("shield")
+// This would cause a compile error because the list is immutable.
+```
+
+You can perform many operations on lists, like getting their size or adding new items. Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
+
+```boba
+print(ingredients.len()) // Outputs: 3
+
+// Add a new item to the end
+ingredients.push("tapioca pearls")
+print(ingredients.len()) // Outputs: 4
+
+// Access items by their index (starting from 0)
+print(ingredients[0]) // Outputs: "flour"
+```
+
+### Transforming and Searching Lists
+
+Beyond adding and accessing elements, Boba's lists have powerful methods for transforming and searching their contents in a functional style. These methods use closures (which you learned about in the Functions chapter) to let you define the exact logic you need.
+
+#### Filtering with .filter()
+
+The .filter() method creates a new list containing only the elements that cause the provided closure to return true. This is the idiomatic way to select a subset of items from a list without writing a manual for loop.
+
+```boba
+let scores = [88, 42, 95, 71, 100]
+
+// Create a new list with only the passing scores (>= 70).
+let passing_scores = scores.filter(|score| score >= 70)
+
+print(passing_scores) // Outputs: [88, 95, 71, 100]
+```
+
+#### Searching with .find()
+
+The .find() method returns the first element in a list that causes the provided closure to return true. If no element matches, it returns None. This is the perfect tool for searching for an item, as it safely handles the case where the item might not exist.
+
+```boba
+let users = ["Ada", "Grace", "Boba", "June"]
+
+// Find the first user with the name "Boba".
+let found_user = users.find(|name| name == "Boba")
+// found_user is Some("Boba")
+
+// Try to find a user that doesn't exist.
+let missing_user = users.find(|name| name == "Dave")
+// missing_user is None
+```
+
+### Getting a Sub-Section with Slicing
+
+Slicing is a powerful feature that lets you create a new collection containing a sub-section, or "slice," of an existing one. It's a concise way to get a portion of a list or string without writing a manual loop. In Boba, slicing creates a new copy of the data.
+
+Slicing extends the [] indexing syntax. Instead of providing a single number to get one element, you provide a range to get multiple elements.
+
+```boba
+let player_scores = [10, 25, 50, 80, 100, 120]
+
+// Get a slice from index 1 up to (but not including) index 4.
+let middle_scores = player_scores[1..4]
+print(middle_scores) // Outputs: [25, 50, 80]
+
+// The original list is unchanged.
+print(player_scores) // Outputs: [10, 25, 50, 80, 100, 120]
+```
+
+You can also leave the start or end of the range open:
+
+```boba
+let message = "Hello, Boba!"
+
+// Slice from the beginning up to index 5.
+let greeting = message[..5]
+print(greeting) // Outputs: "Hello"
+
+// Slice from index 7 to the end of the string.
+let name = message[7..]
+print(name) // Outputs: "Boba!"
+```
+
+## `tuple`
+
+A `tuple` is a fixed-size, ordered collection that can hold values of different types. Unlike lists, tuples:
+- Have a fixed length that cannot be changed after creation
+- Can contain elements of different types
+- Use dot notation for indexing (e.g., `tuple.0` instead of `tuple[0]`)
+
+```boba
+// A tuple with mixed types
+let player = (100, "Ada", true)
+print(player.0) // Outputs: 100
+print(player.1) // Outputs: "Ada"
+print(player.2) // Outputs: true
+
+// Empty tuples are valid too
+let empty = ()
+print(empty) // Outputs: ()
+```
+
+### Tuple Destructuring
+
+One of the most powerful features of tuples is destructuring, which lets you extract values into individual variables in a single step:
+
+```boba
+let point = (10, 20)
+let (x, y) = point
+print(f"x: {x}, y: {y}") // Outputs: x: 10, y: 20
+
+// Destructuring works with nested tuples too
+let nested = ((1, 2), (3, 4))
+let ((x1, y1), (x2, y2)) = nested
+print(f"Point 1: ({x1}, {y1}), Point 2: ({x2}, {y2})")
+```
+
+### Using Tuples in For Loops
+
+When working with lists of tuples, you can destructure the tuple elements directly in the for loop:
+
+```boba
+let points = [(1, 2), (3, 4), (5, 6)]
+for (x, y) in points {
+    print(f"Point: ({x}, {y})")
+}
+```
+
+### Pattern Matching with Tuples
+
+Tuples work seamlessly with pattern matching, allowing you to match both structure and values:
+
+```boba
+let result = match (42, "test") {
+    (0, _) => "zero",
+    (42, "test") => "found it!",
+    (42, _) => "forty-two",
+    _ => "something else"
+}
+print(result) // Outputs: "found it!"
+```
+
+## `map`
+
+A `map` is a collection of key-value pairs. Think of a map like a dictionary, where each 'key' is a unique word and the 'value' is its definition. Each key must be unique, and all keys must be of the same type, as must all values.
+
+```boba
+// Create a map with string keys and number values
+var scores: Map<string, int> = {
+  "ada": 100,
+  "grace": 95
+}
+
+// A map can be type inferred, so you can also write:
+var scores = { "ada": 100, "grace": 95 }
+
+// Check its initial size
+print(scores.len()) // Outputs: 2
+
+// Insert a new key-value pair
+scores["boba"] = 105
+
+// Check the new size
+print(scores.len()) // Outputs: 3
+```
+
+To read a value from a map, you use square brackets `[]` with the key.
+
+```boba
+let adas_score = scores["ada"]
+print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
+```
+
+But what happens if you try to access a key that doesn't exist? In many languages, this can lead to unexpected crashes (like a `KeyError` in Python) or silent errors (like returning `undefined` in JavaScript). Boba prevents these problems. Accessing a key in a map doesn't return the value directly. Instead, it returns a special `Option` type, which safely handles cases where the key might not exist. We will cover this powerful feature in a later chapter.
+
+## Combining Collections with the Spread Operator
+
+Boba provides the spread operator (...) as a clean, declarative way to construct a new collection by "spreading" or "unpacking" the elements of an existing collection into a new literal. For developers familiar with modern JavaScript or Svelte, this will feel very natural.
+
+### Spreading Lists
+
+You can use the spread operator to easily combine multiple lists or add elements to the beginning or end of a list.
+
+```boba
+let first_half = [1, 2, 3]
+let second_half = [6, 7, 8]
+
+// Create a new list by spreading the elements of others into it.
+let combined = [...first_half, 4, 5, ...second_half]
+
+print(combined) // Outputs: [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+This is much more readable than creating a new list and using loops to push elements from the other lists.
+
+### Spreading Maps
+
+The spread operator is also extremely useful for creating new maps. You can use it to merge maps or to create a new map with some default values that can be overridden.
+
+When spreading maps, if the same key exists in multiple sources, the right-most value "wins." This makes it perfect for applying overrides.
+
+```boba
+let default_config = {
+    "theme": "dark",
+    "font_size": 14,
+}
+
+let user_overrides = {
+    "font_size": 16,
+    "show_sidebar": true,
+}
+
+// Start with the defaults, then spread the user's overrides on top.
+let final_config = {...default_config, ...user_overrides}
+
+print(final_config)
+// Outputs: {"theme": "dark", "font_size": 16, "show_sidebar": true}
+// Note that `font_size` is 16 because the value from `user_overrides` came last.
+```
