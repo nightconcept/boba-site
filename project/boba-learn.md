@@ -55,7 +55,62 @@ Understanding these three ideas—functions, strings, and arguments—is the fir
 
 This is the perfect time to switch to your first set of exercises. They will challenge you to use the `print()` function and manipulate simple strings to solidify what you've just learned.
 
-## Chapter 2: Variables and Simple Data Types
+## Hello World: Your First Program
+
+Welcome to Boba! The best way to start learning any new programming language is to write a program. Let's write one that prints the classic message: "Hello, world!".
+
+### Step 1: Create Your File
+
+First, create a new file named `hello.boba`.
+
+### Step 2: Write the Code
+
+Open `hello.boba` in your favorite text editor and type the following lines of code:
+```boba
+fn main() {
+    print("Hello, world!")
+}
+```
+
+This line uses Boba's built-in `print()` function to display text. The text inside the double quotes, "Hello, world!", is a `string`—a sequence of text characters. The double quotes (`"`) are crucial syntax that tells Boba where the string begins and ends. The `fn main() { ... }` block defines the main function. This is a special function in Boba that serves as the entry point—it's the very first part of your code that runs. All the code you want to execute must be placed inside its curly braces {}.
+
+### Step 3: Run Your Program
+
+Now, open your terminal, navigate to the directory where you saved `hello.boba`, and run the following command:
+```sh
+boba run hello.boba
+```
+
+The `boba` command is the main entry point to Boba's development tools. The `run` command specifically compiles your code and, if successful, immediately executes the resulting program.
+
+> **Note: Are you in the right directory?**
+>
+> Your terminal needs to be open to the same folder where you saved `hello.boba`. If you see an error like `file not found`, you can use the `cd` (change directory) command to navigate to the correct location.
+
+#### Step 4: See the Output!
+
+You should see the following output in your terminal:
+```plaintext
+Hello, world!
+```
+
+**Congratulations!** You have just written and run your very first Boba program. You've already used the Boba toolchain (`boba run`), the main function (`fn main`), a built-in function (`print`), and a core data type (`string`).
+## Deconstructing "Hello, World"
+
+Let's break down the code you just wrote to understand the fundamental concepts you've already put into practice.
+
+- **`fn main() { ... }` is the Main Function**: A function is a reusable, named block of code. The main function is a special, required function that acts as the starting point for every Boba program. When you run your file, the code inside the main function's curly braces {} is what gets executed.
+- **`print()` is a Function**: For example, Boba provides the built-in `print()` function to display output. You "call" a function by writing its name followed by parentheses `()`. You can think of it like a recipe in a cookbook; you "call" the recipe by name to perform the steps within it.
+- **`"Hello, world!"` is a String**: The text you see inside the double quotes is a string—Boba's data type for representing text data. The quotes are important; they tell Boba where the string begins and ends, and anything enclosed in them is treated as a single string value by the language.
+- **`(...)` are Arguments**: Arguments are the specific pieces of information, or "inputs," that you provide to a function for it to work with. When you call a function, you "pass" arguments to it inside the parentheses. In this case, you passed the string `"Hello, world!"` to the `print()` function so it knew precisely what to display.
+
+Understanding these three ideas—functions, strings, and arguments—is the first major step to mastering Boba.
+
+### Time to Practice!
+
+This is the perfect time to switch to your first set of exercises. They will challenge you to use the `print()` function and manipulate simple strings to solidify what you've just learned.
+
+## Variables and Simple Data Types
 
 In Boba, you can store data in variables. A core principle of the language is **immutability by default**, which helps you write safer, more predictable code.
 
@@ -72,7 +127,7 @@ message = "Hello, Dave!" // This will cause a compile error!
 
 When you try to run the code above, the Boba compiler will stop and show you an error. It might look something like this:
 
-```boba
+```
 Error: Cannot assign twice to immutable binding `message`.
   --> hello.boba:2:1
   |
@@ -85,26 +140,6 @@ Error: Cannot assign twice to immutable binding `message`.
 ```
 
 This is a key part of the Boba development experience. The compiler is your pair programmer. It doesn't just point out errors; it often tells you exactly how to fix them. Learning to read these messages is a superpower.
-
-### Shadowing: A Safer Way to Transform
-
-As the compiler's help message suggests, you could change let to var to make the variable mutable. But what if you don't really need the variable to change its value over time? What if you just want to perform a transformation and then continue using that name? For this, Boba provides a safer feature called shadowing.
-
-Shadowing allows you to declare a new variable with the same name as a previous one. This new variable "shadows" the old one, meaning the original variable is no longer accessible from this point forward. This is not a mutation; it's creating a brand new, immutable variable.
-
-```boba
-let x = 5
-let x = x + 1 // This is not mutation!
-// This is a new `let` binding that shadows the old `x`.
-let x = x * 2
-print(f"The final value of x is {x}") // Outputs: The final value of x is 12
-```
-
-Shadowing is extremely useful because it allows you to reuse a simple name for a value that you are transforming in a series of steps, all without ever making your data mutable.
-
-> **A Note for JavaScript/TypeScript Developers**
->
-> In Boba, `let` creates a binding that cannot be reassigned, similar to `const` in JavaScript. This is different from JavaScript's `let`, which creates a mutable variable. For mutable variables in Boba, you must use `var`.
 
 ### `var`: Mutable Variables
 
@@ -130,6 +165,49 @@ let score: int = 100
 let current_level = 10 // Inferred as int
 ```
 
+#### Numeric Bases
+
+Boba supports writing numbers in different bases using standard prefixes:
+
+```boba
+// Hexadecimal (base-16) with prefix 0x
+let red_color = 0xFF0000        // 16711680 in decimal
+let alpha = 0xFF                // 255 in decimal
+
+// Octal (base-8) with prefix 0o
+let file_perms = 0o755          // 493 in decimal (read/write/execute)
+let umask = 0o022              // 18 in decimal
+
+// Binary (base-2) with prefix 0b
+let flags = 0b1010_0101        // 165 in decimal
+let enabled = 0b1              // 1 in decimal
+
+// You can use numeric separators with any base
+let binary_mask = 0b1111_0000  // Using _ for readability
+let hex_color = 0xFF_FF_FF     // Same as 0xFFFFFF
+```
+
+These different bases are particularly useful when working with:
+- Hexadecimal: Colors, byte values, memory addresses
+- Octal: File permissions in Unix-like systems
+- Binary: Bit flags, low-level operations
+
+#### Numeric Separators
+
+For better readability of large numbers, Boba allows you to use underscores (`_`) as numeric separators. You can place these separators anywhere between digits. This is particularly useful for representing large numbers in a more readable format:
+
+```boba
+let million = 1_000_000       // Same as 1000000
+let billion = 1_000_000_000   // Clearer than 1000000000
+let binary = 0b1010_0101      // Grouping binary digits
+let salary = 75_000           // More readable than 75000
+
+// Multiple underscores are also valid
+let also_valid = 9__000       // Same as 9000
+```
+
+The underscores are ignored by the compiler and are purely for human readability. You can use them in both integer and floating-point numbers.
+
 ### `float`
 
 The `float` type is used for 64-bit floating-point numbers (numbers with a decimal point). It's essential for any calculations involving fractional values, such as financial data, measurements, or scientific computations.
@@ -137,6 +215,16 @@ The `float` type is used for 64-bit floating-point numbers (numbers with a decim
 ```boba
 let price: float = 4.99
 let temperature = -15.5 // Inferred as float
+```
+
+#### Scientific Notation
+
+For very large or very small numbers, Boba supports scientific notation using the `e` or `E` notation. The number after `e` represents the power of 10 to multiply by.
+
+```boba
+let plancks_constant: float = 6.626e-34  // 6.626 × 10⁻³⁴
+let avogadros_number = 6.022E23         // 6.022 × 10²³
+let electron_mass = 9.109e-31           // 9.109 × 10⁻³¹
 ```
 
 ### `string`
@@ -157,7 +245,7 @@ let player_name = "Ada"
 let level: int = 10
 
 // Use an f-string to create a formatted message.
-let welcome_message = f"Welcome, {player_name} (Level {level})!" 
+let welcome_message = f"Welcome, {player_name} (Level {level})!"
 print(welcome_message) // Outputs: Welcome, Ada (Level 10)!
 
 // Regular strings do not process the braces.
@@ -179,10 +267,10 @@ var has_key = true // Inferred as a boolean
 In the examples, you may have noticed that sometimes we declare a type (`let score: int = 100`) and sometimes we don't (`let current_level = 10`). When you assign a value as you declare a variable, Boba can usually figure out, or infer, the type for you. `10` is clearly an `int`, `"Ada"` is a `string`, and `true` is a `boolean`. While this makes code more concise, adding explicit type annotations can serve as powerful documentation, especially on function signatures or for complex data. It's a choice the developer makes to balance conciseness with clarity for other developers (or their future self).
 
 #### **Time to Practice!**
->
-> Head over to your next set of exercises. You'll get hands-on practice creating variables, fixing compiler errors related to immutability, and working with `string`, `int`, and `boolean` types.
 
-## Chapter 3: Reusing Code: Functions
+Head over to your next set of exercises. You'll get hands-on practice creating variables, fixing compiler errors related to immutability, and working with `string`, `int`, and `boolean` types.
+
+## Reusing Code: Functions
 
 Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
 
@@ -208,19 +296,15 @@ fn get_greeting(name: string) -> string {
   return f"Hello, {name}!"
 }
 
-let message = get_greeting(name: "Boba")
+let message = get_greeting("Boba")
 print(message) // Outputs: Hello, Boba!
 ```
 
 ## Function Calls: Mandatory Named Arguments
 
-A common source of subtle bugs in many languages occurs when arguments are passed to a function in the wrong order. For example, a function call like `create_user("Admin", 123)` might silently succeed when the function actually expected `(id: int, role: string)`. Boba solves this problem by requiring named arguments by default.
+A common source of subtle bugs in many languages occurs when arguments are passed to a function in the wrong order. For example, a function call like `create_user("Admin", 123)` might silently succeed when the function actually expected `(id: int, role: string)`. Boba solves this problem by requiring named arguments by default. This makes function call sites self-documenting.
 
-To maximize clarity, Boba requires function arguments to be called with their names by default. This makes function call sites self-documenting. This approach is built into the language to achieve the clarity that developers in other languages like JavaScript or Python often simulate by passing a single 'options' object to a function.
-
-### The Default: Named Arguments
-
-All arguments at a function call site _must_ be called with their name, using a colon (`:`) as a separator.
+In Boba, all arguments at a function call site with more than one argument _must_ be called with their name, using a colon (`:`) as a separator.
 
 ```boba
 // This function requires named arguments.
@@ -231,22 +315,15 @@ connect(host: "boba.dev", port: 9000, timeout: 5000)
 
 // COMPILE ERROR: Positional arguments not allowed for this function.
 // connect("boba.dev", 9000, 5000)
+
+
+// From the previous example, these are all allowed:
+say_hello()
+print("Hello, Boba!")
+get_greeting(name: "Boba")
 ```
 
-### Opting-In to Positional Arguments
-
-For a parameter to be callable positionally, its name in the function _declaration_ must be prefixed with an underscore (`_`). The function's author uses this to signal that the argument's order is natural and unambiguous, like the operands in an addition function.
-
-```boba
-// This function allows positional arguments.
-pub fn add(_ a: int, _ b: int) -> int { return a + b }
-
-// Correct calls:
-add(5, 3)
-add(a: 5, b: 3) // Named calls are still allowed for clarity.
-```
-
-### Controlling Visibility: Public vs. Private Functions
+## Controlling Visibility: Public vs. Private Functions
 
 Now that you know how to define a function, it's important to understand who can call it. Boba is designed for safety and clear organization, so it has a simple rule: by default, everything you create is private.
 
@@ -260,22 +337,7 @@ You can think of it like building a house:
 
 You may have noticed the pub keyword in some of the previous examples. This new understanding explains why it was there: those functions were being designed as public, reusable tools. This concept of public versus private will apply to other things you create later, such as structs and enums.
 
-### Mixing Named and Positional Arguments
-
-If a function has both positional and named arguments, all positional arguments must come first.
-
-```boba
-// This function mixes positional and named arguments.
-pub fn create_user(_ id: int, name: string, is_admin: boolean) { /* ... */ }
-
-// Correct call: Positional arguments first.
-create_user(101, name: "Ada", is_admin: false)
-
-// COMPILE ERROR: Positional argument cannot follow a named argument.
-// create_user(name: "Ada", 101, is_admin: false)
-```
-
-### Default Parameters
+## Default Parameters
 You can make function arguments optional by providing a default value. This is done by adding `= value` after the parameter's type. If the argument is omitted in the function call, the default value is used.
 
 ```boba
@@ -287,54 +349,70 @@ connect(host: "boba.dev") // Uses default port and TLS setting
 connect(host: "boba.dev", port: 9000) // Overrides port, uses default TLS
 ```
 
-### Chaining Functions with the Pipe Operator
+## Closures: Anonymous Functions
 
-Boba includes a special pipe operator (`|>`) to make chaining function calls more readable. It takes the result of the expression on its left and passes it as the first argument to the function on its right.
+Besides defining named functions with fn, Boba also allows you to create closures, which are lightweight, anonymous functions you can define on the fly. Closures are powerful because you can store them in variables and pass them as arguments to other functions.
 
-This operator is purely for developer ergonomics. It transforms deeply nested calls that must be read "from the inside-out" into a linear sequence of steps that can be read "from left-to-right," which more closely matches how we think about a data transformation pipeline.
+You define a closure using vertical bars | for the parameters, followed by an expression.
+
+```boba
+// A closure that takes two integers and adds them.
+let add = |a: int, b: int| a + b
+
+// You can call the closure just like a regular function.
+let sum = add(2, 3)
+print(sum) // Outputs: 5
+```
+
+This ability to treat functions as data is a cornerstone of functional programming. While it may seem simple, it unlocks incredibly expressive patterns, especially when working with lists and other collections, as you'll see in later chapters.
+
+## Chaining Functions with the Pipe Operator
+
+Boba includes a special pipe operator (`|>`) to make chaining function calls more readable. This operator is purely for developer ergonomics. It transforms deeply nested calls that must be read "from the inside-out" into a linear sequence of steps that can be read "from left-to-right."
+
+To maintain clarity with the named-argument system, the pipe operator uses a placeholder token, #, to explicitly mark where the piped value should be inserted in the next function call. In cases where is only one argument, the pipe operator can be used without the placeholder token.
 
 Consider a set of functions to process text:
 
 ```boba
 fn trim(s: string) -> string { /* ... */ }
 fn to_uppercase(s: string) -> string { /* ... */ }
-fn emphasize(s: string) -> string { f"**{s}**" }
+fn emphasize(text: string) -> string { f"**{text}**" }
+fn send_email(to: string, subject: string, body: string) { /* ... */ }
 ```
 
-Without the pipe operator, processing a message requires nesting the calls, which is read from the inside out and can be hard to follow:
+Without the pipe operator, processing a message requires nesting the calls:
+
 
 ```boba
 let message = "  hello world  "
-let formatted = emphasize(to_uppercase(trim(message)))
+let formatted = send_email(to: "bob@boba-lang.org", subject: "Hello", body: emphasize(text: to_uppercase(s: trim(s: message))))
 // formatted is "**HELLO WORLD**"
 ```
 
-With the pipe operator, you can express the same logic as a clear, left-to-right sequence of transformations:
+With the Hack-style pipe operator, you can express the same logic as a clear, left-to-right sequence of transformations, telling the pipe exactly which argument to use:
 
 ```boba
 let message = "  hello world  "
-let formatted = message |> trim() |> to_uppercase() |> emphasize()
-// formatted is "**HELLO WORLD**"
+let formatted = message
+    |> trim(s: #)
+    |> to_uppercase(s: #)
+    |> emphasize(text: #)
+    |> send_email(to: "bob@boba-lang.org", subject: "Hello", body: #)
+
+// This is equivalent to the above, but without the placeholder token for single argument functions.
+let formatted_no_placeholder = message
+    |> trim()
+    |> to_uppercase()
+    |> emphasize()
+    |> send_email(to: "bob@boba-lang.org", subject: "Hello", body: #)
+
+// formatted and formatted_no_placeholder are both "**HELLO WORLD**"
 ```
 
-The pipe operator is especially powerful when combined with functions that take both positional and named arguments. It passes its result as the first positional argument, allowing you to cleanly chain operations that feed into more complex functions.
+This style is a cornerstone of modern functional programming and is highly encouraged in Boba for creating readable and unambiguous data processing pipelines.
 
-```boba
-// From our previous example of a mixed-argument function
-fn create_user(_ id: int, name: string, is_admin: boolean) {
-  print(f"Creating user {id}: {name} (Admin: {is_admin})")
-}
-
-let user_id = 101
-
-// The pipe passes `user_id` as the first argument to `create_user`
-user_id |> create_user(name: "Ada", is_admin: false)
-// Outputs: Creating user 101: Ada (Admin: false)
-```
-
-This style is a cornerstone of functional programming and is highly encouraged in Boba for creating readable data processing pipelines.
-
-## Lesson 04: Operators and Control Flow
+## Operators and Control Flow
 
 Now that you know about variables and data types, let's look at how to manipulate them using operators and control the flow of your program. Operators are special symbols that perform operations on your data. We'll then see how to use the results of those operations to make decisions with if/else statements.
 
@@ -347,9 +425,8 @@ Boba provides a standard set of arithmetic operators for performing mathematical
 | `+`      | Addition         | `5 + 2` results in `7`   |
 | `-`      | Subtraction      | `5 - 2` results in `3`   |
 | `*`      | Multiplication   | `5 * 2` results in `10`  |
-| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `1` |
+| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `2` |
 | `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
-| `^`      | Power (Note: This differs from Python and JavaScript, which use `**` for exponentiation.) | `5 ^ 2` results in `25`  |
 
 ```boba
 let score = 10
@@ -446,12 +523,36 @@ if has_key and not is_door_locked {
 }
 ```
 
+### Writing Readable Multi-Line Conditions
+
+As you combine logical operators like and and or, your if statements can become long and hard to read on a single line. Boba has a simple, robust rule for formatting these complex conditions: wrap the entire expression in parentheses ().
+
+This approach eliminates ambiguity for the human reader, the Boba parser, and any analysis tools. It allows you to break lines freely within the parentheses, and the boba fmt tool can automatically format it for maximum readability. This same principle applies to any long expression, not just if statements.
+
+```boba
+let has_key = true
+let is_leader = false
+let has_permission = true
+let world_level = 10
+
+// This is the idiomatic way to format a long condition in Boba.
+// The entire expression is wrapped in parentheses.
+if (has_key and
+   (is_leader or has_permission) and
+    world_level > 5
+   ) {
+     print("Access granted!")
+}
+```
+
+This technique of using delimiters—(), [], and {}—to group multi-line statements is a core principle in Boba for writing clean, predictable, and verifiable code. Note the vertical alignment of the operators. This style will be enforced by the formatter, but it is suggested you follow it for readability.
+
 ### Checking for Containment with 'in'
 
 Boba also has collection types for grouping data, like lists of items or maps of key-value pairs. The in operator provides a highly readable way to check if a value exists within a collection. We will cover collections in detail in a later chapter.
 
 ```boba
-let inventory: string[] = ["sword", "shield", "potion"]
+let inventory: List<string> = ["sword", "shield", "potion"]
 
 // Check if "shield" is in our inventory list.
 if "shield" in inventory {
@@ -486,9 +587,9 @@ This concept isn't limited to single lines. Full `if/else` blocks are also expre
 ```boba
 let player_health = 75
 
+// Note: the \n is used to print the string on a new line.
 let armor_message: string = if player_health == 100 {
-    print("Player is at full health.")
-    "Wearing pristine, shining armor."
+    "Player is at full health.\nWearing pristine, shining armor."
 } else if player_health > 50 {
     "Wearing battle-worn, dented armor."
 } else {
@@ -500,10 +601,249 @@ print(armor_message) // Outputs: Wearing battle-worn, dented armor.
 
 This example showcases a fundamental feature of Boba: code blocks are expressions. The last line inside a block, if it doesn't have a semicolon, becomes the value that the block evaluates to.
 
-> #### **Time to Practice!**
-> You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges.
+#### **Time to Practice!**
 
-## Chapter 6: Repeating Actions: for and while Loops
+You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges.
+
+## Grouping Data: lists and maps
+
+While primitive types are the basic building blocks for data, most real-world programs need to work with collections of data. Boba provides two primary, built-in collection types for this purpose: `list` and `map`.
+
+## `list`
+
+A `list` is an ordered collection of values of the same type. Lists are dynamic, meaning you can add or remove items.
+
+```boba
+// A list of numbers
+var highScores: List<int> = [100, 95, 80]
+
+// A list of strings
+var ingredients: List<string> = ["flour", "sugar", "boba pearls"]
+```
+
+Lists declared with `let` are immutable, meaning their contents cannot be changed after creation. If you try to modify a list created with `let`, the Boba compiler will report an error.
+
+```boba
+let starting_gear: List<string> = ["tunic", "dagger"]
+// starting_gear.push("shield")
+// This would cause a compile error because the list is immutable.
+```
+
+You can perform many operations on lists, like getting their size or adding new items. Boba lists are "zero-indexed," which means the first item is at index 0, the second at index 1, and so on.
+
+```boba
+print(ingredients.len()) // Outputs: 3
+
+// Add a new item to the end
+ingredients.push("tapioca pearls")
+print(ingredients.len()) // Outputs: 4
+
+// Access items by their index (starting from 0)
+print(ingredients[0]) // Outputs: "flour"
+```
+
+### Transforming and Searching Lists
+
+Beyond adding and accessing elements, Boba's lists have powerful methods for transforming and searching their contents in a functional style. These methods use closures (which you learned about in the Functions chapter) to let you define the exact logic you need.
+
+#### Filtering with .filter()
+
+The .filter() method creates a new list containing only the elements that cause the provided closure to return true. This is the idiomatic way to select a subset of items from a list without writing a manual for loop.
+
+```boba
+let scores = [88, 42, 95, 71, 100]
+
+// Create a new list with only the passing scores (>= 70).
+let passing_scores = scores.filter(|score| score >= 70)
+
+print(passing_scores) // Outputs: [88, 95, 71, 100]
+```
+
+#### Searching with .find()
+
+The .find() method returns the first element in a list that causes the provided closure to return true. If no element matches, it returns None. This is the perfect tool for searching for an item, as it safely handles the case where the item might not exist.
+
+```boba
+let users = ["Ada", "Grace", "Boba", "June"]
+
+// Find the first user with the name "Boba".
+let found_user = users.find(|name| name == "Boba")
+// found_user is Some("Boba")
+
+// Try to find a user that doesn't exist.
+let missing_user = users.find(|name| name == "Dave")
+// missing_user is None
+```
+
+### Getting a Sub-Section with Slicing
+
+Slicing is a powerful feature that lets you create a new collection containing a sub-section, or "slice," of an existing one. It's a concise way to get a portion of a list or string without writing a manual loop. In Boba, slicing creates a new copy of the data.
+
+Slicing extends the [] indexing syntax. Instead of providing a single number to get one element, you provide a range to get multiple elements.
+
+```boba
+let player_scores = [10, 25, 50, 80, 100, 120]
+
+// Get a slice from index 1 up to (but not including) index 4.
+let middle_scores = player_scores[1..4]
+print(middle_scores) // Outputs: [25, 50, 80]
+
+// The original list is unchanged.
+print(player_scores) // Outputs: [10, 25, 50, 80, 100, 120]
+```
+
+You can also leave the start or end of the range open:
+
+```boba
+let message = "Hello, Boba!"
+
+// Slice from the beginning up to index 5.
+let greeting = message[..5]
+print(greeting) // Outputs: "Hello"
+
+// Slice from index 7 to the end of the string.
+let name = message[7..]
+print(name) // Outputs: "Boba!"
+```
+
+## `tuple`
+
+A `tuple` is a fixed-size, ordered collection that can hold values of different types. Unlike lists, tuples:
+- Have a fixed length that cannot be changed after creation
+- Can contain elements of different types
+- Use dot notation for indexing (e.g., `tuple.0` instead of `tuple[0]`)
+
+```boba
+// A tuple with mixed types
+let player = (100, "Ada", true)
+print(player.0) // Outputs: 100
+print(player.1) // Outputs: "Ada"
+print(player.2) // Outputs: true
+
+// Empty tuples are valid too
+let empty = ()
+print(empty) // Outputs: ()
+```
+
+### Tuple Destructuring
+
+One of the most powerful features of tuples is destructuring, which lets you extract values into individual variables in a single step:
+
+```boba
+let point = (10, 20)
+let (x, y) = point
+print(f"x: {x}, y: {y}") // Outputs: x: 10, y: 20
+
+// Destructuring works with nested tuples too
+let nested = ((1, 2), (3, 4))
+let ((x1, y1), (x2, y2)) = nested
+print(f"Point 1: ({x1}, {y1}), Point 2: ({x2}, {y2})")
+```
+
+### Using Tuples in For Loops
+
+When working with lists of tuples, you can destructure the tuple elements directly in the for loop:
+
+```boba
+let points = [(1, 2), (3, 4), (5, 6)]
+for (x, y) in points {
+    print(f"Point: ({x}, {y})")
+}
+```
+
+### Pattern Matching with Tuples
+
+Tuples work seamlessly with pattern matching, allowing you to match both structure and values:
+
+```boba
+let result = match (42, "test") {
+    (0, _) => "zero",
+    (42, "test") => "found it!",
+    (42, _) => "forty-two",
+    _ => "something else"
+}
+print(result) // Outputs: "found it!"
+```
+
+## `map`
+
+A `map` is a collection of key-value pairs. Think of a map like a dictionary, where each 'key' is a unique word and the 'value' is its definition. Each key must be unique, and all keys must be of the same type, as must all values.
+
+```boba
+// Create a map with string keys and number values
+var scores: Map<string, int> = {
+  "ada": 100,
+  "grace": 95
+}
+
+// A map can be type inferred, so you can also write:
+var scores = { "ada": 100, "grace": 95 }
+
+// Check its initial size
+print(scores.len()) // Outputs: 2
+
+// Insert a new key-value pair
+scores["boba"] = 105
+
+// Check the new size
+print(scores.len()) // Outputs: 3
+```
+
+To read a value from a map, you use square brackets `[]` with the key.
+
+```boba
+let adas_score = scores["ada"]
+print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
+```
+
+But what happens if you try to access a key that doesn't exist? In many languages, this can lead to unexpected crashes (like a `KeyError` in Python) or silent errors (like returning `undefined` in JavaScript). Boba prevents these problems. Accessing a key in a map doesn't return the value directly. Instead, it returns a special `Option` type, which safely handles cases where the key might not exist. We will cover this powerful feature in a later chapter.
+
+## Combining Collections with the Spread Operator
+
+Boba provides the spread operator (...) as a clean, declarative way to construct a new collection by "spreading" or "unpacking" the elements of an existing collection into a new literal. For developers familiar with modern JavaScript or Svelte, this will feel very natural.
+
+### Spreading Lists
+
+You can use the spread operator to easily combine multiple lists or add elements to the beginning or end of a list.
+
+```boba
+let first_half = [1, 2, 3]
+let second_half = [6, 7, 8]
+
+// Create a new list by spreading the elements of others into it.
+let combined = [...first_half, 4, 5, ...second_half]
+
+print(combined) // Outputs: [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+This is much more readable than creating a new list and using loops to push elements from the other lists.
+
+### Spreading Maps
+
+The spread operator is also extremely useful for creating new maps. You can use it to merge maps or to create a new map with some default values that can be overridden.
+
+When spreading maps, if the same key exists in multiple sources, the right-most value "wins." This makes it perfect for applying overrides.
+
+```boba
+let default_config = {
+    "theme": "dark",
+    "font_size": 14,
+}
+
+let user_overrides = {
+    "font_size": 16,
+    "show_sidebar": true,
+}
+
+// Start with the defaults, then spread the user's overrides on top.
+let final_config = {...default_config, ...user_overrides}
+
+print(final_config)
+// Outputs: {"theme": "dark", "font_size": 16, "show_sidebar": true}
+// Note that `font_size` is 16 because the value from `user_overrides` came last.
+```
+
+## Repeating Actions: for and while Loops
 
 Loops are used to execute a block of code multiple times. Boba provides two primary loops: `for` for iterating over sequences and `while` for looping as long as a condition is true.
 
@@ -514,7 +854,7 @@ The `for` loop is Boba's most powerful and common loop. It can iterate over a co
 **1. Iterating Over Collections** This is the idiomatic way to work with every item in a `list` or `map`.
 
 ```boba
-let ingredients: string[] = ["healing potion", "sword", "shield"]
+let ingredients: List<string> = ["healing potion", "sword", "shield"]
 
 // The `for...in` loop will go through each item in the list.
 for item in ingredients {
@@ -561,8 +901,8 @@ var countdown = 3
 
     // Loop as long as countdown is greater than 0.
     while countdown > 0 {
-    print(f"{countdown}...")
-    countdown = countdown - 1 // Decrement the counter.
+      print(f"{countdown}...")
+      countdown = countdown - 1 // Decrement the counter.
     }
 
     print("Liftoff!")
@@ -576,9 +916,9 @@ var countdown = 3
 > **A Word of Caution**
 > Since a `while` loop's continuation depends on a condition you manage manually, you are responsible for ensuring the condition will eventually become `false` to prevent an infinite loop.
 
-> #### **Time to Practice!**
->
-> Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.
+#### **Time to Practice!**
+
+Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.
 
 ## Chapter 7: Grouping Data: list and map
 
@@ -647,7 +987,7 @@ print(f"Ada's score is: {adas_score}") // Outputs: Ada's score is: 100
 
 But what happens if you try to access a key that doesn't exist? In many languages, this can lead to unexpected crashes (like a `KeyError` in Python) or silent errors (like returning `undefined` in JavaScript). Boba prevents these problems. Accessing a key in a map doesn't return the value directly. Instead, it returns a special `Option` type, which safely handles cases where the key might not exist. We will cover this powerful feature in a later chapter.
 
-## Chapter 8: Defining State with enums
+## Defining State with enums
 
 While Boba provides powerful built-in enums like `Option` and `Result`, one of its key features is the ability to define your own. An **enum** (short for enumeration) is a custom type that can only be one of a specific, fixed set of possible values, called 'variants'.
 
@@ -691,7 +1031,7 @@ By using an enum, you leverage the Boba compiler as a safety net. It becomes imp
 
 This chapter provides a foundation for creating your own types. In the next chapter, you'll learn about `structs`, which let you group related data together.
 
-## Chapter 9: Creating Custom Types: structs
+## Creating Custom Types: structs
 
 Structs, short for structures, are custom data types you can create by grouping together related variables. Think of a struct definition as a blueprint: it defines the shape and fields for a concept in your program. From that blueprint, you can then create multiple concrete instances.
 
@@ -708,13 +1048,23 @@ struct Player {
 }
 ```
 
+Structs can also have default values for their fields.
+
+```boba
+struct Player {
+  name: string = "Boba Dev",
+  score: int = 0,
+  is_active: boolean = false
+}
+```
+
 ## Creating an Instance of a Struct
 
 Once you have defined a struct, you can create instances of it using a struct literal.
 
 ```boba
 // Create a new variable `ada` of type `Player`
-let ada: Player = { name: "Ada", score: 100, is_active: true }
+let ada: Player = Player{ name: "Ada", score: 100, is_active: true }
 ```
 
 ## Accessing Struct Fields
@@ -740,7 +1090,7 @@ struct Line {
   end: Point,   // This one too
 }
 
-let my_line = Line {
+let my_line = Line{
   start: Point { x: 10, y: 20 },
   end: Point { x: 50, y: 30 },
 }
@@ -772,10 +1122,18 @@ pub struct User {
 If you tried to access `some_user.username` from a different file, the compiler would stop you, enforcing the privacy rules you've defined.
 
 ### Mutating a Struct
-To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed.
+To create a mutable instance whose fields you can modify, you must declare the variable using `var`. If a struct instance is bound using `let`, it is deeply immutable—neither the variable can be reassigned, nor can its fields be changed. The fields of a struct that you want to be mutable must be marked with the `pub` keyword.
+
 ```boba
+pub struct Player {
+  pub name: string,
+  pub score: int,
+  pub is_active: boolean
+
+}
+
 // Create a mutable Player instance
-var boba_dev: Player = { name: "Boba Dev", score: 0, is_active: false }
+var boba_dev: Player = Player{ name: "Boba Dev", score: 0, is_active: false }
 print(f"Initial score: {boba_dev.score}") // Outputs: Initial score: 0
 
 // Mutate the score field
@@ -783,25 +1141,64 @@ boba_dev.score = 150
 print(f"Updated score: {boba_dev.score}") // Outputs: Updated score: 150
 ```
 
-### Creating a New Struct from an Old One
+#### Unpacking Values: Destructuring with let
 
-Often, instead of mutating a struct, you'll want to create a new instance based on an old one but with some fields changed. Boba provides a convenient struct update syntax for this. The .. operator specifies that the remaining unmentioned fields should be copied directly from another instance.
+After creating an instance of a struct, you'll often want to extract its field values into local variables. While you can access them one by one using dot notation, Boba provides a more powerful and ergonomic feature called destructuring.
+
+Destructuring lets you bind a struct's fields to new variables in a single, declarative statement.
 
 ```boba
-let player1 = Player { name: "Ada", score: 100, is_active: true }
+// Given our Player struct from before
+let ada: Player = Player{ name: "Ada", score: 100, is_active: true }
+
+// ada could also be declared like this:
+// let ada = Player{ name: "Ada", score: 100, is_active: true }
+
+// The old way requires one line per variable.
+let ada_name = ada.name
+let ada_score = ada.score
+
+// The idiomatic Boba way uses destructuring.
+let { name, score } = ada
+print(f"Player: {name}, Score: {score}") // Prints "Player: Ada, Score: 100"
+```
+
+This pattern should feel familiar—it's the same concept you use when looping over maps with for key, value in my_map.items(). By allowing it in let bindings, Boba makes the language more consistent and expressive.
+
+#### Picking and Choosing Fields
+
+You don't have to destructure every field. If you only need a few values, you can use .. to signal that you are intentionally ignoring the rest of the fields.
+
+```boba
+// We only need the name for a greeting.
+let { name, .. } = ada
+print(f"Welcome, {name}!")
+```
+
+This is safer and clearer than leaving fields out, as it explicitly states your intent to ignore the others.
+
+### Creating a New Struct from an Old One with Spread
+
+A common pattern in writing safe, predictable code is to favor creating new, updated instances rather than mutating existing ones. Boba makes this pattern ergonomic and consistent with a feature you've already seen: the spread operator (`...`).
+
+Just as you can use `...` to spread the elements of one list or map into another, you can use it to copy the fields from an existing struct instance into a new one. This allows you to concisely create a new struct that is a copy of an old one, with only a few fields changed.
+
+```boba
+let player1: Player = Player{ name: "Ada", score: 100, is_active: true }
 
 // Create player2 based on player1, but with a different score.
-// The `name` and `is_active` fields are copied from player1.
-let player2 = Player { score: 150, ..player1 }
+// The ...player1 syntax copies the `name` and `is_active` fields.
+let player2 = Player{ score: 150, ...player1 }
 
 print(f"{player2.name} has a new score of {player2.score}")
+// Outputs: Ada has a new score of 150
 ```
 
 ### Time to Practice!
 
 You now know how to bundle related data together. This is the first half of creating powerful custom types. In the next chapter, we will bring this data to life by giving our structs behavior with methods.
 
-## Chapter 10: Adding Behavior: Methods and impl
+## Adding Behavior: Methods and impl
 
 In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
 
@@ -834,19 +1231,20 @@ impl Player {
         }
     }
 }
+```
 
-> **Pro-Tip: Field Init Shorthand**
->
-> In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
->
-> ```boba
-> fn new(name: string) -> Player {
->   return Player {
->     name, // No need to write `name: name`
->     health: 100
->   }
-> }
-> ```
+**Field Init Shorthand**
+
+In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
+
+```boba
+fn new(name: string) -> Player {
+  return Player {
+    name, // No need to write `name: name`
+    health: 100
+  }
+}
+```
 
 You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
 
@@ -904,7 +1302,7 @@ boba_dev.take_damage(amount: 25)
 print(f"Updated health: {boba_dev.health}") // Outputs: Updated health: 75
 ```
 
-## Chapter 11: Structuring Your Project: Modules
+## Importing Functions and Modules
 
 As your programs grow larger, it becomes important to organize your code into multiple files. In Boba, the module system is designed to be simple and intuitive. The rules are:
 
@@ -912,6 +1310,16 @@ As your programs grow larger, it becomes important to organize your code into mu
 2.  **Items are private by default.** All items you define in a file—functions, structs, enums, etc.—are private to that module. They can only be used within the same file.
 3.  **Use `pub` to create a public API.** To make an item accessible from other modules, you must explicitly mark it with the `pub` keyword. This makes it part of the module's public API.
 4.  **Use `import` to access public items.** The `import` keyword is the mechanism to use public items from one module in another.
+
+##Importing from the Standard Library
+
+Boba comes with a standard library of useful modules for common tasks like file system access or networking. To use a standard library module, you can import it directly by name.
+
+```boba
+// The compiler knows `fs` is a built-in standard library module.
+// This brings the `fs` namespace into scope.
+let contents = fs::read("my_file.txt")
+```
 
 For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
@@ -953,8 +1361,9 @@ pub fn say_goodbye() {
 // The `import * as ...` syntax imports all public items under a single namespace.
 utils.say_hello()
 utils.say_goodbye()
+```
 
-## Chapter 12: Testing Your Code
+## Testing Your Code
 
 Writing code is only half the battle. To build robust and reliable software, you need to verify that your code works as you expect it to. Boba's integrated tooling makes testing a simple, first-class part of the development workflow, without requiring any external libraries.
 
@@ -1021,13 +1430,12 @@ fn test_various_assertions() {
 
 ## Unit Testing Your Code
 
-While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) and link it to the implementation file using the `#[file: test]` attribute at the top of the test file.
+While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) which links it to the implementation file.
 
 Here are the rules:
 
 - Your implementation code lives in a file, for example, `my_math.boba`.
 - Your unit tests for that file live in a corresponding file named `my_math_test.boba`.
-- This test file must be "designated" by placing the `#[file: test]` attribute at the very top.
 
 Let's refactor our previous example into this structure.
 
@@ -1048,8 +1456,6 @@ fn internal_add(a: int, b: int) -> int {
 
 **File: `src/my_math_test.boba`**
 ```boba
-#[file: test] // Designates this file as the tester for my_math.boba
-
 //! Unit tests for the my_math module.
 
 #[test]
@@ -1058,18 +1464,16 @@ fn test_public_add_function() {
 }
 ```
 
-The `#[file: test]` attribute is what enables this pattern. It tells the compiler that `my_math_test.boba` is the official unit test file for `my_math.boba`.
+Appending `_test.boba` tells the compiler that `my_math_test.boba` is the official unit test file for `my_math.boba`.
 
 ## Testing Implementation Details
 
-The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-pub items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
+Being a designated unit test file grants special permission to access the private, non-`pub` items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
 
 Let's add a test for our private `internal_add` function.
 
 **File: `src/my_math_test.boba`**
 ```boba
-#[file: test] // Designates this file as the tester for my_math.boba
-
 //! Unit tests for the my_math module.
 
 #[test]
@@ -1079,7 +1483,7 @@ fn test_public_add_function() {
 
 #[test]
 fn test_private_internal_add_function() {
-    // This is allowed ONLY because of the #[file: test] attribute.
+    // Accessing private functions is allowed ONLY because it is a unit test file.
     // We can directly test our internal implementation details.
     test.assert_eq(internal_add(3, 4), 7)
 }
@@ -1157,7 +1561,7 @@ boba test --doc
 
 This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
 
-## Chapter 13: Handling Failures: The Result Type
+## Handling Failures: The Result Type
 
 In any real-world application, things can go wrong. A file might not exist, a network request might fail, or user input might be invalid. While other languages often rely on exceptions and `try...catch` blocks to handle these situations, Boba encourages a more explicit approach using the `Result` enum. The benefit of this approach is that using `Result` makes a function's potential for failure an honest part of its type signature, forcing the caller to acknowledge and handle potential errors at compile time.
 
@@ -1240,7 +1644,7 @@ fn load_config() -> Result<Config, Error> {
 
 Now it's your turn. Look for opportunities in your own code to refactor functions to return a `Result`. Use the `?` operator to clean up your error handling and make your code more robust and readable.
 
-## Chapter 14: Handling Absence: The Option Type
+## Handling Absence: The Option Type
 
 In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
 
@@ -1357,15 +1761,38 @@ match find_user(1) {
 Sometimes, a pattern alone isn't specific enough. You can add a conditional guard to a match arm using the where keyword. The branch will only be taken if both the pattern matches and the where condition evaluates to true. This allows for more complex logic within your match statements.
 
 ```boba
-let maybe_num: Option<int> = Some(50)
+// Multi-line match statement example
+fn get_player_status(health: Option<int>) -> string {
+  // The match statement itself is an expression, so its result
+  // can be directly returned or assigned.
+  match health {
+    Some(h) if h == 100 => {
+      return "Player is at full health."
+    },
 
-match maybe_num {
-    Some(n) where n > 100 => print("Got a big number!"),
-    Some(n) where n > 10 => print("Got a medium number."),
-    Some(n) => print("Got a small number."),
-    None => print("There was no number."),
+    Some(h) if h > 50 => {
+      let message = f"Player is doing okay with {h} health."
+      return message
+    },
+    Some(h) => {
+      return f"Player is in critical condition with only {h} health!"
+    },
+    None => {
+      return "Player status is unknown or offline."
+    },
+  }
 }
-// This will print "Got a medium number."
+
+// Single-line match statement example
+struct Error {
+  code: int,
+}
+
+match response {
+  Ok(data) => print(f"Success! Received data: {data}"),
+  Err(e) if e.code == 404 => print("Error: Not Found."),
+  Err(_) => print("An unknown error occurred."), // Using '_' as a catch-all
+}
 ```
 
 While `_` is necessary for matching on types with a near-infinite number of values (like `int` or `string`), it should be used cautiously with enums. Using it can sometimes bypass the compiler's exhaustiveness check. For example, if a new variant is added to an enum later, the wildcard `_` will catch it silently instead of causing a helpful compile error that would force you to handle the new case explicitly. This is why, for enums like `Option` and `Result`, it's best to match each variant explicitly whenever possible.
@@ -1393,7 +1820,7 @@ match status_code {
 
 The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.
 
-## Chapter 16: Guaranteed Cleanup: defer and panic
+## Guaranteed Cleanup: defer and panic
 
 ## Guaranteed Cleanup with `defer`
 
@@ -1422,6 +1849,7 @@ pub fn process_file(path: string) -> Result<string, Error> {
     // `defer file.close()` will also run automatically before this return.
     return Ok("Processed data!")
 }
+```
 
 If a function has multiple `defer` statements, they are executed in **Last-In, First-Out (LIFO)** order. The last `defer` scheduled is the first one to run when the function exits. This is a crucial rule for correct resource management when multiple resources are acquired.
 
@@ -1452,7 +1880,7 @@ fn get_guild_rank(player: Player) -> string {
 
 It's time to practice what you've learned. The next exercises will challenge you to refactor a function to use `defer` for resource cleanup and write a function that correctly panics when its input violates a critical precondition.
 
-## Chapter 17: Asynchronous Programming: async/await
+## Asynchronous Programming: async/await
 
 Asynchronous programming is essential for building responsive and efficient applications, especially when dealing with tasks like network requests or file I/O that can take time. Boba makes writing asynchronous, non-blocking code as easy and readable as traditional, synchronous code.
 
@@ -1546,7 +1974,7 @@ async fn main() {
 }
 ```
 
-## Chapter 18: Writing Professional Code: Idiomatic Boba
+## Writing Professional Code: Idiomatic Boba
 
 Welcome to the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths in the way its designers intended.
 
@@ -1602,7 +2030,7 @@ pub fn read_file(path: string) -> Result<string, Error> {
 ## Comments vs. Documentation
 
 - Use BobaDoc (`///`) to explain the *what* and *how* for users of your API. This is for the public interface.
-- Use inline comments (`//`) to explain the *why* for maintainers of your code. Explain complex logic, non-obvious choices, or the reasoning behind a particular algorithm.
+- Use inline comments (`#`) to explain the *why* for maintainers of your code. Explain complex logic, non-obvious choices, or the reasoning behind a particular algorithm.
 
 ## What's Next?
 
@@ -1615,4 +2043,3 @@ Your journey doesn't end here. To continue growing as a Boba developer, we encou
 -   **Explore the official Boba Standard Library documentation.** Familiarize yourself with the rich set of tools and modules available to you.
 -   **Build a small, complete project from scratch.** Apply what you've learned to create something new, like a command-line tool or a simple web server.
 -   **Read through the source code of idiomatic Boba projects.** Learning from experienced developers is one of the fastest ways to deepen your understanding of best practices.
--   **Join the community.** A programming language is its ecosystem and its community. Join our Discord server or forums to ask questions, share what you've learned, and connect with other Boba developers.

@@ -1,6 +1,5 @@
 import os
 import re
-import argparse
 
 def combine_mdx_files(source_dir, output_file, header):
     """
@@ -67,25 +66,12 @@ def combine_mdx_files(source_dir, output_file, header):
 
 def main():
     """
-    Parses command line arguments and calls the combine_mdx_files function.
+    Combines all MDX files from the learn directory into a single markdown file.
     """
-    parser = argparse.ArgumentParser(description="Combine MDX files from specified directories.")
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--learn', action='store_true', help='Combine files from the learn directory.')
-    group.add_argument('--ref', action='store_true', help='Combine files from the reference directory.')
-
-    args = parser.parse_args()
-
-    if args.learn:
-        source_dir = os.path.join('src', 'content', 'docs', 'learn')
-        output_file = os.path.join('project', 'boba-learn.md')
-        header = "# learn"
-        combine_mdx_files(source_dir, output_file, header)
-    elif args.ref:
-        source_dir = os.path.join('src', 'content', 'docs', 'reference', '01-language')
-        output_file = os.path.join('project', 'boba-ref.md')
-        header = "# reference"
-        combine_mdx_files(source_dir, output_file, header)
+    source_dir = os.path.join('src', 'content', 'docs', 'learn')
+    output_file = os.path.join('project', 'boba-learn.md')
+    header = "# learn"
+    combine_mdx_files(source_dir, output_file, header)
 
 if __name__ == "__main__":
     main()

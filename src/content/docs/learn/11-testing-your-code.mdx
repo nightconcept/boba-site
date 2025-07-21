@@ -1,9 +1,5 @@
 ---
-<<<<<<< Updated upstream
-title: "Chapter 12: Testing Your Code"
-=======
 title: "Testing Your Code"
->>>>>>> Stashed changes
 description: "Learn how to write effective tests for your Boba code, from simple functions to your private implementation details."
 ---
 
@@ -72,20 +68,12 @@ fn test_various_assertions() {
 
 ## Unit Testing Your Code
 
-<<<<<<< Updated upstream
-While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) and link it to the implementation file using the `#[file: test]` attribute at the top of the test file.
-=======
 While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) which links it to the implementation file.
->>>>>>> Stashed changes
 
 Here are the rules:
 
 - Your implementation code lives in a file, for example, `my_math.boba`.
 - Your unit tests for that file live in a corresponding file named `my_math_test.boba`.
-<<<<<<< Updated upstream
-- This test file must be "designated" by placing the `#[file: test]` attribute at the very top.
-=======
->>>>>>> Stashed changes
 
 Let's refactor our previous example into this structure.
 
@@ -106,11 +94,6 @@ fn internal_add(a: int, b: int) -> int {
 
 **File: `src/my_math_test.boba`**
 ```boba
-<<<<<<< Updated upstream
-#[file: test] // Designates this file as the tester for my_math.boba
-
-=======
->>>>>>> Stashed changes
 //! Unit tests for the my_math module.
 
 #[test]
@@ -119,29 +102,16 @@ fn test_public_add_function() {
 }
 ```
 
-<<<<<<< Updated upstream
-The `#[file: test]` attribute is what enables this pattern. It tells the compiler that `my_math_test.boba` is the official unit test file for `my_math.boba`.
-
-## Testing Implementation Details
-
-The real power of the `#[file: test]` attribute is that it grants the test file special permission to access the private, non-pub items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
-=======
 Appending `_test.boba` tells the compiler that `my_math_test.boba` is the official unit test file for `my_math.boba`.
 
 ## Testing Implementation Details
 
 Being a designated unit test file grants special permission to access the private, non-`pub` items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
->>>>>>> Stashed changes
 
 Let's add a test for our private `internal_add` function.
 
 **File: `src/my_math_test.boba`**
 ```boba
-<<<<<<< Updated upstream
-#[file: test] // Designates this file as the tester for my_math.boba
-
-=======
->>>>>>> Stashed changes
 //! Unit tests for the my_math module.
 
 #[test]
@@ -151,11 +121,7 @@ fn test_public_add_function() {
 
 #[test]
 fn test_private_internal_add_function() {
-<<<<<<< Updated upstream
-    // This is allowed ONLY because of the #[file: test] attribute.
-=======
     // Accessing private functions is allowed ONLY because it is a unit test file.
->>>>>>> Stashed changes
     // We can directly test our internal implementation details.
     test.assert_eq(internal_add(3, 4), 7)
 }

@@ -19,11 +19,7 @@ importers:
         version: 0.34.2
       starlight-sidebar-topics:
         specifier: ^0.6.0
-<<<<<<< Updated upstream
-        version: 0.6.0(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.3)(rollup@4.44.0)(typescript@5.8.3)(yaml@2.8.0)))
-=======
         version: 0.6.0(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0)))
->>>>>>> Stashed changes
     devDependencies:
       biome:
         specifier: ^0.3.3
@@ -5007,15 +5003,9 @@ snapshots:
       safer-buffer: 2.1.2
       tweetnacl: 0.14.5
 
-<<<<<<< Updated upstream
-  starlight-sidebar-topics@0.6.0(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.3)(rollup@4.44.0)(typescript@5.8.3)(yaml@2.8.0))):
-    dependencies:
-      '@astrojs/starlight': 0.34.4(astro@5.10.1(@types/node@24.0.3)(rollup@4.44.0)(typescript@5.8.3)(yaml@2.8.0))
-=======
   starlight-sidebar-topics@0.6.0(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0))):
     dependencies:
       '@astrojs/starlight': 0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0))
->>>>>>> Stashed changes
       picomatch: 4.0.2
 
   stream-replace-string@2.0.0: {}

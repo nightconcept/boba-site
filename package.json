@@ -1,31 +1,4 @@
 {
-<<<<<<< Updated upstream
-  "name": "boba-site",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "format": "pnpm biome format --write .",
-    "lint": "pnpm biome lint .",
-    "astro": "astro",
-    "syntax": "python scripts/combine_mdx.py"
-  },
-  "dependencies": {
-    "@astrojs/starlight": "^0.34.4",
-    "astro": "^5.6.1",
-    "sharp": "^0.34.2",
-    "starlight-sidebar-topics": "^0.6.0"
-  },
-  "devDependencies": {
-    "biome": "^0.3.3",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2"
-  }
-}
-=======
 	"name": "boba-site",
 	"type": "module",
 	"version": "0.0.1",
@@ -51,4 +24,3 @@
 		"lint-staged": "^16.1.2"
 	}
 }
->>>>>>> Stashed changes

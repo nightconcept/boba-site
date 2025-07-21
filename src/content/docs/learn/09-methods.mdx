@@ -1,9 +1,5 @@
 ---
-<<<<<<< Updated upstream
-title: "Chapter 10: Adding Behavior: Methods and impl"
-=======
 title: "Adding Behavior: Methods and impl"
->>>>>>> Stashed changes
 description: "Learn how to attach methods to your structs using an `impl` block."
 ---
 
@@ -38,21 +34,6 @@ impl Player {
         }
     }
 }
-<<<<<<< Updated upstream
-
-> **Pro-Tip: Field Init Shorthand**
->
-> In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
->
-> ```boba
-> fn new(name: string) -> Player {
->   return Player {
->     name, // No need to write `name: name`
->     health: 100
->   }
-> }
-> ```
-=======
 ```
 
 **Field Init Shorthand**
@@ -67,7 +48,6 @@ fn new(name: string) -> Player {
   }
 }
 ```
->>>>>>> Stashed changes
 
 You call an associated function directly on the type. Here's how you would create a new `Player` using the `new` function:
 

@@ -32,29 +32,6 @@ Error: Cannot assign twice to immutable binding `message`.
 
 This is a key part of the Boba development experience. The compiler is your pair programmer. It doesn't just point out errors; it often tells you exactly how to fix them. Learning to read these messages is a superpower.
 
-<<<<<<< Updated upstream
-### Shadowing: A Safer Way to Transform
-
-As the compiler's help message suggests, you could change let to var to make the variable mutable. But what if you don't really need the variable to change its value over time? What if you just want to perform a transformation and then continue using that name? For this, Boba provides a safer feature called shadowing.
-
-Shadowing allows you to declare a new variable with the same name as a previous one. This new variable "shadows" the old one, meaning the original variable is no longer accessible from this point forward. This is not a mutation; it's creating a brand new, immutable variable.
-
-```boba
-let x = 5
-let x = x + 1 // This is not mutation!
-// This is a new `let` binding that shadows the old `x`.
-let x = x * 2
-print(f"The final value of x is {x}") // Outputs: The final value of x is 12
-```
-
-Shadowing is extremely useful because it allows you to reuse a simple name for a value that you are transforming in a series of steps, all without ever making your data mutable.
-
-> **A Note for JavaScript/TypeScript Developers**
->
-> In Boba, `let` creates a binding that cannot be reassigned, similar to `const` in JavaScript. This is different from JavaScript's `let`, which creates a mutable variable. For mutable variables in Boba, you must use `var`.
-
-=======
->>>>>>> Stashed changes
 ### `var`: Mutable Variables
 
 You should only use the `var` keyword when you have a specific and necessary reason to change a value after it's been created. You should use `var` only when you explicitly need to track a state that changes over time, such as a counter in a loop, a user's accumulating score, or a value that is built up incrementally.

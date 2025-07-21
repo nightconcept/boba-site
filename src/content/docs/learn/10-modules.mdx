@@ -1,9 +1,5 @@
 ---
-<<<<<<< Updated upstream
-title: "Chapter 11: Structuring Your Project: Modules"
-=======
 title: "Importing Functions and Modules"
->>>>>>> Stashed changes
 description: "Learn how to organize your Boba code into multiple files and share code between them using the `import` keyword."
 ---
 
@@ -14,8 +10,6 @@ As your programs grow larger, it becomes important to organize your code into mu
 3.  **Use `pub` to create a public API.** To make an item accessible from other modules, you must explicitly mark it with the `pub` keyword. This makes it part of the module's public API.
 4.  **Use `import` to access public items.** The `import` keyword is the mechanism to use public items from one module in another.
 
-<<<<<<< Updated upstream
-=======
 ##Importing from the Standard Library
 
 Boba comes with a standard library of useful modules for common tasks like file system access or networking. To use a standard library module, you can import it directly by name.
@@ -28,7 +22,6 @@ import fs
 let contents = fs::read("my_file.txt")
 ```
 
->>>>>>> Stashed changes
 For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
 
 ## Importing Specific Items
@@ -72,9 +65,5 @@ pub fn say_goodbye() {
 import * as utils from "./utils.boba"
 
 utils.say_hello()
-<<<<<<< Updated upstream
-utils.say_goodbye()
-=======
 utils.say_goodbye()
 ```
->>>>>>> Stashed changes
