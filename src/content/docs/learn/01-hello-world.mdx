@@ -1,57 +1,78 @@
 ---
-title: "Hello World: Your First Program"
+title: "Hello World"
 description: "Learn how to write and run your first Boba program."
 ---
 
-Welcome to Boba! The best way to start learning any new programming language is to write a program. Let's write one that prints the classic message: "Hello, world!".
+Let's get you writing Boba code immediately. Create a file called `hello.boba`:
 
-### Step 1: Create Your File
-
-First, create a new file named `hello.boba`.
-
-### Step 2: Write the Code
-
-Open `hello.boba` in your favorite text editor and type the following lines of code:
 ```boba
 fn main() {
     print("Hello, world!")
 }
 ```
 
-This line uses Boba's built-in `print()` function to display text. The text inside the double quotes, "Hello, world!", is a `string`—a sequence of text characters. The double quotes (`"`) are crucial syntax that tells Boba where the string begins and ends. The `fn main() { ... }` block defines the main function. This is a special function in Boba that serves as the entry point—it's the very first part of your code that runs. All the code you want to execute must be placed inside its curly braces {}.
-
-### Step 3: Run Your Program
-
-Now, open your terminal, navigate to the directory where you saved `hello.boba`, and run the following command:
+Run it:
 ```sh
 boba run hello.boba
 ```
 
-The `boba` command is the main entry point to Boba's development tools. The `run` command specifically compiles your code and, if successful, immediately executes the resulting program.
-
-> **Note: Are you in the right directory?**
->
-> Your terminal needs to be open to the same folder where you saved `hello.boba`. If you see an error like `file not found`, you can use the `cd` (change directory) command to navigate to the correct location.
-
-#### Step 4: See the Output!
-
-You should see the following output in your terminal:
+Output:
 ```plaintext
 Hello, world!
 ```
 
-**Congratulations!** You have just written and run your very first Boba program. You've already used the Boba toolchain (`boba run`), the main function (`fn main`), a built-in function (`print`), and a core data type (`string`).
-## Deconstructing "Hello, World"
+## Boba Syntax Basics
 
-Let's break down the code you just wrote to understand the fundamental concepts you've already put into practice.
+Here's what you just wrote:
 
-- **`fn main() { ... }` is the Main Function**: A function is a reusable, named block of code. The main function is a special, required function that acts as the starting point for every Boba program. When you run your file, the code inside the main function's curly braces {} is what gets executed.
-- **`print()` is a Function**: For example, Boba provides the built-in `print()` function to display output. You "call" a function by writing its name followed by parentheses `()`. You can think of it like a recipe in a cookbook; you "call" the recipe by name to perform the steps within it.
-- **`"Hello, world!"` is a String**: The text you see inside the double quotes is a string—Boba's data type for representing text data. The quotes are important; they tell Boba where the string begins and ends, and anything enclosed in them is treated as a single string value by the language.
-- **`(...)` are Arguments**: Arguments are the specific pieces of information, or "inputs," that you provide to a function for it to work with. When you call a function, you "pass" arguments to it inside the parentheses. In this case, you passed the string `"Hello, world!"` to the `print()` function so it knew precisely what to display.
+- `fn main()` - Entry point function (required in all Boba programs)
+- `print()` - Built-in function for console output
+- Semicolons are optional in Boba
+- Curly braces define code blocks
 
-Understanding these three ideas—functions, strings, and arguments—is the first major step to mastering Boba.
+## Boba Program Structure
 
-### Time to Practice!
+Every Boba program needs a `main()` function as its entry point. This function tells Boba where to start executing your code. The `print()` function outputs text to the console, and semicolons are optional in Boba - you can include them or leave them out based on your preference.
 
-This is the perfect time to switch to your first set of exercises. They will challenge you to use the `print()` function and manipulate simple strings to solidify what you've just learned.
+Boba is a compiled language with static typing, meaning it checks your code for errors before running it. This catches many bugs early in development, making your programs more reliable.
+## Quick Experiments
+
+Try these modifications to get familiar with the syntax:
+
+```boba
+fn main() {
+    print("Hello, world!")
+    print("Welcome to Boba!")  // Multiple statements
+    print(42)                  // Numbers don't need quotes
+    
+    // You can also use f-strings for interpolation
+    let name = "Developer"
+    print(f"Hello, {name}!")
+}
+```
+
+## Development Workflow
+
+The `boba run` command does several things:
+1. Compiles your code to bytecode
+2. Checks for type errors
+3. Executes the program if compilation succeeds
+
+For faster iteration, you can also use:
+```sh
+boba check hello.boba  # Just compile and check types
+boba build hello.boba  # Compile to executable
+```
+
+## Time to Practice!
+
+Before moving on, try these experiments to get comfortable with Boba:
+
+1. **Change the message**: Modify the string to print your name
+2. **Add more output**: Include multiple `print()` statements
+3. **Try different data types**: Print numbers without quotes: `print(42)`
+4. **Use f-strings**: Try `print(f"Hello, {name}!")` with a variable
+
+## What's Next
+
+You've successfully set up Boba and written your first program. Next, you'll learn about variables and Boba's immutability-by-default approach. This design choice prevents many common runtime bugs by making data unchangeable unless you explicitly specify otherwise.

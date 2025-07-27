@@ -1,144 +1,218 @@
 ---
-title: "Reusing Code: Functions"
+title: "Functions"
 description: "Learn how to create reusable blocks of code in Boba with functions."
 ---
 
-Functions are blocks of code that you can name and call from other parts of your program. They are essential for organizing your code and making it reusable.
-
-## Defining and Calling Functions
-
-You define a function using the `fn` keyword. You can also specify the types of the arguments and the return value.
+Functions let you organize code into reusable blocks. Boba's function syntax is clean and includes several features that make code more reliable:
 
 ```boba
-// A simple function that takes no arguments and returns nothing.
+// Simple function
 fn say_hello() {
-  print("Hello, Boba!")
+    print("Hello, Boba!")
 }
 
-// Call the function
-say_hello()
-```
-
-### Functions with Return Values
-To have a function return a value, you must declare its type after an arrow (`->`). Inside the function, you use the `return` keyword to send the value back to the code that called it.
-
-```boba
+// Function with return value
 fn get_greeting(name: string) -> string {
-  return f"Hello, {name}!"
+    return f"Hello, {name}!"
 }
 
-let message = get_greeting("Boba")
-print(message) // Outputs: Hello, Boba!
+// Function calls
+say_hello()
+let message = get_greeting(name: "Developer")
+print(message)  // Hello, Developer!
 ```
 
-## Function Calls: Mandatory Named Arguments
+## Named Arguments Prevent Bugs
 
-A common source of subtle bugs in many languages occurs when arguments are passed to a function in the wrong order. For example, a function call like `create_user("Admin", 123)` might silently succeed when the function actually expected `(id: int, role: string)`. Boba solves this problem by requiring named arguments by default. This makes function call sites self-documenting.
-
-In Boba, all arguments at a function call site with more than one argument _must_ be called with their name, using a colon (`:`) as a separator.
+One of Boba's most valuable features is mandatory named arguments for multi-parameter functions. This eliminates a common source of bugs where arguments are passed in the wrong order:
 
 ```boba
-// This function requires named arguments.
-pub fn connect(host: string, port: int, timeout: int) { /* ... */ }
+// Multi-parameter function
+fn connect(host: string, port: int, timeout: int) {
+    print(f"Connecting to {host}:{port} (timeout: {timeout}s)")
+}
 
-// Correct call:
+// Correct: named arguments required
 connect(host: "boba.dev", port: 9000, timeout: 5000)
 
-// COMPILE ERROR: Positional arguments not allowed for this function.
+// Compile error: positional arguments not allowed
 // connect("boba.dev", 9000, 5000)
 
-
-// From the previous example, these are all allowed:
+// Single parameter functions don't need names
 say_hello()
 print("Hello, Boba!")
 get_greeting(name: "Boba")
 ```
 
-## Controlling Visibility: Public vs. Private Functions
-
-Now that you know how to define a function, it's important to understand who can call it. Boba is designed for safety and clear organization, so it has a simple rule: by default, everything you create is private.
-
-When a function is private, it means it can only be seen and used by code within the very same file where it is defined. It is completely invisible to the outside world. This is a powerful feature that lets you write internal helper functions without worrying that they will be used incorrectly by other parts of a large program.
-
-To make a function part of a file's public API so that it can be used by other files, you must explicitly mark it as public using the pub keyword at the beginning of its definition.
-
-You can think of it like building a house:
-- A private function (the default) is like a bedroom or a utility closet—it's essential for the house to work, but it's only meant to be used by the people living inside.
-- A public function (marked with pub) is like the front door or the mailbox—it's the official, designated way for guests and visitors to interact with the house from the outside.
-
-You may have noticed the pub keyword in some of the previous examples. This new understanding explains why it was there: those functions were being designed as public, reusable tools. This concept of public versus private will apply to other things you create later, such as structs and enums.
-
 ## Default Parameters
-You can make function arguments optional by providing a default value. This is done by adding `= value` after the parameter's type. If the argument is omitted in the function call, the default value is used.
+
+You can make parameters optional by providing default values. This is especially useful for configuration functions:
 
 ```boba
-fn connect(host: string, port: int = 8080, use_tls: boolean = true) {
-  print(f"Connecting to {host}:{port} (TLS: {use_tls})")
+fn connect(host: string, port: int = 8080, use_tls: bool = true) {
+    print(f"Connecting to {host}:{port} (TLS: {use_tls})")
 }
 
-connect(host: "boba.dev") // Uses default port and TLS setting
-connect(host: "boba.dev", port: 9000) // Overrides port, uses default TLS
+// Call with defaults
+connect(host: "boba.dev")  
+
+// Override specific parameters  
+connect(host: "boba.dev", port: 9000)
+connect(host: "local", port: 3000, use_tls: false)
 ```
 
-## Closures: Anonymous Functions
+## Function Visibility
 
-Besides defining named functions with fn, Boba also allows you to create closures, which are lightweight, anonymous functions you can define on the fly. Closures are powerful because you can store them in variables and pass them as arguments to other functions.
-
-You define a closure using vertical bars | for the parameters, followed by an expression.
+Boba follows the principle of "secure by default" - functions are private unless explicitly made public. This helps maintain clean APIs:
 
 ```boba
-// A closure that takes two integers and adds them.
-let add = |a: int, b: int| a + b
+// Private function (default)
+fn internal_helper() {
+    print("Only this file can call me")
+}
 
-// You can call the closure just like a regular function.
-let sum = add(2, 3)
-print(sum) // Outputs: 5
+// Public function
+pub fn calculate_score(base: int, bonus: int) -> int {
+    return base + bonus
+}
 ```
 
-This ability to treat functions as data is a cornerstone of functional programming. While it may seem simple, it unlocks incredibly expressive patterns, especially when working with lists and other collections, as you'll see in later chapters.
+## Closures (Anonymous Functions)
 
-## Chaining Functions with the Pipe Operator
+Closures are functions without names that you can create inline and store in variables. Think of them as "function literals" - just like you can write `42` for a number or `"hello"` for a string, you can write `|x| x * 2` for a function.
 
-Boba includes a special pipe operator (`|>`) to make chaining function calls more readable. This operator is purely for developer ergonomics. It transforms deeply nested calls that must be read "from the inside-out" into a linear sequence of steps that can be read "from left-to-right."
-
-To maintain clarity with the named-argument system, the pipe operator uses a placeholder token, #, to explicitly mark where the piped value should be inserted in the next function call. In cases where is only one argument, the pipe operator can be used without the placeholder token.
-
-Consider a set of functions to process text:
+### Basic Closure Syntax
 
 ```boba
+// Traditional function
+fn double(x: int) -> int {
+    return x * 2
+}
+
+// Equivalent closure
+let double = |x: int| x * 2
+
+// Both work the same way
+print(double(5))  // 10
+```
+
+### Why Use Closures?
+
+Closures excel in situations where you need a small, simple function that you'll only use once or in a specific context:
+
+```boba
+// Instead of defining a named function for simple operations
+// (Collections and their methods covered in next chapter)
+
+// Quick calculation without naming the function
+let quick_calc = |x: int| x * 2 + 1
+print(quick_calc(5))  // 11
+
+// Temporary operations
+let tax_rate = 0.08
+let add_tax = |price: float| price * (1.0 + tax_rate)
+print(add_tax(100.0))  // 108.0
+```
+
+### Closures as Function Parameters
+
+You can pass closures to functions, enabling flexible, reusable code:
+
+```boba
+// A function that takes another function as input
+fn apply_twice(operation: |int| -> int, value: int) -> int {
+    return operation(operation(value))
+}
+
+// Pass different operations
+let result1 = apply_twice(operation: |x| x * 2, value: 3)    // 12 (3*2*2)
+let result2 = apply_twice(operation: |x| x + 1, value: 5)    // 7 (5+1+1)
+
+// Or store the closure first
+let square = |x: int| x * x
+let result3 = apply_twice(operation: square, value: 3)       // 81 (3²²)
+```
+
+### Capturing Variables (The "Closure" Part)
+
+Closures can "capture" variables from their surrounding scope, making them more powerful than regular functions:
+
+```boba
+fn create_multiplier(factor: int) -> |int| -> int {
+    // This closure "closes over" the factor variable
+    return |x: int| x * factor
+}
+
+let double = create_multiplier(factor: 2)
+let triple = create_multiplier(factor: 3)
+
+print(double(5))  // 10 (5 * 2)
+print(triple(5))  // 15 (5 * 3)
+
+// Each closure remembers its own factor value
+```
+
+### When to Use Closures vs Named Functions
+
+**Use closures for:**
+- Short, simple operations
+- One-time use functions
+- Callback functions
+- Operations that depend on local context
+
+**Use named functions for:**
+- Complex logic
+- Functions used in multiple places
+- Public APIs
+- Functions that need clear documentation
+
+## Pipe Operator
+
+The pipe operator transforms nested function calls into readable left-to-right chains, making data processing pipelines much clearer:
+
+```boba
+// Helper functions
 fn trim(s: string) -> string { /* ... */ }
 fn to_uppercase(s: string) -> string { /* ... */ }
 fn emphasize(text: string) -> string { f"**{text}**" }
-fn send_email(to: string, subject: string, body: string) { /* ... */ }
-```
 
-Without the pipe operator, processing a message requires nesting the calls:
-
-
-```boba
+// Without pipe operator (nested)
 let message = "  hello world  "
-let formatted = send_email(to: "bob@boba-lang.org", subject: "Hello", body: emphasize(text: to_uppercase(s: trim(s: message))))
-// formatted is "**HELLO WORLD**"
-```
+let result = emphasize(text: to_uppercase(s: trim(s: message)))
 
-With the Hack-style pipe operator, you can express the same logic as a clear, left-to-right sequence of transformations, telling the pipe exactly which argument to use:
-
-```boba
-let message = "  hello world  "
-let formatted = message
-    |> trim(s: #)
-    |> to_uppercase(s: #)
-    |> emphasize(text: #)
-    |> send_email(to: "bob@boba-lang.org", subject: "Hello", body: #)
-
-// This is equivalent to the above, but without the placeholder token for single argument functions.
-let formatted_no_placeholder = message
+// With pipe operator (linear)
+let result = message
     |> trim()
     |> to_uppercase()
     |> emphasize()
-    |> send_email(to: "bob@boba-lang.org", subject: "Hello", body: #)
 
-// formatted and formatted_no_placeholder are both "**HELLO WORLD**"
+// For multi-parameter functions, use placeholder
+fn send_message(text: string, prefix: string) -> string {
+    return f"{prefix}: {text}"
+}
+
+let formatted = message
+    |> trim()
+    |> to_uppercase()
+    |> send_message(prefix: "LOG", text: #)
 ```
 
-This style is a cornerstone of modern functional programming and is highly encouraged in Boba for creating readable and unambiguous data processing pipelines.
+## Function Benefits
+
+Named arguments prevent bugs where parameters are passed in the wrong order, making function calls self-documenting. The `fn` keyword provides a clean, consistent way to define functions, and explicit return types help catch errors early.
+
+Boba's function system combines simplicity with safety - closures are first-class values, visibility is straightforward with just `pub` and private, and the pipe operator enables readable data transformation chains.
+
+## Time to Practice!
+
+Experiment with Boba's function features:
+
+1. **Write simple functions**: Create functions with and without return values
+2. **Try named arguments**: Write a function with multiple parameters and call it
+3. **Use default parameters**: Create a configuration function with sensible defaults
+4. **Experiment with closures**: Store a function in a variable and pass it around
+5. **Try the pipe operator**: Chain a few string processing functions together
+
+## What's Next
+
+You now understand how Boba's function system prevents common bugs through named arguments and provides powerful tools like closures and pipe operators. Next, you'll learn about operators and control flow, including Boba's readable logical operators and how `if/else` works as expressions, not just statements.

@@ -70,7 +70,7 @@ The following function, `load_config`, is a great example of this. It will read 
 fn load_config() -> Result<Config, Error> {
     // Assume `read_file` and `parse_json` are fallible functions
     // provided by Boba's standard library, imported from modules
-    // like `boba::fs` and `boba::json`.
+    // like `std:fs` and `std:json`.
     var content = read_file("config.json")?
     var config = parse_json(content)?
 

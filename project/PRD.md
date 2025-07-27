@@ -91,4 +91,137 @@ The project will follow a standard Astro and Starlight directory layout to ensur
     Formatting/Linting: Biome. biome.json will be provided.
     Key Principles: Prioritize clarity, simplicity, and accessibility in all written content. Content must be well-structured to be easily parsed by both humans and AI.
     Naming Conventions: All content files and directories should use kebab-case (e.g., get-started.mdx).
+
+8. Documentation Style Guide
+
+The Boba documentation targets junior software engineers who want to get productive quickly. The style assumes familiarity with basic programming concepts while focusing on what makes Boba unique and practical. This approach respects the reader's existing knowledge while efficiently onboarding them to Boba's specific features.
+
+### Voice and Tone Guidelines
+
+**Overall Personality**: Experienced colleague showing you a better tool
+- Confident and direct about Boba's advantages
+- Assumes programming competence
+- Focuses on practical benefits over theoretical explanations
+- Gets you coding quickly without excessive hand-holding
+
+**Target Audience**: Junior software engineers who:
+- Have CS fundamentals from school or bootcamp
+- Understand basic programming concepts (variables, functions, types)
+- Want to learn Boba efficiently without lengthy explanations
+- Prefer practical examples over detailed theory
+
+### Writing Principles
+
+#### 1. **Efficient but Clear**
+- **Skip basic programming explanations**: Don't explain what variables or functions are
+- **Focus on Boba specifics**: How Boba does things differently/better
+- **Provide context for examples**: Brief explanation of what code demonstrates
+- **Balance code and explanation**: Show syntax, then explain key concepts
+
+#### 2. **Assume Competence with Guidance**
+- **Assume technical ability**: Readers understand programming concepts
+- **Provide practical context**: Explain why features matter, not just syntax
+- **Use proper transitions**: Connect concepts and chapters smoothly
+- **Include practice sections**: Reference exercises and hands-on learning
+
+#### 3. **Practical Focus**
+- **Lead with working examples**: Show complete, runnable code
+- **Highlight practical benefits**: "This prevents runtime errors" vs "This is safer"
+- **Include common patterns**: Show idiomatic Boba from the start
+- **Connect to familiar concepts**: "Like TypeScript interfaces" or "Similar to Rust ownership"
+
+#### 4. **Consistent Technical Language**
+- **Immutable bindings**: Use "immutable" consistently, not "unchangeable"
+- **Functions vs methods**: Precise distinction based on context
+- **Error handling**: Use Result/Option terminology correctly
+- **Type system**: Use proper type theory terms when relevant
+
+### Formatting Standards
+
+#### Code Examples
+```boba
+// Good: Clear, commented, realistic examples
+fn calculate_score(base: int, bonus: int) -> int {
+    return base + bonus
+}
+
+let player_score = calculate_score(base: 100, bonus: 50)
+print(f"Your score: {player_score}")
+```
+
+#### Explanatory Text Structure
+1. **Brief intro**: What you'll learn in 1-2 sentences
+2. **Concept explanation**: The "what" and "why" 
+3. **Code example**: Practical demonstration
+4. **Key takeaway**: Reinforce the main point
+
+#### Voice Examples
+
+**✅ Good - Direct and Practical**:
+> "Boba functions use named arguments for multi-parameter calls, preventing argument order bugs. Here's the syntax:"
+
+**❌ Too Explanatory**:
+> "Functions are essential building blocks that let you package up code for reuse, making your programs more organized and easier to maintain. Let's learn how to define your first function:"
+
+**❌ Too Academic**:
+> "Function definitions constitute a fundamental abstraction mechanism enabling code reuse through encapsulation of executable statements."
+
+### Content Structure Guidelines
+
+#### Chapter Organization
+1. **Syntax first**: Show the code immediately
+2. **Brief explanation**: What the code demonstrates and why it matters
+3. **Key differences**: How this differs from other languages
+4. **Practical examples**: Real-world usage patterns
+5. **Practice section**: Reference to hands-on exercises ("Time to Practice")
+6. **Smooth transition**: Connect to next chapter's concepts
+
+#### Example Progression
+- **Complete examples**: Show full, runnable programs
+- **Idiomatic patterns**: Demonstrate best practices from the start
+- **Realistic use cases**: Web servers, CLI tools, data processing
+- **Performance considerations**: When relevant to junior engineers
+
+#### Error Handling in Examples
+- **Show compiler errors**: Include actual error messages
+- **Demonstrate debugging**: Quick troubleshooting techniques
+- **Common mistakes**: Patterns junior engineers typically encounter
+- **Error recovery**: How to fix and move forward
+
+### Specific Style Rules
+
+#### Contractions and Informality
+- **Use contractions moderately**: "You'll find", "we're going to", "it's important"
+- **Avoid excessive contractions**: Not "should've", "would've", "could've"
+- **Stay professional in technical sections**: Formal tone for reference material
+
+#### Technical Precision
+- **Be accurate about language behavior**: No hand-waving on important details
+- **Use correct terminology**: Don't simplify at the cost of accuracy
+- **Provide complete examples**: Code that actually compiles and runs
+- **Include edge cases**: Address common beginner confusion
+- **Mandatory explanatory text**: Every concept must have 1-2 paragraphs explaining what's happening before or alongside code examples
+- **Junior engineer context**: Assume basic programming familiarity but explain Boba-specific behavior and design decisions without referencing other languages explicitly
+- **Avoid language comparisons**: Don't assume knowledge of specific languages; explain features on their own merits
+
+#### Encouragement Without Condescension  
+- **Acknowledge difficulty**: "This concept can be tricky"
+- **Provide reassurance**: "With practice, this becomes second nature"
+- **Avoid diminutives**: Not "just", "simply", "obviously"
+- **Respect reader intelligence**: Don't over-explain basic programming concepts
+
+### Review Checklist
+
+Before publishing any documentation page, verify:
+
+- [ ] **Voice consistency**: Conversational but authoritative throughout
+- [ ] **Technical accuracy**: All code examples compile and run correctly
+- [ ] **Progressive complexity**: Concepts build logically from simple to advanced
+- [ ] **Motivation provided**: Reader understands why each concept matters
+- [ ] **Terminology consistency**: Uses established definitions throughout
+- [ ] **Examples are realistic**: Code demonstrates practical usage patterns
+- [ ] **Encouraging tone**: Supportive without being patronizing
+- [ ] **Clear transitions**: Smooth flow between sections and concepts
+
+This style guide ensures the Boba documentation maintains a consistent, approachable voice that serves both newcomers learning their first programming language and experienced developers evaluating Boba for their next project.
   

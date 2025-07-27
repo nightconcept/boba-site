@@ -1,79 +1,312 @@
 ---
-title: "Repeating Actions: for and while Loops"
-description: "Learn how to repeat actions in your code using for and while loops."
+title: "Repetition and Iteration: Loops"
+description: "Learn how to repeat actions efficiently using for and while loops in Boba."
 ---
 
-Loops are used to execute a block of code multiple times. Boba provides two primary loops: `for` for iterating over sequences and `while` for looping as long as a condition is true.
+Loops handle repetitive tasks efficiently - one of the most common needs in programming. Instead of copying and pasting code or writing the same logic repeatedly, loops let you execute blocks of code multiple times with different data.
 
-#### The `for` Loop: The Main Iteration Tool
+Boba provides two main loop types: `for` loops for iterating over known collections or ranges, and `while` loops for continuing until a condition changes.
 
-The `for` loop is Boba's most powerful and common loop. It can iterate over a collection of items or a range of numbers.
+## The for Loop: Your Primary Iteration Tool
 
-**1. Iterating Over Collections** This is the idiomatic way to work with every item in a `list` or `map`.
+The `for` loop handles most repetitive tasks. It works with collections (lists, maps) and number ranges, making it versatile for different iteration patterns.
 
-```boba
-let ingredients: List<string> = ["healing potion", "sword", "shield"]
+### Iterating Over Collections
 
-// The `for...in` loop will go through each item in the list.
-for item in ingredients {
-  print(f"Player inventory contains: {item}")
-}
-```
+Iterating over collections is where Boba's `for` loops really shine compared to traditional C-style loops. Instead of managing indices, bounds checking, and potential off-by-one errors, you work directly with the data itself. This approach eliminates an entire class of bugs that plague C programs and makes your code more readable than Python's `for i in range(len(list))` patterns.
 
-**2. Iterating Over a Range of Numbers** To repeat an action a specific number of times, you can use a range. A range is created with the `..` (exclusive) or `..=` (inclusive) operator. A range is a temporary sequence of numbers created on-the-fly, specifically for the purpose of iteration.
+The most common use of `for` loops is processing every item in a collection, where Boba handles all the iteration mechanics automatically:
 
 ```boba
-// A range from 0 up to, but not including, 5 (0, 1, 2, 3, 4).
-// This will run 5 times.
-for i in 0..5 {
-  print(f"Executing task {i}...")
-}
+let scores = [88, 92, 76, 94, 85]
 
-// An inclusive range from 1 up to, and including, 3.
-for i in 1..=3 {
-  print(f"This is message number {i}.")
-}
-// Output:
-// This is message number 1.
-// This is message number 2.
-// This is message number 3.
-```
-
-**3. Iterating Over a Map's Key-Value Pairs**
-
-To iterate over a map, you can use the `.items()` method to get both the key and the value for each entry.
-
-```boba
-let player_skills = {"archery": 5, "magic": 3}
-
-for key, value in player_skills.items() {
-  print(f"Skill: {key}, Level: {value}")
-}
-```
-
-#### The `while` Loop
-
-The while loop continues to execute a block of code as long as a specified condition remains true. You should use a while loop when you don't know ahead of time how many times you need to loop.
-```boba
-var countdown = 3
-
-    // Loop as long as countdown is greater than 0.
-    while countdown > 0 {
-      print(f"{countdown}...")
-      countdown = countdown - 1 // Decrement the counter.
+// Process each score in the list
+for score in scores {
+    if score >= 90 {
+        print(f"Excellent: {score}")
+    } else if score >= 80 {
+        print(f"Good: {score}")
+    } else {
+        print(f"Needs improvement: {score}")
     }
-
-    print("Liftoff!")
-    // Output:
-    // 3...
-    // 2...
-    // 1...
-    // Liftoff!
+}
 ```
 
-> **A Word of Caution**
-> Since a `while` loop's continuation depends on a condition you manage manually, you are responsible for ensuring the condition will eventually become `false` to prevent an infinite loop.
+This pattern replaces manual indexing and eliminates off-by-one errors common in other languages. Boba handles the iteration mechanics so you focus on the logic inside the loop.
 
-#### **Time to Practice!**
+### Range-Based Iteration
 
-Iteration is fundamental to programming. Your next exercises will have you using `for` and `while` loops to process collections and repeat actions, solidifying your understanding of how to control program flow.
+Range-based iteration replaces the verbose C-style `for(int i = 0; i < n; i++)` loops with clean, expressive syntax. Boba's ranges are lazy-evaluated, meaning they don't create arrays in memory - they generate numbers on-demand. This makes them memory-efficient even for large ranges, unlike creating lists of numbers in some other languages.
+
+When you need to repeat an action a specific number of times, ranges provide the most straightforward approach:
+
+```boba
+// Exclusive range: 0, 1, 2, 3, 4 (5 iterations)
+for i in 0..5 {
+    print(f"Processing step {i}")
+}
+
+// Inclusive range: 1, 2, 3, 4, 5 (5 iterations)
+for count in 1..=5 {
+    print(f"Countdown: {count}")
+}
+
+// Common pattern: building collections
+var squared_numbers = []
+for n in 1..=10 {
+    squared_numbers.push(n * n)
+}
+print(squared_numbers)  // [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+```
+
+Ranges are generated on-demand, making them memory-efficient even for large sequences.
+
+### Iterating Over Maps
+
+Maps provide an `.items()` method that yields key-value pairs for iteration:
+
+```boba
+let inventory = {"sword": 1, "potion": 5, "gold": 247}
+
+// Access both keys and values
+for item, quantity in inventory.items() {
+    if quantity > 1 {
+        print(f"{quantity} {item}s")
+    } else {
+        print(f"{quantity} {item}")
+    }
+}
+
+// If you only need keys or values
+for item in inventory.keys() {
+    print(f"Have: {item}")
+}
+
+for amount in inventory.values() {
+    print(f"Quantity: {amount}")
+}
+```
+
+### Advanced Iteration with Destructuring
+
+Destructuring in loops is a modern feature that might be unfamiliar if you're coming from C or older Python versions. Instead of accessing tuple elements by index (`item[0]`, `item[1]`), you can extract values directly into named variables. This makes code more readable and eliminates the mental overhead of remembering what each index represents.
+
+This feature is particularly powerful when working with collections containing tuples or structured data, as it lets you work with meaningful variable names rather than array indices:
+
+```boba
+let coordinates = [(0, 0), (10, 20), (5, 15)]
+
+// Destructure tuples directly in the loop
+for x, y in coordinates {
+    let distance = math.sqrt(x * x + y * y)
+    print(f"Point ({x}, {y}) is {distance} units from origin")
+}
+
+// Works with maps too when values are structured
+let players = {"alice": (level: 10, score: 850), "bob": (level: 8, score: 720)}
+for name, (level, score) in players.items() {
+    print(f"{name}: Level {level}, Score {score}")
+}
+```
+
+## The while Loop: Condition-Based Repetition
+
+`while` loops handle scenarios where the number of iterations depends on changing conditions rather than a predetermined count. This is fundamentally different from `for` loops - you're not iterating over data, you're continuing until some state changes. Think of scenarios like reading user input until they type "quit", retrying network connections until success, or processing data until you reach a termination condition.
+
+Use `while` loops when you don't know in advance how many iterations you'll need, but have a clear stopping condition that will eventually become false:
+
+```boba
+// Finding a condition
+var guess = 50
+let target = 42
+
+while guess != target {
+    if guess > target {
+        guess = guess - 1
+        print(f"Too high, trying {guess}")
+    } else {
+        guess = guess + 1
+        print(f"Too low, trying {guess}")
+    }
+}
+print(f"Found target: {target}")
+```
+
+### Practical while Loop Patterns
+
+```boba
+// Processing until input meets criteria
+import std:io
+
+var user_input = ""
+while user_input != "quit" {
+    user_input = io.input("Enter command (or 'quit' to exit): ")
+    if user_input == "help" {
+        print("Available commands: help, status, quit")
+    } else if user_input == "status" {
+        print("System is running normally")
+    }
+}
+
+// Accumulating until threshold
+var total = 0
+var current = 1
+while total < 100 {
+    total = total + current
+    current = current + 1
+    print(f"Total: {total}")
+}
+print(f"Stopped at total: {total}")
+```
+
+### Loop Safety and Infinite Loops
+
+Infinite loops are one of the most common bugs in programming, especially for developers coming from C where loop conditions can be subtle. Unlike `for` loops that have built-in termination, `while` loops put the responsibility on you to ensure progress toward the exit condition. This requires careful thought about what variables the condition depends on and how they change within the loop.
+
+The key principle is ensuring your loop body always makes progress toward the termination condition. Always ensure your `while` condition can eventually become false:
+
+```boba
+// DANGEROUS: This loop never stops
+// var x = 1
+// while x > 0 {
+//     x = x + 1  // x keeps growing, never becomes <= 0
+// }
+
+// SAFE: Condition will eventually be false
+var retries = 3
+while retries > 0 {
+    print(f"Attempting connection... ({retries} retries left)")
+    // ... connection logic here ...
+    retries = retries - 1  // Ensures loop will terminate
+}
+```
+
+## Loop Control: break and continue
+
+Loop control statements let you modify the normal flow of iteration without restructuring your entire loop logic. `break` immediately exits the loop (useful for early termination when you find what you're looking for), while `continue` skips the rest of the current iteration and moves to the next one (useful for filtering out unwanted items during processing).
+
+These control statements are particularly valuable for search operations and data validation scenarios where you don't want to process every element unnecessarily. Control loop execution with `break` (exit loop) and `continue` (skip to next iteration):
+
+```boba
+// Finding first match
+let numbers = [2, 4, 7, 8, 10, 13]
+var first_odd = 0
+
+for num in numbers {
+    if num % 2 == 1 {  // If odd
+        first_odd = num
+        break  // Exit loop immediately
+    }
+}
+print(f"First odd number: {first_odd}")
+
+// Skipping invalid data
+let scores = [85, -1, 92, 0, 78, -5, 94]
+var valid_count = 0
+
+for score in scores {
+    if score <= 0 {
+        continue  // Skip to next iteration
+    }
+    print(f"Valid score: {score}")
+    valid_count = valid_count + 1
+}
+print(f"Found {valid_count} valid scores")
+```
+
+## Common Loop Patterns
+
+### Processing with Index
+
+When you need both the item and its position:
+
+```boba
+let items = ["apple", "banana", "cherry"]
+
+// Manual indexing (avoid when possible)
+for i in 0..items.len() {
+    print(f"Item {i}: {items[i]}")
+}
+
+// Better: Use enumerate() when available in collections
+// (This may be added to Boba's standard library)
+```
+
+### Accumulation Patterns
+
+```boba
+// Sum calculation
+let scores = [85, 92, 78, 96, 88]
+var total = 0
+
+for score in scores {
+    total = total + score
+}
+let average = total / scores.len()
+print(f"Average score: {average}")
+
+// String building
+let words = ["Boba", "is", "awesome"]
+var sentence = ""
+
+for word in words {
+    sentence = sentence + word + " "
+}
+print(sentence.trim())  // "Boba is awesome"
+```
+
+### Filtering and Transformation
+
+```boba
+// Building new collections based on conditions
+let all_scores = [65, 78, 92, 45, 88, 91, 73]
+var passing_scores = []
+
+for score in all_scores {
+    if score >= 70 {
+        passing_scores.push(score)
+    }
+}
+print(f"Passing scores: {passing_scores}")
+
+// Transformation during iteration
+let celsius_temps = [0, 20, 30, 40]
+var fahrenheit_temps = []
+
+for c in celsius_temps {
+    let f = (c * 9 / 5) + 32
+    fahrenheit_temps.push(f)
+}
+print(f"Fahrenheit: {fahrenheit_temps}")
+```
+
+## Key Differences from Other Languages
+
+**From JavaScript:**
+- No `for (let i = 0; i < arr.length; i++)` verbose syntax
+- Range syntax (`0..5`) more concise than manual indexing
+- Destructuring works directly in loop headers
+
+**From Python:**
+- Similar `for item in collection` syntax
+- Range syntax uses `..` instead of `range()`
+- Static typing prevents runtime iteration errors
+
+**From Java/C#:**
+- No verbose `for (Type item : collection)` syntax
+- Enhanced for loops are the default, not an enhancement
+- No need for explicit iterators or index management
+
+## Time to Practice!
+
+Loops are fundamental to processing data efficiently. Experiment with these concepts:
+
+1. **Basic iteration**: Loop through lists and maps with different data types
+2. **Range patterns**: Try both exclusive (`..`) and inclusive (`..=`) ranges
+3. **Conditional processing**: Use `if` statements inside loops to filter data
+4. **Accumulation**: Build totals, averages, or new collections from existing data
+5. **Early termination**: Practice using `break` and `continue` appropriately
+
+## What's Next
+
+You now understand how to repeat actions efficiently using loops. Whether iterating over collections with `for` loops or continuing until conditions change with `while` loops, you can handle repetitive tasks cleanly. Next, you'll learn about enums - Boba's way of defining types that can be one of several distinct variants.

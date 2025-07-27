@@ -112,7 +112,7 @@
 				},
 				{
 					"name": "support.type.primitive",
-					"match": "\\b(string|int|float|function|boolean|table|void)\\b"
+					"match": "\\b(string|int|float|function|bool|table|void)\\b"
 				}
 			]
 		},

@@ -16,10 +16,10 @@ Boba comes with a standard library of useful modules for common tasks like file 
 
 ```boba
 // The compiler knows `fs` is a built-in standard library module.
-import fs
+import std:fs
 
 // This brings the `fs` namespace into scope.
-let contents = fs::read("my_file.txt")
+let contents = fs.read("my_file.txt")
 ```
 
 For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.

@@ -24,7 +24,7 @@ pub fn process_file(path: string) -> Result<string, Error> {
     var data = file.read_all()?
     if data.is_empty() {
         // We can just return. `defer file.close()` will run automatically.
-        return Err({ message = "File is empty" })
+        return Err({ message: "File is empty" })
     }
 
     // `defer file.close()` will also run automatically before this return.

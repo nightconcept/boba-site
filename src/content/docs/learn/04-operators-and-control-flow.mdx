@@ -1,246 +1,172 @@
 ---
-title: "Operators and Control Flow"
+title: "Operators & Control Flow"
 description: "Learn how to manipulate data using operators and control the flow of your program with if/else statements."
 ---
 
-Now that you know about variables and data types, let's look at how to manipulate them using operators and control the flow of your program. Operators are special symbols that perform operations on your data. We'll then see how to use the results of those operations to make decisions with if/else statements.
+Boba provides familiar operators with some improvements for readability and safety. Most operators work exactly as you'd expect from other languages, with a few key differences that make code more readable.
 
 ## Arithmetic Operators
 
-Boba provides a standard set of arithmetic operators for performing mathematical calculations.
-
-| Operator | Description      | Example                |
-| :------- | :--------------- | :--------------------- |
-| `+`      | Addition         | `5 + 2` results in `7`   |
-| `-`      | Subtraction      | `5 - 2` results in `3`   |
-| `*`      | Multiplication   | `5 * 2` results in `10`  |
-| `/`      | Division         | `5.0 / 2.0` results in `2.5`, `5 / 2` results in `2` |
-| `%`      | Modulo (remainder) | `5 % 2` results in `1`   |
+Standard mathematical operations with predictable integer division:
 
 ```boba
-let score = 10
-let bonus = score * 2
-let total_score = score + bonus
-let final_level = total_score / 10
+let a = 10
+let b = 3
 
-print(f"Final level is: {final_level}") // Outputs: Final level is: 3
-// When dividing two integers, Boba performs integer division, which
-// discards any fractional remainder and returns an integer.
+let sum = a + b      // 13
+let diff = a - b     // 7
+let product = a * b  // 30
+let quotient = a / b // 3 (integer division)
+let remainder = a % b // 1
+
+// Float division
+let precise = 10.0 / 3.0  // 3.333...
 ```
 
 ## Comparison Operators
 
-Comparison operators are used to compare two values. They always result in a `boolean` (`true` or `false`) value.
-
-| Operator | Description          | Example               |
-| :------- | :------------------- | :-------------------- |
-| `==`     | Equal to             | `5 == 5` is `true`    |
-| `!=`     | Not equal to         | `5 != 5` is `false`   |
-| `<`      | Less than            | `5 < 8` is `true`     |
-| `>`      | Greater than         | `5 > 8` is `false`    |
-| `<=`     | Less than or equal   | `5 <= 5` is `true`    |
-| `>=`     | Greater than or equal| `5 >= 8` is `false`   |
+All comparison operations return boolean values for use in conditionals:
 
 ```boba
 let score = 85
-let is_passing = score >= 60
 
-print(f"Is the student passing? {is_passing}") // Outputs: Is the student passing? true
-```
+// Basic comparisons
+let passing = score >= 60        // true
+let perfect = score == 100       // false
+let needs_work = score < 70      // false
 
-## The `if` Statement
-
-The `if` statement executes a block of code only if a specified condition is `true`.
-
-```boba
-var temperature: float = 30.0
-
-if temperature > 25 {
-  print("It's a hot day!")
-}
-```
-
-## The `else` Statement
-
-You can use the `else` statement to provide a block of code to execute if the `if` condition is `false`.
-
-```boba
-var score: int = 85
-
-if score >= 60 {
-  print("You passed!")
-} else {
-  print("You failed. Better luck next time!")
-}
-```
-
-## The `else if` Statement
-
-To handle multiple conditions, you can chain `if` statements with `else if`.
-
-```boba
-var hunger = "hungry"
-var thirst = "thirsty"
-
-if hunger == "hungry" and thirst == "thirsty" {
-  print("You are hungry and thirsty.")
-} else if hunger == "hungry" {
-  print("You are only hungry.")
-} else if thirst == "thirsty" {
-  print("You are only thirsty.")
-} else {
-  print("You are neither hungry nor thirsty.")
+// Results are boolean values
+if passing {
+    print("Student passed!")
 }
 ```
 
 ## Logical Operators
 
-Logical operators are used to combine boolean values.
-
-| Operator | Description | Example                               |
-| :------- | :---------- | :------------------------------------ |
-| `and`    | Logical AND | `true and false` results in `false` |
-| `or`     | Logical OR  | `true or false` results in `true`   |
-| `not`    | Logical NOT | `not true` results in `false`       |
+Boba uses English words for logical operations, making code more readable than symbolic operators:
 
 ```boba
 let has_key = true
-let is_door_locked = false
+let door_locked = false
 
-if has_key and not is_door_locked {
-  print("You can enter the room.") // This will print.
+// Logical operations  
+let can_enter = has_key and not door_locked  // true
+let stuck_outside = not has_key or door_locked  // false
+
+// Short-circuit evaluation
+if has_key and door_locked {
+    print("Have key but door is locked")
 }
+```
+
+## Control Flow: if/else
+
+Boba's `if/else` statements work as both statements and expressions, letting you assign their results to variables:
+
+```boba
+let temperature = 30.0
+
+if temperature > 25 {
+    print("It's hot!")
+} else if temperature > 15 {
+    print("Nice weather")
+} else {
+    print("It's cold")
+}
+
+// if/else as expressions
+let status = if score >= 60 { "pass" } else { "fail" }
 ```
 
 ## Bitwise Operators
 
-Bitwise operators allow you to manipulate the individual bits (1s and 0s) that make up an `int`. This is useful for efficiently storing sets of flags, working with certain data formats, and performance-critical code.
-
-| Operator | Description | Example |
-| :------- | :---------- | :------ |
-| `&`      | Bitwise AND | `5 & 3` results in `1` |
-| `\|`     | Bitwise OR  | `5 \| 3` results in `7` |
-| `^`      | Bitwise XOR | `5 ^ 3` results in `6` |
-| `~`      | Bitwise NOT | `~5` flips all bits |
-| `<<`     | Left Shift  | `4 << 1` results in `8` |
-| `>>`     | Right Shift | `8 >> 1` results in `4` |
-
-### Example: Player Permissions
-
-A common use case is storing multiple boolean flags in a single integer:
+For low-level operations and flag manipulation:
 
 ```boba
-// Each permission corresponds to a single bit
-let CAN_INVITE = 1   // Binary: ...0001
-let CAN_KICK = 2     // Binary: ...0010  
-let CAN_PROMOTE = 4  // Binary: ...0100
+let flags = 0b1010_0101
+let mask = 0b1111_0000
 
-// Grant multiple permissions using OR
-let player_perms = CAN_INVITE | CAN_KICK
-// Result: 3 (Binary: ...0011)
+// Bitwise operations
+let and_result = flags & mask     // 0b1010_0000
+let or_result = flags | mask      // 0b1111_0101
+let xor_result = flags ^ mask     // 0b0101_0101
+let not_result = ~flags           // Inverts all bits
 
-// Check for specific permission using AND
-if player_perms & CAN_KICK != 0 {
-  print("Player can kick members")
+// Shifts for fast multiplication/division by powers of 2
+let doubled = flags << 1          // Multiply by 2
+let halved = flags >> 1           // Divide by 2
+```
+
+### Example: Permission Flags
+
+```boba
+// Define permissions as bit flags
+let CAN_READ = 1     // 0b001
+let CAN_WRITE = 2    // 0b010  
+let CAN_EXECUTE = 4  // 0b100
+
+// Combine permissions
+let user_perms = CAN_READ | CAN_WRITE  // 0b011
+
+// Check permissions
+if user_perms & CAN_WRITE != 0 {
+    print("User can write")
 }
 
-if player_perms & CAN_PROMOTE == 0 {
-  print("Player cannot promote members")
+if user_perms & CAN_EXECUTE == 0 {
+    print("User cannot execute")
 }
 ```
 
-### Shift Operators for Fast Math
+## Multi-line Conditions
 
-Left and right shifts can be used for fast multiplication and division by powers of 2:
-
-```boba
-let x = 4  // Binary: 0100
-
-// Left shift by 1 (multiplies by 2)
-print(x << 1)  // Outputs: 8 (Binary: 1000)
-
-// Right shift by 2 (divides by 4)  
-print(x >> 2)  // Outputs: 1 (Binary: 0001)
-```
-
-### Writing Readable Multi-Line Conditions
-
-As you combine logical operators like and and or, your if statements can become long and hard to read on a single line. Boba has a simple, robust rule for formatting these complex conditions: wrap the entire expression in parentheses ().
-
-This approach eliminates ambiguity for the human reader, the Boba parser, and any analysis tools. It allows you to break lines freely within the parentheses, and the boba fmt tool can automatically format it for maximum readability. This same principle applies to any long expression, not just if statements.
+For complex conditions, wrap in parentheses:
 
 ```boba
-let has_key = true
-let is_leader = false
 let has_permission = true
-let world_level = 10
+let is_authenticated = true
+let rate_limit_ok = true
 
-// This is the idiomatic way to format a long condition in Boba.
-// The entire expression is wrapped in parentheses.
-if (has_key and
-   (is_leader or has_permission) and
-    world_level > 5
-   ) {
-     print("Access granted!")
+// Clean formatting for complex conditions
+if (has_permission and 
+    is_authenticated and 
+    rate_limit_ok) {
+    print("Access granted")
 }
 ```
 
-This technique of using delimiters—(), [], and {}—to group multi-line statements is a core principle in Boba for writing clean, predictable, and verifiable code. Note the vertical alignment of the operators. This style will be enforced by the formatter, but it is suggested you follow it for readability.
+## Collection Containment
 
-### Checking for Containment with 'in'
-
-Boba also has collection types for grouping data, like lists of items or maps of key-value pairs. The in operator provides a highly readable way to check if a value exists within a collection. We will cover collections in detail in a later chapter.
+The `in` operator provides a clean way to check membership in collections:
 
 ```boba
-let inventory: List<string> = ["sword", "shield", "potion"]
+// Note: Collections covered in detail next chapter
+let valid_statuses = ["pending", "approved", "rejected"]
+let current_status = "approved"
 
-// Check if "shield" is in our inventory list.
-if "shield" in inventory {
-  print("You are well-defended!")
-}
-
-let player_skills = {"archery": 5, "magic": 3}
-
-// For maps, `in` checks if the key exists.
-if "stealth" in player_skills {
-  print("You can sneak.")
+if current_status in valid_statuses {
+    print("Valid status")
 } else {
-  print("You are not a sneaky person.") // This will print.
+    print("Invalid status") 
 }
 ```
 
-### Using if/else as an Expression
+## Operator Design Principles
 
-In Boba, `if/else` blocks are expressions. The final expression in the chosen branch is the value that the entire block evaluates to. This value can then be assigned to a variable or returned from a function.
+Boba uses English words for logical operations (`and`, `or`, `not`) to make code more readable than symbolic operators. Integer division is the default behavior, with explicit float types needed for decimal results.
 
-```boba
-let health: int = 75
+The `in` operator provides clean membership testing for collections, and `if/else` expressions let you assign conditional values directly to variables.
 
-// The entire if/else expression evaluates to a single value.
-let status: string = if health > 50 { "Healthy" } else { "Injured" }
+## Time to Practice!
 
-print(f"Player status: {status}") // Outputs: Player status: Healthy
-```
+Experiment with Boba's operators and control flow:
 
-This concept isn't limited to single lines. Full `if/else` blocks are also expressions. This allows for very clean and readable logic without temporary mutable variables.
+1. **Try arithmetic operations**: Practice with integer vs. float division
+2. **Write conditionals**: Use comparison operators in `if/else` statements
+3. **Use logical operators**: Combine conditions with `and`, `or`, and `not`
+4. **Experiment with expressions**: Use `if/else` as expressions to assign values
+5. **Play with bitwise operations**: Try the permission flags example
 
-```boba
-let player_health = 75
+## What's Next
 
-// Note: the \n is used to print the string on a new line.
-let armor_message: string = if player_health == 100 {
-    "Player is at full health.\nWearing pristine, shining armor."
-} else if player_health > 50 {
-    "Wearing battle-worn, dented armor."
-} else {
-    "Wearing cracked and broken armor."
-}
-
-print(armor_message) // Outputs: Wearing battle-worn, dented armor.
-```
-
-This example showcases a fundamental feature of Boba: code blocks are expressions. The last line inside a block, if it doesn't have a semicolon, becomes the value that the block evaluates to.
-
-#### **Time to Practice!**
-
-You now have the tools to manipulate data and control the flow of your programs. The next set of exercises will test your knowledge of all these operators and conditional logic to solve small challenges. 
+You now understand Boba's operator system and control flow mechanisms. The English-word logical operators make code more readable, and treating `if/else` as expressions enables more functional programming patterns. Next, you'll learn about collections - lists, maps, and tuples - which let you work with multiple related values efficiently.
