@@ -112,6 +112,57 @@ if has_key and not is_door_locked {
 }
 ```
 
+## Bitwise Operators
+
+Bitwise operators allow you to manipulate the individual bits (1s and 0s) that make up an `int`. This is useful for efficiently storing sets of flags, working with certain data formats, and performance-critical code.
+
+| Operator | Description | Example |
+| :------- | :---------- | :------ |
+| `&`      | Bitwise AND | `5 & 3` results in `1` |
+| `\|`     | Bitwise OR  | `5 \| 3` results in `7` |
+| `^`      | Bitwise XOR | `5 ^ 3` results in `6` |
+| `~`      | Bitwise NOT | `~5` flips all bits |
+| `<<`     | Left Shift  | `4 << 1` results in `8` |
+| `>>`     | Right Shift | `8 >> 1` results in `4` |
+
+### Example: Player Permissions
+
+A common use case is storing multiple boolean flags in a single integer:
+
+```boba
+// Each permission corresponds to a single bit
+let CAN_INVITE = 1   // Binary: ...0001
+let CAN_KICK = 2     // Binary: ...0010  
+let CAN_PROMOTE = 4  // Binary: ...0100
+
+// Grant multiple permissions using OR
+let player_perms = CAN_INVITE | CAN_KICK
+// Result: 3 (Binary: ...0011)
+
+// Check for specific permission using AND
+if player_perms & CAN_KICK != 0 {
+  print("Player can kick members")
+}
+
+if player_perms & CAN_PROMOTE == 0 {
+  print("Player cannot promote members")
+}
+```
+
+### Shift Operators for Fast Math
+
+Left and right shifts can be used for fast multiplication and division by powers of 2:
+
+```boba
+let x = 4  // Binary: 0100
+
+// Left shift by 1 (multiplies by 2)
+print(x << 1)  // Outputs: 8 (Binary: 1000)
+
+// Right shift by 2 (divides by 4)  
+print(x >> 2)  // Outputs: 1 (Binary: 0001)
+```
+
 ### Writing Readable Multi-Line Conditions
 
 As you combine logical operators like and and or, your if statements can become long and hard to read on a single line. Boba has a simple, robust rule for formatting these complex conditions: wrap the entire expression in parentheses ().

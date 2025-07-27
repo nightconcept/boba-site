@@ -1,0 +1,128 @@
+---
+title: "Generics"
+description: "Learn about generic types and functions in Boba for writing reusable, type-safe code"
+---
+
+Generics allow you to write code that works with different types while maintaining type safety. Instead of writing separate functions for each type, you can write one generic function that works with many types.
+
+## Basic Generic Functions
+
+Define generic functions using angle brackets with type parameters:
+
+```boba
+fn get_first<T>(items: List<T>) -> T {
+    return items[0]
+}
+
+// Works with different types
+let numbers = [1, 2, 3]
+let first_number = get_first(numbers)  // Returns int
+
+let names = ["Alice", "Bob", "Charlie"]  
+let first_name = get_first(names)      // Returns string
+```
+
+## Generic Types
+
+Boba has several built-in generic types:
+
+```boba
+// Lists with specific element types
+let numbers: List<int> = [1, 2, 3, 4]
+let words: List<string> = ["hello", "world"]
+
+// Maps with key and value types  
+let scores: Map<string, int> = {"alice": 100, "bob": 85}
+
+// Tuples with mixed types
+let point: (int, int) = (10, 20)
+let record: (string, int, bool) = ("Alice", 25, true)
+```
+
+## Generic Structs
+
+You can create your own generic types:
+
+```boba
+struct Container<T> {
+    value: T
+}
+
+// Create containers for different types
+let int_container = Container{ value: 42 }
+let string_container = Container{ value: "hello" }
+```
+
+## Generic Enums
+
+Enums can also be generic:
+
+```boba
+enum Result<T, E> {
+    Ok(T),
+    Err(E)
+}
+
+let success: Result<int, string> = Result.Ok(42)
+let failure: Result<int, string> = Result.Err("Something went wrong")
+```
+
+## Type Inference
+
+Boba can often infer generic types from context:
+
+```boba
+// Type inferred from the list contents
+let numbers = [1, 2, 3]        // List<int>
+let mixed = (42, "hello")      // (int, string)
+
+// Type inferred from function arguments
+fn identity<T>(value: T) -> T {
+    return value
+}
+
+let result = identity(42)      // T inferred as int
+```
+
+## Generic Constraints
+
+You can constrain generic types (though this is an advanced feature):
+
+```boba
+// T must be a specific type or implement certain traits
+fn process<T: Comparable>(value: T) -> T {
+    // Implementation here
+    return value
+}
+```
+
+## Working with Option and Result
+
+Two important generic types you'll use frequently:
+
+```boba
+import std:test
+
+// Option<T> represents a value that might not exist
+let maybe_number: Option<int> = Some(42)
+let no_number: Option<int> = None
+
+// Result<T, E> represents success or failure
+let success: Result<int, string> = Ok(100)
+let error: Result<int, string> = Err("Failed to parse")
+
+// Use pattern matching with generic types
+match maybe_number {
+    Some(value) => print(f"Got: {value}"),
+    None => print("No value")
+}
+```
+
+## Best Practices
+
+1. **Use descriptive type parameter names**: `T` for generic types, `K` and `V` for map keys/values
+2. **Prefer type inference** when the compiler can figure it out
+3. **Be explicit with types** when it improves code clarity
+4. **Use generics** to avoid code duplication while maintaining type safety
+
+Generics make your code more reusable and help catch type errors at compile time rather than runtime.

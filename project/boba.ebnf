@@ -1,0 +1,299 @@
+(*
+  Boba Language Grammar in EBNF
+  It describes the syntactic structure of the Boba programming language.
+
+  Conventions used:
+  - `rule = definition ;`      : Rule definition
+  - `"terminal"`                : Literal terminal symbol
+  - `[ item ]`                  : Optional item (0 or 1)
+  - `{ item }`                  : Repetition of item (0 or more)
+  - `( item1 | item2 )`         : Grouping of alternatives
+  - `item1, item2`              : Sequence
+  - `(* comment *)`             : Comment
+  - `rule+ = rule, { rule }`    : 1 or more repetitions (shorthand)
+
+  Note: Whitespace and comments are generally allowed between any tokens.
+  Comments (line_comment, doc_comment, module_comment) are allowed anywhere.
+*)
+
+(* --- Comments --- *)
+line_comment = "//", { any_character_except_newline } ;
+doc_comment = "///", { any_character_except_newline } ;
+module_comment = "//!", { any_character_except_newline } ;
+
+(* --- Top-Level Program Structure --- *)
+program = { top_level_item } ;
+top_level_item =
+    import_statement
+  | { attribute }, [ visibility ], ( function_definition | struct_definition | enum_definition | impl_block | let_statement, [ semicolon ] | var_statement, [ semicolon ] )
+  | loop_statement
+  | expression_statement, [ semicolon ]
+;
+visibility = "pub" ;
+attribute = "#", "[", attribute_content, "]" ;
+attribute_content = 
+    test_attribute 
+  | should_panic_attribute 
+  | custom_attribute 
+;
+test_attribute = "test" ;
+should_panic_attribute = "should_panic", [ "(", string_literal, ")" ] ;
+custom_attribute = identifier, [ "(", attribute_args, ")" ] ;
+attribute_args = attribute_arg, { ",", attribute_arg } ;
+attribute_arg = string_literal | identifier ;
+
+(* --- Imports --- *)
+import_statement = "import", (stdlib_import | file_import) ;
+stdlib_import = "std", ":", identifier ;
+file_import = (import_list | import_all | import_single), "from", string_literal ;
+import_list = "{", import_item, { ",", import_item }, [ "," ], "}" ;
+import_item = identifier, [ "as", identifier ] ;
+import_all = "*", "as", identifier ;
+import_single = identifier, [ "as", identifier ] ;
+
+(* --- Core Definitions --- *)
+function_definition = [ "async" ], "fn", identifier, [ generic_params ], "(", [ parameter_list ], ")", [ return_type ], block ;
+parameter_list = parameter, { ",", parameter }, [","] ;
+parameter = ([ "mut" ], "self") | (identifier, [ ":", type, [ default_value ] ]) ;
+default_value = "=", expression ;
+return_type = "->", type ;
+
+struct_definition = "struct", identifier, [ generic_params ], "{", [ struct_field, { ",", struct_field }, [ "," ] ], "}" ;
+struct_field = [ visibility ], identifier, ":", type, [ default_value ] ;
+
+enum_definition = "enum", identifier, [ generic_params ], "{", [ enum_variant, { ",", enum_variant }, [ "," ] ], "}" ;
+enum_variant = identifier, [ "(", type, { ",", type }, ")" ] ;
+
+impl_block = "impl", identifier, "{", { [ attribute ], [ visibility ], function_definition }, "}" ;
+
+(* --- Statements --- *)
+block = "{", { statement }, "}" ;
+semicolon = ";" ;
+statement =
+    (let_statement | var_statement | expression_statement | defer_statement | return_statement | panic_statement), [ semicolon ]
+  | loop_statement
+;
+let_statement = "let", pattern, [ ":", type ], "=", expression ;
+var_statement = "var", pattern, [ ":", type ], "=", expression ;
+return_statement = "return", [ expression ] ;
+defer_statement = "defer", expression ;
+panic_statement = "panic", "(", [ expression ], ")" ;
+expression_statement = expression ;
+
+(* --- Loops --- *)
+loop_statement = for_loop | while_loop ;
+for_loop = "for", (unpacked_patterns | pattern), "in", expression, block ;
+while_loop = "while", expression, block ;
+
+(* --- Patterns --- *)
+pattern =
+    "_"
+  | struct_pattern
+  | tuple_pattern
+  | enum_pattern
+  | literal
+  | identifier
+;
+tuple_pattern =
+    "(" , ")"
+  | "(", pattern, ",", { pattern, "," }, [ pattern ], ")"
+  | "(", pattern, ",", ")"
+;
+struct_pattern = identifier, "{", [ struct_field_pattern, { ",", struct_field_pattern } ], [ ",", ".." ], "}" ;
+struct_field_pattern = identifier, [ ":", pattern ] ;
+enum_pattern = identifier, { ".", identifier }, [ "(", pattern, { ",", pattern }, ")" ] ;
+unpacked_patterns = pattern, { ",", pattern }+ ;
+
+(* --- Expressions (Operator Precedence) --- *)
+expression = assignment_expression ;
+assignment_expression = logical_or, [ "=", assignment_expression ] ;
+logical_or = logical_and, { "or", logical_and } ;
+logical_and = coalesce_expression, { "and", coalesce_expression } ;
+coalesce_expression = comparison, { "??", comparison } ;
+comparison = range_expression, { comparison_op, range_expression } ;
+comparison_op = "==" | "!=" | "<=" | ">=" | "<" | ">" ;
+range_expression = bitwise_or, { range_op, bitwise_or } ;
+range_op = "..=" | ".." ;
+bitwise_or = bitwise_xor, { "|", bitwise_xor } ;
+bitwise_xor = bitwise_and, { "^", bitwise_and } ;
+bitwise_and = shift, { "&", shift } ;
+shift = pipe_expression, { shift_op, pipe_expression } ;
+shift_op = "<<" | ">>" ;
+pipe_expression = additive, { "|>", additive } ;
+additive = multiplicative, { add_op, multiplicative } ;
+add_op = "+" | "-" ;
+multiplicative = unary, { multiply_op, unary } ;
+multiply_op = "*" | "/" | "%" ;
+unary = (unary_op, unary) | postfix_expression ;
+unary_op = "!" | "-" | "~" | "not" ;
+
+postfix_expression = primary, { call_suffix | index_suffix | method_call_suffix | field_access_suffix | tuple_index_suffix | pipe_suffix | question_mark_suffix } ;
+call_suffix = "(", [ function_argument, { ",", function_argument }, [","] ], ")" ;
+index_suffix = "[", expression, "]" ;
+method_call_suffix = ".", (builtin_method | identifier), "(", [ function_argument, { ",", function_argument }, [","] ], ")" ;
+builtin_method = 
+    string_method | list_method | map_method | option_method | result_method 
+;
+string_method = "len" | "is_empty" | "chars" | "bytes" | "split" | "trim" | "to_lowercase" | "to_uppercase" ;
+list_method = "len" | "is_empty" | "first" | "last" | "push" | "pop" | "get" | "contains" ;
+map_method = "len" | "is_empty" | "get" | "keys" | "values" | "contains_key" ;
+option_method = "is_some" | "is_none" | "unwrap" | "unwrap_or" | "map" ;
+result_method = "is_ok" | "is_err" | "unwrap" | "unwrap_or" | "map" | "map_err" ;
+pipe_suffix = "|>", pipe_target ;
+field_access_suffix = ".", identifier ;
+tuple_index_suffix = ".", number_literal ;
+question_mark_suffix = "?" ;
+
+primary =
+    struct_literal
+  | closure_literal
+  | self_identifier
+  | builtin_function_call
+  | literal
+  | identifier
+  | grouped_expression
+  | if_expression
+  | match_expression
+  | block_expression
+  | await_expression
+  | invalid_numeric_literal (* Represents various invalid literal forms for error reporting *)
+;
+builtin_function_call = builtin_function_name, "(", [ function_argument, { ",", function_argument } ], ")" ;
+builtin_function_name = 
+    "print" | "println" | "panic" | "assert" | "dbg" 
+  | stdlib_function_name
+;
+stdlib_function_name = 
+    fs_function | io_function | os_function | datetime_function | math_function | test_function
+;
+fs_function = "read" | "write" | "append" | "exists" | "size" | "modified" | "created" | "is_file" | "is_dir" | "mkdir" | "rmdir" | "list_dir" | "copy" | "move" | "remove" | "rename" | "join" | "dirname" | "basename" | "extname" | "abs_path" | "cwd" | "home_dir" | "tmpdir" ;
+io_function = "stdin" | "stdout" | "stderr" | "flush" | "read_line" ;
+os_function = "env" | "get_env" | "set_env" | "exit" | "pid" | "args" | "platform" | "arch" | "cpus" ;
+datetime_function = "now" | "time" | "sleep" | "date" | "format" | "parse" | "utc" | "local" ;
+math_function = "abs" | "min" | "max" | "floor" | "ceil" | "round" | "sqrt" | "sin" | "cos" | "tan" | "asin" | "acos" | "atan" | "log" | "exp" | "pow" | "random" | "pi" | "e" ;
+test_function = "assert_eq" | "spec" | "it" ;
+grouped_expression = "(", expression, ")" ;
+
+(* --- Function Arguments & Pipe Operations --- *)
+function_argument = named_argument | positional_argument ;
+named_argument = identifier, ":", expression ;
+positional_argument = expression ;
+
+pipe_target = pipe_function_call | pipe_placeholder_call ;
+pipe_function_call = identifier, "(", ")" ;
+pipe_placeholder_call = identifier, "(", [ pipe_argument, { ",", pipe_argument }, [","] ], ")" ;
+pipe_argument = pipe_placeholder | named_pipe_argument | positional_pipe_argument ;
+pipe_placeholder = "#" ;
+named_pipe_argument = identifier, ":", (pipe_placeholder | expression) ;
+positional_pipe_argument = expression ;
+
+(* --- Closures --- *)
+closure_literal = "|", [ closure_parameter_list ], "|", [ closure_return_type ], closure_body ;
+closure_parameter_list = closure_parameter, { ",", closure_parameter } ;
+closure_parameter = identifier, [ ":", type ] ;
+closure_return_type = "->", type ;
+closure_body = expression | block ;
+
+(* --- Control Flow Expressions --- *)
+if_expression = "if", expression, block_expression, [ "else", (if_expression | block_expression) ] ;
+match_expression = "match", expression, "{", [ match_arm, { ",", match_arm }, [","] ], "}" ;
+match_arm = pattern, [ "if", expression ], "=>", (expression | block_expression) ;
+block_expression = "{", { statement }, [ expression ], "}" ;
+
+(* --- Async/Await --- *)
+await_expression = "await", await_target ;
+await_target = primary, { call_suffix | index_suffix | method_call_suffix | field_access_suffix | tuple_index_suffix | pipe_suffix } ;
+
+(* --- Literals --- *)
+literal = f_string | float | number_literal | string_literal | boolean | list_literal | map_literal | tuple_literal ;
+
+number_literal = hex_literal | octal_literal | binary_literal | decimal_literal ;
+hex_literal = "0x", { hex_digit | "_" }+ ;
+octal_literal = "0o", { octal_digit | "_" }+ ;
+binary_literal = "0b", { binary_digit | "_" }+ ;
+decimal_literal = ("0", { digit | "_" }*) | (nonzero_digit, { digit | "_" }*) ;
+float = (* See regex-based definition in lexer details *) ;
+boolean = "true" | "false" ;
+
+string_literal = '"', { string_character }, '"' ;
+string_character = (* Any character except double quote or backslash, or an escape sequence *) ;
+f_string = 'f"', { f_string_content | interpolation }, '"' ;
+f_string_content = (* Any sequence of characters not containing " or { *) ;
+interpolation = "{", expression, "}" ;
+
+list_literal = "[", [ list_element, { ",", list_element }, [","] ], "]" ;
+list_element = spread_element | expression ;
+spread_element = "...", expression ;
+
+map_literal = "{", [ map_entry, { ",", map_entry }, [","] ], "}" ;
+map_entry = ("...", expression) | (expression, ":", expression) ;
+
+tuple_literal =
+    "(" , ")"
+  | "(", expression, ",", { expression, "," }, [ expression ], ")"
+  | "(", expression, ",", ")"
+;
+
+struct_literal = identifier, "{", [ struct_init_field, { ",", struct_init_field }, [","] ], "}" ;
+struct_init_field = spread_field | regular_field ;
+spread_field = "...", identifier ;
+regular_field = identifier, [ ":", expression ] ;
+
+(* --- Types --- *)
+type = function_type | tuple_type | generic_type | builtin_type | named_type ;
+named_type = identifier ;
+generic_type = identifier, "<", type, { ",", type }, ">" ;
+tuple_type = "(", type, { ",", type }, ")" ;
+function_type = "|", [ type, { ",", type } ], "|", "->", type ;
+builtin_type = 
+    primitive_type 
+  | result_type 
+  | option_type 
+  | void_type 
+  | collection_type
+;
+primitive_type = "int" | "float" | "string" | "bool" ;
+result_type = "Result", "<", type, ",", type, ">" ;
+option_type = "Option", "<", type, ">" ;
+void_type = "void" | "()" ;
+collection_type = "List" | "Map" ;
+
+(* --- Generic Parameters --- *)
+generic_params = "<", generic_param, { ",", generic_param }, ">" ;
+generic_param = identifier, [ generic_constraint ] ;
+generic_constraint = ":", type ;
+
+(* --- Lexical Primitives --- *)
+identifier = (* A sequence of letters, digits, or underscores, not starting with a digit and not being a keyword. *) ;
+self_identifier = "self" ;
+
+(* Primitives for numeric literals *)
+digit = "0"..."9" ;
+nonzero_digit = "1"..."9" ;
+hex_digit = "0"..."9" | "a"..."f" | "A"..."F" ;
+octal_digit = "0"..."7" ;
+binary_digit = "0" | "1" ;
+
+(* Invalid literal forms for error handling *)
+invalid_numeric_literal =
+    ("0x", { not_hex_digit | "_" }+)
+  | ("0o", { not_octal_digit | "_" }+)
+  | ("0b", { not_binary_digit | "_" }+)
+  | "0x"
+  | "0o"
+  | "0b"
+;
+not_hex_digit = (* Any alphanumeric character that is not a hex digit. *) ;
+not_octal_digit = (* Any alphanumeric character that is not an octal digit. *) ;
+not_binary_digit = (* Any alphanumeric character that is not a binary digit. *) ;
+any_character_except_newline = (* Any character except line feed (LF) or carriage return (CR). *) ;
+
+(* --- Standard Library Integration --- *)
+(* Note: Standard library modules are imported via stdlib_import and provide functions like:
+   - std:io: print, println, read_line, etc.
+   - std:fs: read, write, exists, etc.
+   - std:math: sin, cos, sqrt, etc.
+   - std:os: platform, env, args, etc.
+   - std:datetime: now, format, etc.
+   - std:test: assert_eq, spec, it, etc.
+*)
