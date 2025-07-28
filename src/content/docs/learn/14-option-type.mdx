@@ -1,17 +1,17 @@
 ---
-title: "Handling Absence: The Option Type"
+title: "Option"
 description: "Learn how Boba's built-in Option<T> type provides a robust and safe way to handle values that might be absent, preventing an entire category of null-related errors."
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 
-In many programming languages, the absence of a value is represented by `null`. While seemingly convenient, `null` is often called the "billion-dollar mistake" because it can lead to unexpected runtime errors...
+Many programming languages represent the absence of a value with `null`, but this approach can lead to unexpected runtime errors when you forget to check for null values. Boba was designed without `null` to prevent this entire category of errors.
 
-To prevent this entire category of errors, Boba was designed without `null`. Instead, it provides a robust, built-in enum called `Option<T>` to handle values that might be absent.
+Instead, Boba provides a robust, built-in enum called `Option<T>` to handle values that might be absent. This makes the possibility of absence explicit in the type system, forcing you to handle it safely.
 
 ## The `Option<T>` Enum
 
-The `Option<T>` enum is defined as follows:
+The `Option<T>` enum represents a value that might or might not exist. By using `Option<T>`, the possibility of an absent value becomes part of the type system:
 
 ```boba
 enum Option<T> {
@@ -23,9 +23,7 @@ enum Option<T> {
 -   `Some(T)`: A variant that holds a value of type `T`.
 -   `None`: A variant that represents the absence of a value. It is similar to `null` but is type-safe.
 
-By using `Option<T>`, the possibility of an absent value becomes part of the type system. The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen.
-
-A common way to handle an `Option` is to use a `match` statement to provide a default value in the `None` case.
+The compiler forces you to acknowledge and handle the `None` case, preventing null reference errors before they happen. A common way to handle an `Option` is to use a `match` statement to provide a default value in the `None` case:
 
 ```boba
 let timeout_option: Option<int> = user_settings.get("timeout")
@@ -38,35 +36,34 @@ let timeout: int = match timeout_option {
 
 ## Shortcut: Unwrapping with a Default using ??
 
-The `??` operator is a clean shorthand specifically for the common pattern of unwrapping a `Some` value or providing a default value if it's `None`.
+The `??` operator provides a clean shorthand for the common pattern of unwrapping a `Some` value or providing a default value if it's `None`. This operator makes your code cleaner by removing the boilerplate of a match statement:
 
 ```boba
 // If the left side is Some(t), use t. If it's None, use the right side.
 let value = config_map.get("timeout") ?? 5000
 ```
 
-This operator makes your code cleaner by removing the boilerplate of a match statement for the simple "use this or a default" pattern.
 
 ## When to Use Option vs. Result
 
-Both `Option` and `Result` deal with the possibility of a value not being what you expect, so when do you use which? The guideline can be framed as a question the developer should ask themselves.
+Both `Option` and `Result` deal with unexpected values, but they serve different purposes. **Use `Option<T>`** when it's normal and expected for a value to be absent - like searching for a user that might not exist, or getting the first element of a potentially empty list.
 
-*   For **`Option<T>`**, the question is: **"Is it normal and expected for a value to be absent here?"**
-    *   `find_user_by_id()`: A user might not exist. This isn't an error; "user not found" is an expected, valid outcome of a search.
-    *   `map.get(key)`: A key may not be in a map. This is normal.
-    *   Getting the first element of a list: This could be `None` if the list is empty, which is a normal state.
+**Use `Result<T, E>`** when an operation is supposed to succeed but could fail due to external circumstances - like reading a file that might not exist, or parsing malformed JSON. The key difference is whether absence is expected (Option) or represents a failure (Result).
 
-*   For **`Result<T, E>`**, the question is: **"Is this an operation that is supposed to succeed, but could plausibly fail due to circumstances beyond my control?"**
-    *   `fs.read_file()`: You expect to read a file, but it might fail due to permissions or the disk being full. A disk being full is an external failure, not an expected outcome of reading a file.
-    *   `json.parse()`: You expect to parse a string, but it might fail because the string is malformed.
-    *   Parsing a string into a number: This should succeed but could return an `Err` if the string is malformed (an operational failure).
+## Safe Operations with Option
 
-<Aside>
-A Note on Fallible Operations: String Indexing
+String indexing in Boba can panic if you access an out-of-bounds index. This is a perfect example where `Option` provides safety - instead of panicking, functions can return `None` for invalid operations.
 
-In Boba, you can access individual characters of a string using index notation, like `my_string[0]`. However, this operation is fallible: if you try to access an index that is out of bounds (for example, indexing into an empty string), your program will panic. This is a perfect example of a situation where a function should return an `Option` to handle the "empty" case safely instead of panicking.
-</Aside>
+## Time to Practice!
 
-#### Time to Practice!
+Experiment with `Option` to understand safe null handling:
 
-Now it's time to put `Option` to work. The next exercises will challenge you to write functions that return an `Option` and then use `match` to safely handle both the `Some` and `None` cases.
+1. **Create optional values**: Write functions that return `Option<T>` for values that might not exist
+2. **Use pattern matching**: Practice handling both `Some` and `None` cases with `match`
+3. **Try the `??` operator**: Use the shorthand for providing default values
+4. **Chain optional operations**: Combine multiple optional values safely
+5. **Compare with Result**: Understand when to use `Option` vs `Result`
+
+## What's Next
+
+You now understand how to handle absent values safely using `Option`. This eliminates null pointer exceptions and makes your code more reliable by forcing explicit handling of missing data. Next, you'll learn about pattern matching, a powerful feature that lets you destructure and match against complex data structures beyond just `Option` and `Result`.

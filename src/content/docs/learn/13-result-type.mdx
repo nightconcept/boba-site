@@ -1,13 +1,17 @@
 ---
-title: "Handling Failures: The Result Type"
+title: "Result"
 description: "Learn how to handle operations that can fail gracefully in Boba using the Result enum and the `?` operator."
 ---
 
-In any real-world application, things can go wrong. A file might not exist, a network request might fail, or user input might be invalid. While other languages often rely on exceptions and `try...catch` blocks to handle these situations, Boba encourages a more explicit approach using the `Result` enum. The benefit of this approach is that using `Result` makes a function's potential for failure an honest part of its type signature, forcing the caller to acknowledge and handle potential errors at compile time.
+In real-world applications, things can go wrong. Files might not exist, network requests might fail, or user input might be invalid. Boba encourages explicit error handling using the `Result` enum instead of exceptions.
+
+The benefit of this approach is that `Result` makes a function's potential for failure part of its type signature, forcing callers to acknowledge and handle potential errors at compile time. This prevents forgotten error handling that can cause crashes.
 
 ## The `Result` Enum
 
-The `Result` enum is a powerful tool for handling operations that can either succeed or fail.
+The `Result` enum is a powerful tool for handling operations that can either succeed or fail. It forces you to consider both success and failure cases explicitly:
+
+
 
 ```boba
 enum Result<T, E> {
@@ -21,12 +25,9 @@ enum Result<T, E> {
 
 ## The `?` Operator
 
-Boba provides the `?` operator as a convenient way to work with `Result` values. It simplifies error handling by propagating errors up the call stack.
+The `?` operator provides a convenient way to work with `Result` values by propagating errors up the call stack. It's syntactic sugar for a `match` statement that handles the `Err` case automatically.
 
-This operator is powerful syntactic sugar for a `match` statement that handles the `Err` case for you. Here's how it works:
-
-- If the `Result` is `Ok(value)`, the `?` operator unwraps the `Result` and gives you the `value` inside.
-- If the `Result` is `Err(error)`, the `?` operator immediately stops the current function and returns the `Err(error)`.
+If the `Result` is `Ok(value)`, the `?` operator unwraps and gives you the `value`. If it's `Err(error)`, the operator immediately returns that error from the current function:
 
 Before the `?` operator was introduced, handling nested `Result` values required explicit `match` statements. For example, to get a value from a fallible operation and continue, you would write:
 
@@ -58,13 +59,15 @@ struct Error {
 struct Config {
   hostname: string,
   port: int,
-  enable_https: boolean
+  enable_https: bool
 }
 ```
 
-The true power of the `?` operator becomes apparent when chaining multiple operations that can each fail, as it allows you to write a clean "happy path" while correctly propagating any error that occurs at any step.
+## Chaining Fallible Operations
 
-The following function, `load_config`, is a great example of this. It will read a file and parse it as JSON. Both of these operations can fail, making them perfect candidates for using `Result` and the `?` operator.
+The true power of the `?` operator becomes apparent when chaining multiple operations that can each fail. It allows you to write a clean "happy path" while correctly propagating any error.
+
+The following function reads a file and parses it as JSON. Both operations can fail, making them perfect candidates for using `Result` and the `?` operator:
 
 ```boba
 fn load_config() -> Result<Config, Error> {
@@ -80,6 +83,22 @@ fn load_config() -> Result<Config, Error> {
 }
 ```
 
-### Time to Practice!
+## Error Handling Best Practices
 
-Now it's your turn. Look for opportunities in your own code to refactor functions to return a `Result`. Use the `?` operator to clean up your error handling and make your code more robust and readable.
+**Use Result for fallible operations**: Any function that can fail should return a `Result` rather than panicking. **Chain operations with `?`**: Use the `?` operator to create clean error propagation chains.
+
+**Be specific with error types**: Use meaningful error types that help callers understand what went wrong and how to handle it.
+
+## Time to Practice!
+
+Experiment with `Result` to build robust error handling:
+
+1. **Create fallible functions**: Write functions that return `Result` for operations that might fail
+2. **Use the `?` operator**: Practice chaining fallible operations cleanly
+3. **Handle both cases**: Use `match` to handle both `Ok` and `Err` cases explicitly
+4. **Design error types**: Create meaningful error types for different failure modes
+5. **Chain operations**: Combine multiple fallible operations using `?`
+
+## What's Next
+
+You now understand how to handle operations that might fail using `Result`. This explicit error handling makes your programs more reliable by forcing you to consider failure cases. Next, you'll learn about the `Option` type, which handles the common case of values that might not exist, providing a safe alternative to null pointers.

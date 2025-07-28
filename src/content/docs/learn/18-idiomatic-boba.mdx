@@ -1,13 +1,15 @@
 ---
-title: "Writing Professional Code: Idiomatic Boba"
+title: "Idiomatic Boba"
 description: "Learn the official Boba code style, documentation standards, and the philosophy behind them."
 ---
 
-Welcome to the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths in the way its designers intended.
+This is the final step in your learning journey: moving from writing code that works to writing code that is truly idiomatic. Idiomatic code is clear, maintainable, and leverages the language's strengths as its designers intended.
+
+Idiomatic code follows established patterns and conventions that make it immediately recognizable and understandable to other Boba developers. It's not just about syntax - it's about expressing intent clearly and efficiently.
 
 ## Naming Conventions
 
-Consistent naming makes code predictable.
+Consistent naming makes code predictable and easy to read. Boba follows established patterns that help you immediately understand what kind of entity you're looking at:
 
 - **`PascalCase` for Types:** All `struct` and `enum` types.
   - `struct PlayerProfile`, `enum RequestStatus`
@@ -18,14 +20,15 @@ Consistent naming makes code predictable.
 
 ## Formatting (`boba fmt`)
 
-The `boba fmt` tool handles formatting automatically, ensuring all code in the ecosystem is instantly familiar. Having one official formatting tool eliminates all arguments over code style. It ensures that any Boba code a developer encounters will be instantly familiar, reducing the cognitive load of reading and contributing to new projects.
+The `boba fmt` tool handles formatting automatically, ensuring all code in the ecosystem is instantly familiar. Having one official formatting tool eliminates style debates and reduces cognitive load when reading different projects.
+
+Use `boba fmt` to format your code before committing. This ensures consistency across the entire Boba ecosystem and makes code reviews focus on logic rather than style.
 
 ## BobaDoc: The Standardized Documentation Engine
 
-Good code is well-documented. Boba has a built-in standard for documentation called BobaDoc, which is designed to be easy to write, human-readable, and machine-parsable.
+Good code is well-documented. Boba has a built-in documentation standard called BobaDoc that's easy to write, human-readable, and machine-parsable.
 
--   **`///` (Outer Comment):** Documents the single item immediately following it.
--   **`//!` (Inner Comment):** Documents the item that contains it, most often used at the very top of a file to document the entire module.
+**`///` (Outer Comment)** documents the item immediately following it. **`//!` (Inner Comment)** documents the item that contains it, typically used at the top of files to document entire modules.
 
 BobaDoc uses simple `@` tags for structured data:
 
@@ -34,7 +37,7 @@ BobaDoc uses simple `@` tags for structured data:
 -   `@panics: description` - Describes conditions that will cause a panic.
 -   `@example:` - Marks a following code block as an example.
 
-Code within `@example` blocks can be automatically tested by running the `boba test --doc` command, ensuring documentation is always accurate.
+Code within `@example` blocks can be automatically tested with `boba test --doc`, ensuring documentation stays accurate as your code evolves.
 
 ```boba
 //! A module for safe file system operations.
@@ -56,17 +59,29 @@ pub fn read_file(path: string) -> Result<string, Error> {
 
 ## Comments vs. Documentation
 
-- Use BobaDoc (`///`) to explain the *what* and *how* for users of your API. This is for the public interface.
-- Use inline comments (`#`) to explain the *why* for maintainers of your code. Explain complex logic, non-obvious choices, or the reasoning behind a particular algorithm.
+**Use BobaDoc (`///`)** to explain the *what* and *how* for users of your API - focus on the public interface. **Use inline comments (`//`)** to explain the *why* for maintainers - complex logic, non-obvious choices, or reasoning behind algorithms.
+
+Good documentation helps users understand how to use your code, while good comments help future developers (including yourself) understand why you wrote it that way.
+
+## Time to Practice!
+
+Apply idiomatic Boba principles to your code:
+
+1. **Follow naming conventions**: Use PascalCase for types, snake_case for values
+2. **Format consistently**: Run `boba fmt` on all your code
+3. **Write clear documentation**: Use BobaDoc for public APIs
+4. **Add helpful comments**: Explain complex logic and design decisions
+5. **Test your examples**: Use `boba test --doc` to verify documentation
 
 ## What's Next?
 
-Congratulations on completing this foundational tour of the Boba language! You've taken a significant step from writing your first "Hello, world!" to understanding the principles of idiomatic, professional Boba code.
+Congratulations on completing this foundational tour of the Boba language! You've progressed from writing your first "Hello, world!" to understanding the principles of idiomatic, professional Boba code.
 
-You have mastered the core concepts of the language, including variables, control flow, functions, and custom `struct` types. More importantly, you've learned about the features that make Boba robust and safe, such as the `Option` and `Result` types for explicit error handling and the powerful built-in testing framework for verifying your code's correctness.
+You've mastered core concepts including variables, control flow, functions, and custom types. More importantly, you've learned features that make Boba robust and safe: `Option` and `Result` for explicit error handling, pattern matching for exhaustive control flow, and the built-in testing framework.
 
-Your journey doesn't end here. To continue growing as a Boba developer, we encourage you to explore the following steps:
+**Continue growing as a Boba developer:**
+- **Explore the Standard Library** - Familiarize yourself with available tools and modules
+- **Build complete projects** - Apply your knowledge to command-line tools or web servers  
+- **Read idiomatic Boba code** - Learn from experienced developers' patterns and practices
 
--   **Explore the official Boba Standard Library documentation.** Familiarize yourself with the rich set of tools and modules available to you.
--   **Build a small, complete project from scratch.** Apply what you've learned to create something new, like a command-line tool or a simple web server.
--   **Read through the source code of idiomatic Boba projects.** Learning from experienced developers is one of the fastest ways to deepen your understanding of best practices.
+You now have the foundation to build reliable, maintainable software with Boba. Welcome to the community!

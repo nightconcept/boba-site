@@ -1,13 +1,15 @@
 ---
-title: "Adding Behavior: Methods and impl"
+title: "Methods"
 description: "Learn how to attach methods to your structs using an `impl` block."
 ---
 
-In the last chapter, we learned how to group data using `structs`. Now, let's give them behavior by implementing functions on them, called **methods**. We do this using an `impl` (implementation) block.
+Methods let you add behavior to your custom types. While structs group related data, methods define what you can do with that data. This combination of data and behavior creates powerful, self-contained types.
+
+Methods are defined in `impl` (implementation) blocks, which attach functions to specific types. This keeps related functionality organized and makes your types feel like built-in language features.
 
 ## The `impl` Block
 
-The `impl` block is where you define all the functions that belong to a `struct`.
+The `impl` block is where you define all the functions that belong to a `struct`. This creates a clear separation between the data definition (in the `struct`) and the behavior definition (in the `impl`):
 
 ```boba
 struct Player {
@@ -22,7 +24,9 @@ impl Player {
 
 ## Associated Functions and Constructors
 
-An **associated function** is a function that belongs to a type but is not called on a specific instance (like a `static` method in other languages). The most common associated function is `new()`, which is the idiomatic Boba convention for a constructor.
+An **associated function** is a function that belongs to a type but is not called on a specific instance. The most common associated function is `new()`, which is the idiomatic Boba convention for a constructor.
+
+Associated functions are useful for creating new instances or providing utility functions that relate to the type but don't need access to instance data:
 
 ```boba
 impl Player {
@@ -36,9 +40,9 @@ impl Player {
 }
 ```
 
-**Field Init Shorthand**
+### Field Init Shorthand
 
-In the `new` function, we wrote `name: name`. When a local variable has the same name as a struct field, Boba allows you to use a shorthand. You could write this more idiomatically as:
+When a local variable has the same name as a struct field, Boba allows you to use a shorthand. Instead of writing `name: name`, you can just write `name`:
 
 ```boba
 fn new(name: string) -> Player {
@@ -59,7 +63,7 @@ let player = Player.new(name: "Ada")
 
 A **method** is a function within an `impl` block that takes `self` as its first parameter. `self` represents the specific instance of the struct the method is being called on. By default, the `self` parameter provides immutable, read-only access to the struct's instance.
 
-> For developers coming from languages like JavaScript, Python, or Java, `self` is the equivalent of `this`.
+This design makes it clear which functions operate on instances versus which are utility functions for the type itself:
 
 ```boba
 impl Player {
@@ -75,7 +79,9 @@ impl Player {
 
 ## Mutating State with `mut self`
 
-By default, `self` is immutable. If a method needs to _change_ the struct's data, you must mark the parameter as `mut self`. This is an explicit signal that the method has side effects on the instance.
+By default, `self` is immutable. If a method needs to change the struct's data, you must mark the parameter as `mut self`. This is an explicit signal that the method has side effects on the instance.
+
+This explicitness helps you understand which methods modify data and which are read-only, making code easier to reason about:
 
 ```boba
 impl Player {
@@ -89,7 +95,21 @@ impl Player {
 }
 ```
 
-To be able to call a method that mutates its instance, the instance itself must be declared as mutable using `var`. The compiler will prevent you from calling a `mut self` method on an immutable `let` binding. Here is a full example:
+To call a method that mutates its instance, the instance itself must be declared as mutable using `var`. The compiler prevents you from calling a `mut self` method on an immutable `let` binding, ensuring consistency:
+
+## Time to Practice!
+
+Experiment with methods to understand how they add behavior to types:
+
+1. **Create associated functions**: Write constructors and utility functions
+2. **Add instance methods**: Create methods that operate on `self`
+3. **Try mutable methods**: Write methods that modify instance data
+4. **Use field shorthand**: Practice the concise initialization syntax
+5. **Mix read and write methods**: Combine immutable and mutable operations
+
+## What's Next
+
+You now understand how to add behavior to your custom types using methods. This completes the foundation of object-oriented programming in Boba - data (structs) combined with behavior (methods). Next, you'll learn about modules, which help organize your code into logical units and manage complexity as your programs grow.
 
 ```boba
 // First, create a mutable Player instance named boba_dev using var.

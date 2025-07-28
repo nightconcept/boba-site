@@ -1,15 +1,17 @@
 ---
-title: "Chapter 15: Powerful Control Flow: Pattern Matching"
+title: "Pattern Matching"
 description: "Learn how to use the powerful `match` statement for exhaustive pattern matching."
 ---
 
-Boba's primary tool for control flow is the powerful `match` statement. It allows you to check a value against a series of patterns in a clean and expressive way. Its key strength is that the compiler enforces **exhaustiveness**, which is why it is the perfect tool for safely working with enum types like `Option` and `Result`.
+Pattern matching is Boba's powerful tool for control flow that lets you check a value against a series of patterns in a clean, expressive way. Its key strength is compiler-enforced **exhaustiveness** - you must handle every possible case.
 
-### The Rule of Exhaustiveness
+This exhaustiveness makes pattern matching perfect for safely working with enum types like `Option` and `Result`, ensuring you never forget to handle a case that could cause runtime errors.
 
-A `match` statement in Boba must be **exhaustive**. This means you must provide a branch for every possible value the type can have. The Boba compiler will give you an error if you forget a case, preventing a whole class of bugs.
+## The Rule of Exhaustiveness
 
-The `match` statement is most powerful when used with types that have a fixed number of variations, like `Option` and `Result`.
+A `match` statement in Boba must be **exhaustive** - you must provide a branch for every possible value the type can have. The compiler will give you an error if you forget a case, preventing bugs from unhandled scenarios.
+
+The `match` statement is most powerful when used with types that have a fixed number of variations, like `Option` and `Result`:
 
 ```boba
 // Safely unwrapping an Option
@@ -33,9 +35,11 @@ match read_config_file() {
 }
 ```
 
-### Binding Values from Patterns
+## Binding Values from Patterns
 
-The real power of match is its ability to deconstruct a type and bind the values inside its variants to new variables. In a branch like Some(name) => ..., a new variable name is created and is only available within that specific branch. This allows you to check for a variant and use its inner value in a single, clean operation.
+The real power of match is its ability to deconstruct a type and bind the values inside its variants to new variables. In a branch like `Some(name) => ...`, a new variable `name` is created and is only available within that specific branch.
+
+This allows you to check for a variant and use its inner value in a single, clean operation:
 
 ```boba
 match find_user(1) {
@@ -45,9 +49,11 @@ match find_user(1) {
 }
 ```
 
-### Conditional Guards with where
+## Conditional Guards
 
-Sometimes, a pattern alone isn't specific enough. You can add a conditional guard to a match arm using the where keyword. The branch will only be taken if both the pattern matches and the where condition evaluates to true. This allows for more complex logic within your match statements.
+Sometimes, a pattern alone isn't specific enough. You can add a conditional guard to a match arm using `if`. The branch will only be taken if both the pattern matches and the condition evaluates to true.
+
+This allows for more complex logic within your match statements:
 
 ```boba
 // Multi-line match statement example
@@ -84,15 +90,17 @@ match response {
 }
 ```
 
-While `_` is necessary for matching on types with a near-infinite number of values (like `int` or `string`), it should be used cautiously with enums. Using it can sometimes bypass the compiler's exhaustiveness check. For example, if a new variant is added to an enum later, the wildcard `_` will catch it silently instead of causing a helpful compile error that would force you to handle the new case explicitly. This is why, for enums like `Option` and `Result`, it's best to match each variant explicitly whenever possible.
+## Exhaustiveness Guarantees
 
-This exhaustiveness is not just a convention—it's a guarantee. If you write a `match` statement for an `Option` and forget to handle the `None` case, your code will not compile. The compiler ensures you have considered both the `Some` and `None` cases, or the `Ok` and `Err` cases, before your program can run.
+Exhaustiveness is not just a convention—it's a compiler guarantee. If you write a `match` statement for an `Option` and forget to handle the `None` case, your code will not compile. The compiler ensures you have considered all cases before your program can run.
 
-### The Default Case: `_`
+While `_` is necessary for matching on types with many possible values (like `int` or `string`), use it cautiously with enums. The wildcard can bypass exhaustiveness checks, potentially hiding bugs when new variants are added later.
 
-Sometimes, you don't want to handle every single case explicitly. For these situations, you can use the wildcard pattern, a single underscore (`_`), as a default or "catch-all" branch. The `_` will match any value that hasn't been matched by the preceding branches.
+## The Default Case: `_`
 
-This is useful when matching on types with many possibilities, like numbers or strings.
+Sometimes, you don't want to handle every single case explicitly. The wildcard pattern (`_`) serves as a default or "catch-all" branch that matches any value not handled by preceding branches.
+
+This is useful when matching on types with many possibilities, like numbers or strings:
 
 ```boba
 var status_code: int = 418
@@ -105,6 +113,16 @@ match status_code {
 }
 ```
 
-#### **Time to Practice!**
+## Time to Practice!
 
-The final set of exercises will challenge you to solve problems by writing `match` statements that handle both `Option` and `Result` types, reinforcing the learning from the last three chapters.
+Experiment with pattern matching to master this powerful feature:
+
+1. **Match on enums**: Practice exhaustive matching with `Option` and `Result`
+2. **Use binding**: Extract values from enum variants into variables
+3. **Add guards**: Use `if` conditions to refine pattern matching
+4. **Try wildcards**: Use `_` for catch-all cases on numeric types
+5. **Combine patterns**: Create complex matching logic with multiple conditions
+
+## What's Next
+
+You now understand how to use pattern matching for safe, exhaustive control flow. This powerful feature ensures you handle all possible cases, preventing runtime errors from forgotten scenarios. Next, you'll learn about defer and panic - mechanisms for cleanup and handling truly exceptional situations that can't be recovered from.

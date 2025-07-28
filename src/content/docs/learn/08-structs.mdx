@@ -14,7 +14,7 @@ You define a struct using the `struct` keyword. Inside the struct definition, yo
 struct Player {
   name: string,
   score: int,
-  is_active: boolean
+  is_active: bool
 }
 ```
 
@@ -24,7 +24,7 @@ Structs can also have default values for their fields.
 struct Player {
   name: string = "Boba Dev",
   score: int = 0,
-  is_active: boolean = false
+  is_active: bool = false
 }
 ```
 
@@ -98,7 +98,7 @@ To create a mutable instance whose fields you can modify, you must declare the v
 pub struct Player {
   pub name: string,
   pub score: int,
-  pub is_active: boolean
+  pub is_active: bool
 
 }
 

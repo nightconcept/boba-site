@@ -1,18 +1,17 @@
 ---
-title: "Importing Functions and Modules"
+title: "Modules"
 description: "Learn how to organize your Boba code into multiple files and share code between them using the `import` keyword."
 ---
 
-As your programs grow larger, it becomes important to organize your code into multiple files. In Boba, the module system is designed to be simple and intuitive. The rules are:
+As your programs grow larger, organizing code into multiple files becomes essential for maintainability. Boba's module system follows simple, intuitive rules that promote good software architecture.
 
-1.  **Every file is a module.** Each `.boba` file you create is its own module, a private container for its contents.
-2.  **Items are private by default.** All items you define in a file—functions, structs, enums, etc.—are private to that module. They can only be used within the same file.
-3.  **Use `pub` to create a public API.** To make an item accessible from other modules, you must explicitly mark it with the `pub` keyword. This makes it part of the module's public API.
-4.  **Use `import` to access public items.** The `import` keyword is the mechanism to use public items from one module in another.
+Each `.boba` file is its own module, with items private by default. You must explicitly mark items as `pub` to make them accessible from other modules. This design encourages intentional API design and prevents accidental coupling between modules.
 
-##Importing from the Standard Library
+## Importing from the Standard Library
 
-Boba comes with a standard library of useful modules for common tasks like file system access or networking. To use a standard library module, you can import it directly by name.
+Boba comes with a standard library of useful modules for common tasks like file system access, mathematical operations, and string manipulation. Standard library modules use the `std:` prefix to distinguish them from your own modules.
+
+To use a standard library module, you import it with the `std:` prefix:
 
 ```boba
 // The compiler knows `fs` is a built-in standard library module.
@@ -22,11 +21,15 @@ import std:fs
 let contents = fs.read("my_file.txt")
 ```
 
-For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory.
+## Module Organization
+
+For the following examples, assume you have two files, `utils.boba` and `main.boba`, located together in the same directory. This demonstrates how to structure related functionality across multiple files:
 
 ## Importing Specific Items
 
-To import specific items from a file, you use the `import { item } from "path"` syntax. You can list items by name inside curly braces `{}`, and can optionally rename them with `as`.
+To import specific items from a file, you use the `import { item } from "path"` syntax. This selective importing keeps your namespace clean and makes dependencies explicit.
+
+You can list items by name inside curly braces `{}`, and optionally rename them with `as` to avoid naming conflicts:
 
 ```boba
 // in utils.boba
@@ -49,7 +52,21 @@ File paths can also point to files in subdirectories, such as "./helpers/strings
 
 ## Importing Everything as a Namespace
 
-To import all public items from a file as a single namespace, you can use the `import * as namespace from "path"` syntax.
+To import all public items from a file as a single namespace, you can use the `import * as namespace from "path"` syntax. This approach groups related functionality under a common name, making it clear where each function comes from:
+
+## Time to Practice!
+
+Experiment with modules to understand code organization:
+
+1. **Create separate modules**: Split functionality across multiple `.boba` files
+2. **Use `pub` strategically**: Design clean public APIs for your modules
+3. **Import selectively**: Practice importing only what you need
+4. **Try namespace imports**: Group related functionality under namespaces
+5. **Use standard library**: Import and use `std:` modules like `std:fs` or `std:math`
+
+## What's Next
+
+You now understand how to organize code using Boba's module system. This enables you to build larger, more maintainable programs by separating concerns and creating clear boundaries between different parts of your code. Next, you'll learn about testing, which helps ensure your modules work correctly and continue to work as you make changes.
 
 ```boba
 // in utils.boba

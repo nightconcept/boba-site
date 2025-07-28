@@ -1,11 +1,13 @@
 ---
-title: "Guaranteed Cleanup: defer and panic"
+title: "Defer & Panic"
 description: "Learn how to ensure resource cleanup with `defer` and handle unrecoverable errors with `panic`."
 ---
 
 ## Guaranteed Cleanup with `defer`
 
-The `defer` statement schedules a function call to be executed right before the current function exits, regardless of whether the function returns normally, propagates an error with the `?` operator, or exits due to a `panic`.
+The `defer` statement schedules a function call to be executed right before the current function exits, regardless of how the function exits. Whether it returns normally, propagates an error with `?`, or exits due to a panic, deferred functions always run.
+
+This makes `defer` perfect for resource cleanup - you can guarantee that files are closed, connections are released, or locks are freed, preventing resource leaks:
 
 // Assume `fs` is Boba's file system module, providing functions
 // that return a Result, like `fs.open(path)`.
@@ -32,13 +34,15 @@ pub fn process_file(path: string) -> Result<string, Error> {
 }
 ```
 
-If a function has multiple `defer` statements, they are executed in **Last-In, First-Out (LIFO)** order. The last `defer` scheduled is the first one to run when the function exits. This is a crucial rule for correct resource management when multiple resources are acquired.
+## Defer Execution Order
+
+If a function has multiple `defer` statements, they execute in **Last-In, First-Out (LIFO)** order. The last `defer` scheduled is the first one to run when the function exits. This ordering is crucial for correct resource management when multiple resources are acquired - resources are cleaned up in reverse order of acquisition.
 
 ## Unrecoverable Errors with `panic`
 
-Whereas `Result` is used for expected, recoverable errors, `panic` is reserved for unrecoverable errors that signify a bug in the program's logic. A panic is an abrupt, unrecoverable error that stops the normal execution of your program. `panic` must not be used for ordinary, expected errors like a file not being found or invalid user input; those are cases where `Result` is the appropriate tool.
+`panic` is reserved for unrecoverable errors that signify bugs in the program's logic. A panic abruptly stops normal execution and should never be used for ordinary, expected errors like missing files or invalid user input - those cases require `Result`.
 
-When a panic occurs, the program will stop what it's doing and begin to **unwind the stack**. As it unwinds, it will execute any **`defer`** statements it finds along the way.
+When a panic occurs, the program begins to **unwind the stack**, executing any `defer` statements it finds along the way. This ensures cleanup code runs even during catastrophic failures:
 
 You can trigger a panic manually with the built-in `panic()` function.
 
@@ -57,6 +61,22 @@ fn get_guild_rank(player: Player) -> string {
   }
 }
 
-### Time to Practice!
+## When to Use Panic vs Result
 
-It's time to practice what you've learned. The next exercises will challenge you to refactor a function to use `defer` for resource cleanup and write a function that correctly panics when its input violates a critical precondition.
+**Use `panic`** for programming errors and invariant violations - situations that should never happen if your code is correct. **Use `Result`** for expected failures that are part of normal program operation.
+
+Panic represents "this should be impossible" while Result represents "this might not work."
+
+## Time to Practice!
+
+Experiment with defer and panic to understand resource management:
+
+1. **Use defer for cleanup**: Practice ensuring resources are always released
+2. **Try multiple defers**: Understand LIFO execution order
+3. **Handle resource chains**: Use defer with nested resource acquisition
+4. **Understand panic scenarios**: Identify when panic is appropriate vs Result
+5. **Test cleanup behavior**: Verify defer runs during different exit conditions
+
+## What's Next
+
+You now understand how to guarantee resource cleanup with `defer` and handle truly exceptional situations with `panic`. These tools help you write robust programs that clean up properly even when things go wrong. Next, you'll learn about async/await, which enables concurrent programming and helps you write efficient programs that can handle multiple tasks simultaneously.

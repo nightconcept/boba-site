@@ -1,22 +1,17 @@
 ---
-title: "Testing Your Code"
+title: "Testing"
 description: "Learn how to write effective tests for your Boba code, from simple functions to your private implementation details."
 ---
 
-Writing code is only half the battle. To build robust and reliable software, you need to verify that your code works as you expect it to. Boba's integrated tooling makes testing a simple, first-class part of the development workflow, without requiring any external libraries.
+Testing ensures your code works correctly and continues working as you make changes. Boba's integrated tooling makes testing a simple, first-class part of the development workflow, without requiring any external libraries.
 
-This chapter covers how to write effective tests for your Boba code, from simple functions to your private implementation details.
+Boba's testing philosophy emphasizes both unit tests (testing individual functions and modules) and integration tests (testing your public API as external users would experience it).
 
 ## What is a Test?
 
-In Boba, a test is simply a function that verifies the correctness of your code. The test function is marked with the `#[test]` attribute, which tells the `boba test` command to discover and execute it.
+In Boba, a test is simply a function marked with the `#[test]` attribute. The test runner discovers and executes these functions automatically when you run `boba test`.
 
-The rules are simple:
-
-- A test **passes** if the function runs to completion without panicking.
-- A test **fails** if the function panics at any point.
-
-To run all the tests in your project, simply execute `boba test`. The test runner will automatically discover and run all test functions, then print a summary of the results.
+A test **passes** if the function runs to completion without panicking, and **fails** if the function panics at any point. This simple model makes it easy to understand test outcomes:
 
 Let's look at a complete, minimal example. Here we have a function `add()` and a test for it in the same file. We use the built-in `test.assert_eq()` function to check if the output is what we expect.
 
@@ -46,11 +41,11 @@ Test results: 1 passed; 0 failed.
 
 This is the core testing loop: write a little code, write a test, run `boba test`, and see it pass.
 
-### Assertion Functions
+## Assertion Functions
 
-The primary way to check for correctness inside a test is with an assertion. The code above uses `test.assert_eq(left, right)`, which panics if the two arguments are not equal, causing the test to fail. The `test` module, which contains `assert_eq` and other helpful functions, is built-in and automatically available in any function marked with the `#[test]` attribute.
+The primary way to check for correctness inside a test is with assertions. The `test` module is built-in and automatically available in any function marked with the `#[test]` attribute.
 
-The built-in `test` module provides a few helpful assertion functions for your tests:
+The built-in `test` module provides helpful assertion functions for your tests:
 
 - `test.assert_eq(left, right)`: Panics if the two values are not equal. This is the most common assertion.
 - `test.assert(condition, "message")`: Panics if `condition` is false.
@@ -68,12 +63,9 @@ fn test_various_assertions() {
 
 ## Unit Testing Your Code
 
-While you can write tests in the same file as your code, the idiomatic way to organize them in Boba is to use the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests. The convention is to create a test file named with a `_test` suffix (e.g., `my_module_test.boba`) which links it to the implementation file.
+The idiomatic way to organize tests in Boba is the "Designated Tester" pattern. This pattern uses a simple file naming convention to link your implementation to its tests.
 
-Here are the rules:
-
-- Your implementation code lives in a file, for example, `my_math.boba`.
-- Your unit tests for that file live in a corresponding file named `my_math_test.boba`.
+Your implementation code lives in a file like `my_math.boba`, and your unit tests live in a corresponding file named `my_math_test.boba`. This keeps tests close to the code they're testing while maintaining clear separation:
 
 Let's refactor our previous example into this structure.
 
@@ -106,7 +98,9 @@ Appending `_test.boba` tells the compiler that `my_math_test.boba` is the offici
 
 ## Testing Implementation Details
 
-Being a designated unit test file grants special permission to access the private, non-`pub` items from its corresponding implementation file. This allows you to test your internal implementation details without making them public.
+Designated unit test files have special permission to access private, non-`pub` items from their corresponding implementation file. This allows you to test internal implementation details without making them public.
+
+This design lets you write thorough tests for your module's internal logic while maintaining a strictly controlled public API:
 
 Let's add a test for our private `internal_add` function.
 
@@ -131,10 +125,9 @@ This ability to test private functions is a key feature of Boba's unit testing p
 
 ## Integration Testing Your Public API
 
-After unit testing is firmly established, we can introduce integration tests. Integration tests are for testing your library's public API as a whole, from an external user's perspective. These tests live in a dedicated, top-level `tests/` directory.
+Integration tests verify your library's public API from an external user's perspective. These tests live in a dedicated, top-level `tests/` directory and can only access `pub` functions.
 
-- Each file in the `tests/` directory is treated as a separate test program.
-- These tests can only call `pub` functions from your library, just like a real user would. They cannot access private functions.
+Each file in the `tests/` directory is treated as a separate test program, ensuring tests remain isolated and focused:
 
 ```
 my_project/
@@ -160,11 +153,11 @@ This clear separation—unit tests alongside the code with special access, and i
 
 Boba's `test` module and attributes provide more tools for specific situations.
 
-### Advanced Testing Techniques
+## Advanced Testing Techniques
 
-#### Testing Panics
+### Testing Panics
 
-To verify that your code correctly panics under error conditions, add the `#[should_panic]` attribute to your test function. This test will now pass if the code inside panics, and fail if it does not.
+To verify that your code correctly panics under error conditions, add the `#[should_panic]` attribute to your test function. This inverts the normal test logic - the test passes if the code panics:
 
 ```boba
 #[test]
@@ -175,9 +168,9 @@ fn test_add_overflow_panics() {
 }
 ```
 
-#### Testing Documentation Examples
+### Testing Documentation Examples
 
-To ensure your documentation is always correct, Boba can run your `@example` blocks as tests. Here is how you would write a function with a documentation example:
+Boba can run your `@example` blocks as tests, ensuring your documentation never becomes outdated. This powerful feature guarantees that your examples always work as advertised:
 
 ```boba
 /// Adds two numbers together.
@@ -199,4 +192,17 @@ Run the `test` command with the `--doc` flag:
 boba test --doc
 ```
 
-This powerful feature ensures that your documentation never becomes outdated or incorrect, guaranteeing that your examples always work as advertised.
+## Time to Practice!
+
+Experiment with testing to build confidence in your code:
+
+1. **Write basic tests**: Create test functions using `#[test]` attribute
+2. **Use assertions**: Practice with `assert_eq`, `assert`, and `assert_ne`
+3. **Try unit testing**: Create `_test.boba` files for your modules
+4. **Test private functions**: Access internal implementation details in unit tests
+5. **Write integration tests**: Test your public API from the `tests/` directory
+6. **Test documentation**: Add `@example` blocks to your function documentation
+
+## What's Next
+
+You now understand how to verify your code works correctly using Boba's testing tools. Testing gives you confidence to make changes and helps catch bugs early. Next, you'll learn about the `Result` type, which provides a structured way to handle operations that might fail, making error handling explicit and safe.

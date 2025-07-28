@@ -1,15 +1,15 @@
 ---
-title: "Defining State with enums"
+title: "Enums"
 description: "Learn how to create your own custom types with a fixed set of variants using enums."
 ---
 
-While Boba provides powerful built-in enums like `Option` and `Result`, one of its key features is the ability to define your own. An **enum** (short for enumeration) is a custom type that can only be one of a specific, fixed set of possible values, called 'variants'.
+Enums let you define custom types that can only be one of a specific, fixed set of possible values, called 'variants'. This is incredibly useful for modeling state in your programs, ensuring that variables can only hold valid values that you've explicitly defined.
 
-This is incredibly useful for modeling state. For example, if you are tracking the status of a job, you can define an enum to ensure the status can *only* be one of the states you've defined, preventing bugs from invalid string values.
+Instead of using strings like "pending", "complete", or "failed" (which could be misspelled or mistyped), enums give you compile-time guarantees that only valid states are possible. This prevents entire classes of bugs before your program even runs.
 
-### Defining an Enum
+## Defining an Enum
 
-You define an enum with the `enum` keyword, listing all its possible variants.
+You define an enum with the `enum` keyword, listing all its possible variants. Each variant is a valid value that variables of this enum type can hold:
 
 ```boba
 // This enum can only be one of three possible values.
@@ -24,11 +24,11 @@ enum JobStatus {
 >
 > In Boba, enum variants can also hold data. For example, you could define `Failed(string)` to store an error message right inside the variant. This powerful feature for modeling complex state will be covered in a later chapter.
 
-### Using an Enum
+## Using an Enum
 
-Once defined, you can use the enum as a type for variables and function parameters. You access a specific variant using `EnumName.VariantName`.
+Once defined, you can use the enum as a type for variables and function parameters. You access a specific variant using `EnumName.VariantName`. To act on the value of an enum, you use a `match` statement.
 
-To act on the value of an enum, you can use a `match` statement. This is a powerful control flow tool that allows you to compare a value against a series of patterns and execute code based on which pattern matches. Its key feature is that it must be exhaustive—the compiler guarantees that you have a branch for every possible variant, preventing bugs from unhandled cases.
+The `match` statement is exhaustive - the compiler guarantees that you handle every possible variant, preventing bugs from unhandled cases. This safety feature ensures your code can never encounter an unexpected state:
 
 ```boba
 // Create a variable of type JobStatus.
@@ -41,6 +41,21 @@ match current_status {
 }
 ```
 
-By using an enum, you leverage the Boba compiler as a safety net. It becomes impossible for a `JobStatus` variable to ever hold an invalid value like "in-progress" or "error". This eliminates an entire category of bugs at compile time.
+## Enum Benefits
 
-This chapter provides a foundation for creating your own types. In the next chapter, you'll learn about `structs`, which let you group related data together.
+Enums leverage the compiler as a safety net. It becomes impossible for a `JobStatus` variable to ever hold an invalid value like "in-progress" or "error". This eliminates an entire category of bugs at compile time.
+
+Enums also make your code self-documenting - anyone reading your code can immediately see all possible states by looking at the enum definition. This clarity reduces confusion and makes maintenance easier.
+
+## Time to Practice!
+
+Experiment with enums to understand their power:
+
+1. **Create simple enums**: Define enums for different states in your domain
+2. **Use match statements**: Practice handling all variants exhaustively  
+3. **Try enum methods**: Create functions that take enums as parameters
+4. **Compare to strings**: See how enums prevent typos that strings allow
+
+## What's Next
+
+You now understand how to create custom types with fixed sets of values using enums. This provides compile-time safety for state management. Next, you'll learn about structs, which let you group related data together into custom types, complementing enums for comprehensive type design.

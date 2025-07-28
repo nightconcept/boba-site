@@ -3,11 +3,15 @@ title: "Generics"
 description: "Learn about generic types and functions in Boba for writing reusable, type-safe code"
 ---
 
-Generics allow you to write code that works with different types while maintaining type safety. Instead of writing separate functions for each type, you can write one generic function that works with many types.
+Generics allow you to write code that works with different types while maintaining type safety. Instead of duplicating function logic for integers, strings, and other types, you can write one generic function that adapts to whatever type you provide.
+
+This eliminates code duplication while preserving Boba's compile-time type checking. Generics ensure your code is both flexible and safe, catching type mismatches before your program runs.
 
 ## Basic Generic Functions
 
-Define generic functions using angle brackets with type parameters:
+Define generic functions using angle brackets with type parameters. The type parameter (commonly named `T`) acts as a placeholder that gets filled in when you call the function:
+
+
 
 ```boba
 fn get_first<T>(items: List<T>) -> T {
@@ -24,7 +28,9 @@ let first_name = get_first(names)      // Returns string
 
 ## Generic Types
 
-Boba has several built-in generic types:
+Boba has several built-in generic types that you've already been using. When you create a `List<int>` or `Map<string, int>`, you're using generics to specify exactly what types the collection can hold:
+
+
 
 ```boba
 // Lists with specific element types
@@ -41,7 +47,9 @@ let record: (string, int, bool) = ("Alice", 25, true)
 
 ## Generic Structs
 
-You can create your own generic types:
+You can create your own generic types by adding type parameters to struct definitions. This lets you build reusable data structures that work with any type:
+
+
 
 ```boba
 struct Container<T> {
@@ -55,7 +63,9 @@ let string_container = Container{ value: "hello" }
 
 ## Generic Enums
 
-Enums can also be generic:
+Enums can also be generic, allowing variants to hold different types of data. This is how Boba implements powerful types like `Option` and `Result`:
+
+
 
 ```boba
 enum Result<T, E> {
@@ -69,7 +79,9 @@ let failure: Result<int, string> = Result.Err("Something went wrong")
 
 ## Type Inference
 
-Boba can often infer generic types from context:
+Boba can often infer generic types from context, reducing the verbosity of generic code. You don't always need to specify the type parameters explicitly:
+
+
 
 ```boba
 // Type inferred from the list contents
@@ -86,7 +98,9 @@ let result = identity(42)      // T inferred as int
 
 ## Generic Constraints
 
-You can constrain generic types (though this is an advanced feature):
+You can constrain generic types to ensure they have certain capabilities. This advanced feature lets you call specific methods on generic parameters:
+
+
 
 ```boba
 // T must be a specific type or implement certain traits
@@ -98,7 +112,9 @@ fn process<T: Comparable>(value: T) -> T {
 
 ## Working with Option and Result
 
-Two important generic types you'll use frequently:
+Two important generic types you'll use frequently are `Option<T>` and `Result<T, E>`. These demonstrate how generics enable powerful, reusable error handling patterns:
+
+
 
 ```boba
 import std:test
@@ -120,9 +136,20 @@ match maybe_number {
 
 ## Best Practices
 
-1. **Use descriptive type parameter names**: `T` for generic types, `K` and `V` for map keys/values
-2. **Prefer type inference** when the compiler can figure it out
-3. **Be explicit with types** when it improves code clarity
-4. **Use generics** to avoid code duplication while maintaining type safety
+**Use descriptive type parameter names**: `T` for generic types, `K` and `V` for map keys/values. **Prefer type inference** when the compiler can figure it out, but **be explicit with types** when it improves code clarity.
 
-Generics make your code more reusable and help catch type errors at compile time rather than runtime.
+**Use generics** to avoid code duplication while maintaining type safety. They help catch type errors at compile time rather than runtime.
+
+## Time to Practice!
+
+Experiment with generics to understand their flexibility:
+
+1. **Write generic functions**: Create functions that work with multiple types
+2. **Use built-in generics**: Practice with `List<T>`, `Map<K, V>`, and `Option<T>`
+3. **Create generic structs**: Build reusable data structures
+4. **Try type inference**: Let Boba figure out types when possible
+5. **Practice with constraints**: Experiment with bounded generic types
+
+## What's Next
+
+You now understand how generics provide type-safe flexibility in Boba. You can write reusable code that works with multiple types while maintaining compile-time safety guarantees. Next, you'll learn about methods, which let you add behavior to your custom types and make them feel like built-in language features.
