@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "mcp__filesystem__write_file",
+      "mcp__filesystem__create_directory"
     ],
     "deny": []
   }

@@ -41,7 +41,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: "Learn Boba",
+					label: "Tutorials",
 					items: [
 						{ label: "Hello World", link: "/learn/01-hello-world/" },
 						{
@@ -69,6 +69,43 @@ export default defineConfig({
 						{ label: "Idiomatic Boba", link: "/learn/18-idiomatic-boba/" },
 					],
 				},
+				// {
+				// 	label: "How-to Guides",
+				// 	items: [
+				// 		{ label: "Build a CLI App", link: "/how-to/build-cli-app/" },
+				// 		{ label: "Handle JSON Data", link: "/how-to/handle-json-data/" },
+				// 		{ label: "Test-Driven Development", link: "/how-to/test-driven-development/" },
+				// 		{ label: "Migrate from Python", link: "/how-to/migrate-from-python/" },
+				// 	],
+				// },
+				// {
+				// 	label: "Reference",
+				// 	items: [
+				// 		{
+				// 			label: "Language",
+				// 			items: [
+				// 				{ label: "Types", link: "/reference/language/types/" },
+				// 				{ label: "Syntax", link: "/reference/language/syntax/" },
+				// 			],
+				// 		},
+				// 		{
+				// 			label: "Standard Library",
+				// 			items: [
+				// 				{ label: "std:fs", link: "/reference/standard-library/fs/" },
+				// 				{ label: "std:json", link: "/reference/standard-library/json/" },
+				// 			],
+				// 		},
+				// 	],
+				// },
+				// {
+				// 	label: "Explanation",
+				// 	items: [
+				// 		{ label: "Why Boba Exists", link: "/explanation/why-boba-exists/" },
+				// 		{ label: "AI Collaboration Design", link: "/explanation/ai-collaboration-design/" },
+				// 		{ label: "Safety by Design", link: "/explanation/safety-by-design/" },
+				// 		{ label: "Bytecode VM Architecture", link: "/explanation/bytecode-vm-architecture/" },
+				// 	],
+				// },
 				{
 					label: "Language Overview",
 					items: [{ label: "Examples", link: "/language-overview/examples/" }],
