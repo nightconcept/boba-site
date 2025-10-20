@@ -18,8 +18,8 @@ importers:
         specifier: ^0.34.2
         version: 0.34.2
       starlight-sidebar-topics:
-        specifier: ^0.6.0
-        version: 0.6.0(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0)))
+        specifier: ^0.6.2
+        version: 0.6.2(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0)))
     devDependencies:
       biome:
         specifier: ^0.3.3
@@ -1788,6 +1788,10 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
+  picomatch@4.0.3:
+    resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
+    engines: {node: '>=12'}
+
   pidtree@0.6.0:
     resolution: {integrity: sha512-eG2dWTVw5bzqGRztnHExczNxt5VGsE6OwTeCG3fdUf9KBsZzO3R5OIIIzWR+iZA0NtZ+RDVdaoE2dK1cn6jH4g==}
     engines: {node: '>=0.10'}
@@ -1999,6 +2003,7 @@ packages:
   sitemap@8.0.0:
     resolution: {integrity: sha512-+AbdxhM9kJsHtruUF39bwS/B0Fytw6Fr1o4ZAIAEqA6cke2xcoO2GleBw9Zw7nRzILVEgz7zBM5GiTJjie1G9A==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    deprecated: 'SECURITY: Multiple vulnerabilities fixed in 8.0.1 (XML injection, path traversal, command injection, protocol injection). Upgrade immediately: npm install sitemap@8.0.1'
     hasBin: true
 
   slice-ansi@5.0.0:
@@ -2029,8 +2034,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  starlight-sidebar-topics@0.6.0:
-    resolution: {integrity: sha512-ysmOR7zaHYKtk18/mpW4MbEMDioR/ZBsisu9bdQrq0v9BlHWpW7gAdWlqFWO9zdv1P7l0Mo1WKd0wJ0UtqOVEQ==}
+  starlight-sidebar-topics@0.6.2:
+    resolution: {integrity: sha512-SNCTUZS/hcVor0ZcaXbaSVU37+V+qtvzNirkvnOg3Mqu/awuGpthkH5+uKpiZqWxLffp6TrOlsv5E5QsxrndNg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@astrojs/starlight': '>=0.32.0'
@@ -4592,6 +4597,8 @@ snapshots:
 
   picomatch@4.0.2: {}
 
+  picomatch@4.0.3: {}
+
   pidtree@0.6.0: {}
 
   postcss-nested@6.2.0(postcss@8.5.6):
@@ -5003,10 +5010,10 @@ snapshots:
       safer-buffer: 2.1.2
       tweetnacl: 0.14.5
 
-  starlight-sidebar-topics@0.6.0(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0))):
+  starlight-sidebar-topics@0.6.2(@astrojs/starlight@0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0))):
     dependencies:
       '@astrojs/starlight': 0.34.4(astro@5.10.1(@types/node@24.0.8)(rollup@4.44.1)(typescript@5.8.3)(yaml@2.8.0))
-      picomatch: 4.0.2
+      picomatch: 4.0.3
 
   stream-replace-string@2.0.0: {}
 
