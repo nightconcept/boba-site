@@ -13,7 +13,7 @@
 		"syntax": "python scripts/combine_mdx.py"
 	},
 	"dependencies": {
-		"@astrojs/starlight": "^0.34.4",
+		"@astrojs/starlight": "^0.36.1",
 		"astro": "^5.10.1",
 		"sharp": "^0.34.2",
 		"starlight-sidebar-topics": "^0.6.0"
